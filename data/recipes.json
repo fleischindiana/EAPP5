@@ -260,5 +260,31 @@
     ],
     "naehr": "Pro Scheibe: ~210 kcal · ~5g Protein (+3g mit Pulver) · Kalium, Magnesium, Ballaststoffe",
     "savedAt": "2026-03-11T13:01:10.171Z"
+  },
+  {
+    "name": "Kartoffel-Tofu-Pfanne",
+    "meta": "⏱ 30 Min · 4 Portionen",
+    "kategorie": "🍽️ Mittag & Abend",
+    "zutaten": [
+      "500g Tofu",
+      "4-5 mittelgroße Kartoffeln",
+      "1 Zwiebel",
+      "2 Knoblauchzehen",
+      "1 EL Olivenöl",
+      "1 TL getrockneter Thymian",
+      "Salz und Pfeffer",
+      "Optional: 1/4 TL Kurkuma für die Farbe"
+    ],
+    "schritte": [
+      "Die Kartoffeln schälen und in kleine Würfel schneiden.",
+      "Die Zwiebel und den Knoblauch fein hacken.",
+      "In einer großen Pfanne das Olivenöl erhitzen und die Zwiebel und den Knoblauch darin glasig braten.",
+      "Den Tofu in kleine Würfel schneiden und zur Zwiebel-Knoblauch-Mischung hinzufügen. Kurz anbraten, bis der Tofu leicht gebräunt ist.",
+      "Die Kartoffelwürfel hinzufügen, Thymian, Salz und Pfeffer darüber streuen. Optional mit Kurkuma für die Farbe bestreuen.",
+      "Alles gut vermischen und bei mittlerer Hitze etwa 20-25 Minuten braten, bis die Kartoffeln gar sind. Zwischendurch mehrmals umrühren, um ein Anbrennen zu vermeiden."
+    ],
+    "naehr": "~550 kcal · ~30g Protein · 70g Kohlenhydrate · 20g Fett",
+    "tipp": "Um die Proteinaufnahme zu erhöhen, kann man zusätzlich eine Handvoll Hülsenfrüchte wie Erbsen oder Bohnen hinzufügen. Für Läufer ist es wichtig, auf eine ausgewogene Ernährung zu achten, um die Energiebedürfnisse zu decken und die Regeneration zu unterstützen.",
+    "savedAt": "2026-03-11T16:38:04.782Z"
   }
 ]

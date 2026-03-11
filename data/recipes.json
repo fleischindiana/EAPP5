@@ -199,5 +199,30 @@
     ],
     "naehr": "~780 kcal · ~30g Protein · Eisen, Zink, Vitamin C",
     "savedAt": "2026-03-11T13:01:07.438Z"
+  },
+  {
+    "name": "Mega Meal Prep Bowl (4 Tage)",
+    "meta": "⏱ 45 Min · 4 Portionen · Meal Prep",
+    "kategorie": "🍽️ Mittag & Abend",
+    "zutaten": [
+      "400g rote Linsen",
+      "300g Quinoa",
+      "2 Süßkartoffeln gewürfelt",
+      "200g Kichererbsen (Dose)",
+      "2 Handvoll Spinat",
+      "Kreuzkümmel, Paprika, Kurkuma",
+      "4 EL Tahini, Saft 1 Zitrone",
+      "1 L Gemüsebrühe, 2 EL Olivenöl"
+    ],
+    "schritte": [
+      "Linsen + Quinoa getrennt kochen (20 Min).",
+      "Süßkartoffeln mit Olivenöl + Gewürzen im Ofen: 200°C, 25 Min.",
+      "Kichererbsen abtropfen, kurz anbraten.",
+      "Tahini-Dressing: Tahini + Zitrone + 4 EL Wasser + Salz verrühren.",
+      "4 Behälter befüllen: je Linsen, Quinoa, Süßkartoffel, Kichererbsen.",
+      "Spinat oben drauf. Dressing separat. 4 Tage haltbar."
+    ],
+    "naehr": "~720 kcal · ~32g Protein · Kalium, Eisen, Folsäure",
+    "savedAt": "2026-03-11T13:01:08.333Z"
   }
 ]

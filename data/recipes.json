@@ -323,5 +323,37 @@
     "naehr": "~420 kcal · ~10g Protein · 60g Kohlenhydrate, 20g Fett",
     "tipp": "Dieser Kuchen ist reich an Kohlenhydraten und kann als Snack oder Dessert nach dem Laufen genossen werden. Um den Proteinbedarf zu decken, kann er mit einem Glas Pflanzenmilch oder einem veganen Proteinshake kombiniert werden.",
     "savedAt": "2026-03-11T16:42:29.569Z"
+  },
+  {
+    "name": "Kartoffelsuppe mit Tofu und Gemüse",
+    "meta": "⏱ 30 Min · 4 Portionen",
+    "kategorie": "🍽️ Mittag & Abend",
+    "zutaten": [
+      "4 große Kartoffeln",
+      "1 Block Tofu (120g)",
+      "2 EL Olivenöl",
+      "1 Zwiebel",
+      "3 Knoblauchzehen",
+      "2 Karotten",
+      "2 Stangen Sellerie",
+      "1 Dose (400g) Tomaten",
+      "4 TL getrockneter Thymian",
+      "2 TL getrockneter Rosmarin",
+      "Salz und Pfeffer",
+      "2 EL Sojasauce (glutenfrei)",
+      "4 EL vegane Sahne (optional)"
+    ],
+    "schritte": [
+      "Kartoffeln, Zwiebel, Knoblauch, Karotten und Sellerie schälen und fein hacken.",
+      "In einem großen Topf Olivenöl erhitzen und das gehackte Gemüse darin anbraten, bis es weich ist.",
+      "Tofu in kleine Stücke schneiden und zum Gemüse geben. Kurz anbraten.",
+      "Tomaten, Thymian, Rosmarin, Salz und Pfeffer hinzufügen. Mit Wasser auffüllen, bis alles bedeckt ist.",
+      "Alles etwa 20 Minuten köcheln lassen, bis die Kartoffeln weich sind.",
+      "Sojasauce hinzufügen und abschmecken. Optional mit veganer Sahne cremig machen.",
+      "Suppe pürieren oder Portionsweise servieren."
+    ],
+    "naehr": "~550 kcal · ~25g Protein · 70g Kohlenhydrate · 20g Fett",
+    "tipp": "Für zusätzliche Proteine kann man auch noch eine Handvoll Nüsse oder Samen wie Chiasamen hinzufügen. Um das Ziel von 100g Protein pro Tag zu erreichen, sollten weitere proteinreiche Mahlzeiten oder Snacks wie Nussbutter, Tofu oder vegane Proteinshakes konsumiert werden.",
+    "savedAt": "2026-03-11T16:42:53.529Z"
   }
 ]

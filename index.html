@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ernährung">
+<meta name="theme-color" content="#1a3d2b">
+<title>Ernährungsplan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green-deep: #1a3d2b;
+  --green-mid: #2d6a4f;
+  --green-light: #52b788;
+  --green-pale: #d8f3dc;
+  --cream: #f8f5f0;
+  --cream-dark: #ede8e0;
+  --text: #1a1a1a;
+  --text-light: #666;
+  --white: #ffffff;
+  --safe-bottom: env(safe-area-inset-bottom, 20px);
+  --safe-top: env(safe-area-inset-top, 44px);
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body { height:100dvh; overflow:hidden; font-family:'DM Sans',sans-serif; background:var(--green-deep); color:var(--text); }
+body { display:flex; flex-direction:column; }
+
+/* NAV TABS */
+.tab-bar {
+  flex-shrink:0;
+  background:var(--green-deep);
+  border-top:2px solid var(--green-mid);
+  display:flex;
+  z-index:100;
+  box-shadow:0 -4px 24px rgba(0,0,0,0.25);
+  /* Extend into home indicator area */
+  padding-bottom:var(--safe-bottom);
+  margin-bottom:0;
+}
+.tab-btn {
+  flex:1; display:flex; flex-direction:column; align-items:center;
+  padding:10px 0 8px; border:none; background:none; cursor:pointer;
+  font-family:'DM Sans',sans-serif; transition:all 0.2s;
+}
+.tab-icon { font-size:22px; margin-bottom:3px; transition:transform 0.2s; }
+.tab-label { font-size:10px; font-weight:600; letter-spacing:0.5px; color:rgba(255,255,255,0.45); text-transform:uppercase; transition:color 0.2s; }
+.tab-btn.active .tab-label { color:var(--green-light); }
+.tab-btn.active .tab-icon { transform:scale(1.18); }
+
+/* SCREENS */
+.screen {
+  flex:1;
+  min-height:0;
+  overflow-y:scroll;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  display:none;
+}
+.screen.active { display:block; }
+
+/* ========== SCREEN 1: PLAN ========== */
+.plan-hero {
+  background:var(--green-deep);
+  padding:calc(var(--safe-top) + 12px) 20px 12px;
+  position:relative; overflow:hidden;
+}
+.plan-hero::after {
+  content:''; position:absolute; top:-60px; right:-60px;
+  width:300px; height:300px; border-radius:50%;
+  background:radial-gradient(circle, rgba(82,183,136,0.2) 0%, transparent 70%);
+  pointer-events:none;
+}
+.plan-hero-label { font-size:10px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--green-light); margin-bottom:3px; }
+.plan-hero h1 { font-family:'Playfair Display',serif; font-size:22px; font-weight:900; color:var(--white); line-height:1.1; margin-bottom:2px; }
+.plan-hero h1 span { color:var(--green-light); }
+.plan-hero-sub { font-size:11px; color:rgba(255,255,255,0.6); font-weight:300; }
+
+.plan-stats { display:flex; gap:8px; padding:8px 16px 4px; overflow-x:auto; scrollbar-width:none; }
+.plan-stats::-webkit-scrollbar { display:none; }
+.stat-pill {
+  background:var(--white); border-radius:20px; padding:8px 14px;
+  white-space:nowrap; box-shadow:0 2px 8px rgba(0,0,0,0.06);
+  flex-shrink:0;
+}
+.stat-pill-val { font-size:15px; font-weight:700; color:var(--green-deep); }
+.stat-pill-label { font-size:10px; color:var(--text-light); letter-spacing:0.5px; text-transform:uppercase; }
+
+/* SUPPLEMENT TABLE */
+.section-header {
+  padding:20px 16px 10px;
+  font-family:'Playfair Display',serif;
+  font-size:20px; font-weight:700; color:var(--green-deep);
+}
+.supp-card {
+  margin:0 16px 6px;
+  background:var(--white);
+  border-radius:12px;
+  padding:12px 14px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.05);
+}
+.supp-row { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
+.supp-name { font-size:14px; font-weight:700; color:var(--green-deep); }
+.supp-when { font-size:11px; color:var(--green-light); font-weight:600; margin-top:2px; }
+.supp-dose { font-size:12px; color:var(--text-light); text-align:right; font-family:'DM Mono',monospace; font-size:11px; }
+.supp-why { font-size:11px; color:var(--text-light); margin-top:4px; }
+
+/* DAY CARDS */
+.day-card {
+  margin:0 16px 16px;
+  background:var(--white);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 3px 14px rgba(26,61,43,0.08);
+}
+.day-card-header {
+  padding:14px 16px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.day-card-header.run { background:linear-gradient(135deg,#1a3d2b,#2d6a4f); }
+.day-card-header.rest { background:linear-gradient(135deg,#1a2d3d,#2d4a6a); }
+.day-card-title { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:var(--white); }
+.day-badge {
+  font-size:11px; font-weight:600; padding:4px 10px; border-radius:12px;
+}
+.badge-run { background:rgba(82,183,136,0.25); color:#b7e4c7; }
+.badge-rest { background:rgba(100,149,237,0.25); color:#a8c6f0; }
+
+/* ACCORDION */
+.day-toggle {
+  width:100%; border:none; background:var(--cream); padding:10px 16px;
+  text-align:left; font-family:'DM Sans',sans-serif; font-size:13px;
+  font-weight:600; color:var(--text-light); cursor:pointer;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.day-toggle-arrow { transition:transform 0.3s; font-size:12px; }
+.day-toggle.open .day-toggle-arrow { transform:rotate(180deg); }
+.day-content { display:none; padding:0 0 4px; }
+.day-content.open { display:block; }
+
+.meal-row {
+  padding:10px 16px;
+  border-bottom:1px solid var(--cream-dark);
+  display:flex; gap:10px; align-items:flex-start;
+}
+.meal-row:last-child { border-bottom:none; }
+.meal-emoji { font-size:18px; flex-shrink:0; margin-top:1px; }
+.meal-info { flex:1; }
+.meal-type { font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--green-mid); margin-bottom:2px; }
+.meal-name { font-size:13px; font-weight:600; color:var(--text); line-height:1.3; margin-bottom:3px; }
+.meal-naehr { font-size:11px; color:var(--text-light); }
+.meal-kcal { font-size:11px; font-weight:700; color:var(--green-deep); font-family:'DM Mono',monospace; background:var(--cream-dark); padding:2px 7px; border-radius:8px; white-space:nowrap; margin-top:4px; display:inline-block; }
+
+.day-footer-row {
+  background:#f0f9f4;
+  padding:10px 16px;
+  display:flex; justify-content:space-between; align-items:flex-start; gap:8px;
+}
+.day-tipp { font-size:11px; color:var(--text-light); font-style:italic; flex:1; }
+.day-total { font-size:12px; font-weight:700; color:var(--green-deep); white-space:nowrap; font-family:'DM Mono',monospace; }
+
+/* RECIPES */
+.recipe-card {
+  margin:0 16px 16px;
+  background:var(--white);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 2px 10px rgba(0,0,0,0.05);
+  border-left:4px solid var(--green-light);
+}
+.recipe-header {
+  padding:14px 16px 10px;
+  cursor:pointer; display:flex; justify-content:space-between; align-items:center;
+}
+.recipe-name { font-size:15px; font-weight:700; color:var(--green-deep); line-height:1.3; }
+.recipe-meta { font-size:11px; color:var(--text-light); margin-top:3px; }
+.recipe-content { display:none; padding:0 16px 14px; border-top:1px solid var(--cream-dark); }
+.recipe-content.open { display:block; }
+.recipe-sub { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--green-mid); margin:12px 0 6px; }
+.recipe-list { list-style:none; }
+.recipe-list li { font-size:13px; padding:4px 0; border-bottom:1px solid var(--cream-dark); display:flex; gap:6px; }
+.recipe-list li::before { content:'·'; color:var(--green-light); font-size:16px; flex-shrink:0; }
+.recipe-steps { list-style:none; counter-reset:steps; }
+.recipe-steps li { font-size:13px; padding:6px 0; border-bottom:1px solid var(--cream-dark); display:flex; gap:10px; counter-increment:steps; }
+.recipe-steps li::before {
+  content:counter(steps); background:var(--green-mid); color:white;
+  min-width:20px; height:20px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:10px; font-weight:700; flex-shrink:0; margin-top:1px;
+}
+.recipe-naehr { margin-top:10px; background:#f0f9f4; border-radius:8px; padding:10px 12px; font-size:12px; color:var(--green-deep); font-weight:500; }
+
+/* ========== SCREEN 2: NÄHRSTOFFE ========== */
+.ref-hero {
+  background:var(--green-deep);
+  padding:calc(var(--safe-top) + 12px) 20px 12px;
+}
+.ref-hero-label { font-size:10px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--green-light); margin-bottom:3px; }
+.ref-hero h1 { font-family:'Playfair Display',serif; font-size:20px; font-weight:900; color:var(--white); margin-bottom:8px; }
+.ref-hero h1 span { color:var(--green-light); }
+.calc-row {
+  background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);
+  border-radius:12px; padding:12px 16px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+}
+.calc-label { font-size:12px; color:rgba(255,255,255,0.7); }
+.calc-input {
+  background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25);
+  border-radius:8px; padding:6px 12px; color:white;
+  font-family:'DM Mono',monospace; font-size:16px; font-weight:500;
+  width:80px; text-align:center;
+}
+.calc-input:focus { outline:none; border-color:var(--green-light); }
+
+.cat-filter { display:flex; gap:6px; padding:12px 16px 4px; overflow-x:auto; scrollbar-width:none; }
+.cat-filter::-webkit-scrollbar { display:none; }
+.cat-btn {
+  padding:6px 14px; border-radius:16px; border:2px solid var(--cream-dark);
+  background:var(--white); font-size:12px; font-weight:600; cursor:pointer;
+  white-space:nowrap; color:var(--text-light); flex-shrink:0; transition:all 0.2s;
+  font-family:'DM Sans',sans-serif;
+}
+.cat-btn.active { background:var(--green-mid); border-color:var(--green-mid); color:white; }
+
+.tagesinfo-bar {
+  margin:8px 16px; background:#f0f9f4; border-left:3px solid var(--green-light);
+  border-radius:0 8px 8px 0; padding:8px 12px; font-size:11px; color:var(--text-light);
+}
+.tagesinfo-bar strong { color:var(--green-deep); }
+
+.cat-title {
+  font-family:'Playfair Display',serif; font-size:18px; font-weight:700;
+  color:var(--green-deep); padding:16px 16px 8px;
+}
+
+.food-card {
+  margin:0 16px 12px;
+  background:var(--white);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 2px 10px rgba(26,61,43,0.06);
+}
+.food-header-row {
+  padding:12px 14px 10px;
+  display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid var(--cream-dark);
+}
+.food-name-wrap { display:flex; align-items:center; gap:8px; }
+.food-emoji { font-size:22px; }
+.food-name { font-size:15px; font-weight:700; color:var(--text); }
+.food-portion { background:var(--cream-dark); border-radius:12px; padding:3px 10px; font-size:10px; font-weight:600; color:var(--text-light); font-family:'DM Mono',monospace; }
+.food-kcal-big { padding:8px 14px 4px; display:flex; align-items:baseline; gap:4px; }
+.kcal-num { font-family:'DM Mono',monospace; font-size:26px; font-weight:500; color:var(--green-deep); }
+.kcal-u { font-size:12px; color:var(--text-light); }
+
+.nutrient-rows { padding:0 14px 12px; }
+.n-row { display:flex; align-items:center; gap:8px; padding:4px 0; border-bottom:1px solid #f3f0eb; }
+.n-row:last-child { border-bottom:none; }
+.n-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.n-name { font-size:12px; color:var(--text-light); width:90px; flex-shrink:0; }
+.n-bar-wrap { flex:1; height:5px; background:var(--cream-dark); border-radius:3px; overflow:hidden; }
+.n-bar { height:100%; border-radius:3px; transition:width 0.4s; }
+.n-val { font-family:'DM Mono',monospace; font-size:11px; font-weight:500; color:var(--text); width:52px; text-align:right; }
+.n-pct { font-size:10px; color:var(--text-light); width:28px; text-align:right; }
+
+.c-protein{background:#2471a3} .c-carbs{background:#c9a84c} .c-fat{background:#7d5a9e}
+.c-fiber{background:#52b788} .c-kalium{background:#c0392b} .c-magnesium{background:#1a3d2b}
+.c-eisen{background:#8B4513} .c-calcium{background:#5b8dee} .c-vitamin_c{background:#f0a500}
+.c-omega3{background:#0097a7} .c-zink{background:#6d4c41}
+
+/* STICKY HEADER FOR NÄHRSTOFFE */
+.naehr-sticky {
+  position:sticky; top:0; z-index:50;
+  background:var(--green-deep);
+}
+
+/* RECIPE SCREEN HERO */
+.rezept-hero {
+  background:var(--green-deep);
+  padding:calc(var(--safe-top) + 12px) 20px 12px;
+}
+.rezept-hero h1 { font-family:'Playfair Display',serif; font-size:22px; font-weight:900; color:var(--white); }
+.rezept-hero h1 span { color:var(--green-light); }
+.rezept-hero-sub { font-size:11px; color:rgba(255,255,255,0.6); margin-top:3px; }
+.tips-hero {
+  background:var(--green-deep);
+  padding:calc(var(--safe-top) + 12px) 20px 12px;
+}
+.tips-hero h1 { font-family:'Playfair Display',serif; font-size:22px; font-weight:900; color:var(--white); }
+.tips-hero h1 span { color:var(--green-light); }
+.tips-hero-sub { font-size:11px; color:rgba(255,255,255,0.6); margin-top:3px; }
+
+.tip-card {
+  margin:0 16px 14px;
+  background:var(--white); border-radius:14px; padding:18px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
+.tip-icon { font-size:26px; margin-bottom:8px; }
+.tip-title { font-size:16px; font-weight:700; color:var(--green-deep); margin-bottom:10px; }
+.tip-list { list-style:none; }
+.tip-list li { font-size:13px; color:var(--text-light); padding:5px 0; border-bottom:1px solid var(--cream-dark); display:flex; gap:8px; }
+.tip-list li::before { content:'→'; color:var(--green-light); flex-shrink:0; }
+.tip-list li:last-child { border-bottom:none; }
+.tip-highlight {
+  background:#f0f9f4; border-left:3px solid var(--green-light);
+  border-radius:0 8px 8px 0; padding:10px 12px;
+  font-size:13px; color:var(--green-deep); font-weight:500; margin:14px 16px 0;
+}
+
+/* RECIPE CATEGORIES */
+.recipe-cat-title {
+  font-family:'Playfair Display',serif; font-size:17px; font-weight:700;
+  color:var(--green-deep); padding:14px 16px 6px;
+  display:flex; align-items:center; gap:8px;
+}
+.recipe-cat-title::after {
+  content:''; flex:1; height:1px; background:var(--cream-dark);
+}
+
+/* AI RECIPE SEARCH */
+.ai-search-box {
+  margin:12px 16px 8px;
+  background:linear-gradient(135deg,#1a3d2b,#2d6a4f);
+  border-radius:16px; padding:16px;
+  box-shadow:0 4px 16px rgba(26,61,43,0.2);
+}
+.ai-search-label { font-size:13px; font-weight:700; color:var(--green-light); margin-bottom:3px; }
+.ai-search-hint { font-size:11px; color:rgba(255,255,255,0.6); margin-bottom:10px; }
+.ai-search-input {
+  width:100%; background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.2); border-radius:10px;
+  padding:10px 12px; color:white; font-family:'DM Sans',sans-serif;
+  font-size:13px; resize:none; outline:none; -webkit-appearance:none;
+}
+.ai-search-input::placeholder { color:rgba(255,255,255,0.4); }
+.ai-search-input:focus { border-color:var(--green-light); }
+.ai-search-btn {
+  margin-top:10px; width:100%;
+  background:var(--green-light); border:none; border-radius:10px;
+  padding:11px; font-family:'DM Sans',sans-serif;
+  font-size:13px; font-weight:700; color:var(--green-deep);
+  cursor:pointer; transition:opacity 0.2s;
+}
+.ai-search-btn:active { opacity:0.8; }
+.ai-search-btn:disabled { opacity:0.5; cursor:default; }
+.ai-result-card {
+  margin:0 16px 16px; background:var(--white); border-radius:16px;
+  overflow:hidden; box-shadow:0 3px 14px rgba(26,61,43,0.1);
+  border-left:4px solid var(--green-light);
+  animation:fadeIn 0.4s ease;
+}
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.ai-result-header { padding:14px 16px 10px; background:#f0f9f4; }
+.ai-result-title { font-size:16px; font-weight:700; color:var(--green-deep); }
+.ai-result-meta { font-size:11px; color:var(--text-light); margin-top:2px; }
+.ai-result-body { padding:12px 16px 14px; }
+.ai-result-sub { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--green-mid); margin:10px 0 6px; }
+.ai-result-sub:first-child { margin-top:0; }
+.ai-result-list { list-style:none; }
+.ai-result-list li { font-size:13px; padding:4px 0; border-bottom:1px solid var(--cream-dark); display:flex; gap:6px; }
+.ai-result-list li::before { content:'·'; color:var(--green-light); font-size:16px; flex-shrink:0; }
+.ai-result-list li:last-child { border-bottom:none; }
+.ai-result-steps { list-style:none; counter-reset:steps; }
+.ai-result-steps li { font-size:13px; padding:6px 0; border-bottom:1px solid var(--cream-dark); display:flex; gap:10px; counter-increment:steps; }
+.ai-result-steps li::before {
+  content:counter(steps); background:var(--green-mid); color:white;
+  min-width:20px; height:20px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:10px; font-weight:700; flex-shrink:0; margin-top:1px;
+}
+.ai-result-steps li:last-child { border-bottom:none; }
+.ai-result-naehr { margin-top:10px; background:#f0f9f4; border-radius:8px; padding:10px 12px; font-size:12px; color:var(--green-deep); font-weight:500; }
+.ai-loading { text-align:center; padding:24px 16px; color:var(--text-light); font-size:13px; }
+.ai-error { margin:0 16px 16px; background:#fff0f0; border-left:4px solid #e74c3c; border-radius:0 8px 8px 0; padding:12px; font-size:12px; color:#c0392b; }
+
+/* WEIGHT TRACKER MODAL */
+.weight-fab {
+  position:absolute; top:calc(var(--safe-top) + 12px); right:16px;
+  background:var(--green-light); color:var(--green-deep);
+  border:none; border-radius:20px; padding:7px 14px;
+  font-family:'DM Sans',sans-serif; font-size:12px; font-weight:700;
+  cursor:pointer; display:flex; align-items:center; gap:5px;
+  box-shadow:0 2px 8px rgba(82,183,136,0.4);
+}
+.modal-overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,0.6);
+  z-index:200; display:none; align-items:flex-end;
+  backdrop-filter:blur(4px);
+}
+.modal-overlay.open { display:flex; }
+.modal {
+  background:var(--cream); border-radius:24px 24px 0 0;
+  width:100%; max-height:88dvh; overflow-y:auto;
+  padding-bottom:var(--safe-bottom);
+  animation:slideUp 0.3s ease;
+}
+@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+.modal-handle { width:40px; height:4px; background:var(--cream-dark); border-radius:2px; margin:12px auto 0; }
+.modal-head {
+  padding:16px 20px 14px; display:flex; align-items:center;
+  justify-content:space-between; border-bottom:1px solid var(--cream-dark);
+}
+.modal-title { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; color:var(--green-deep); }
+.modal-close {
+  background:var(--cream-dark); border:none; color:var(--text-light);
+  width:30px; height:30px; border-radius:50%; font-size:16px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+}
+.w-input-row { display:flex; gap:8px; padding:16px 16px 8px; align-items:flex-end; }
+.w-field { flex:1; }
+.w-field label { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-light); display:block; margin-bottom:6px; }
+.w-field input {
+  width:100%; background:var(--white); border:2px solid var(--cream-dark);
+  border-radius:12px; padding:12px 14px; color:var(--text);
+  font-family:'DM Mono',monospace; font-size:22px; font-weight:500;
+  outline:none; text-align:center;
+}
+.w-field input:focus { border-color:var(--green-light); }
+.w-add-btn {
+  background:var(--green-mid); color:white; border:none;
+  border-radius:12px; padding:14px 18px;
+  font-family:'DM Sans',sans-serif; font-size:13px; font-weight:700;
+  cursor:pointer; white-space:nowrap;
+}
+.w-stats { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; padding:8px 16px 16px; }
+.ws { background:var(--white); border-radius:12px; padding:12px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+.ws-val { font-family:'DM Mono',monospace; font-size:18px; font-weight:500; color:var(--green-deep); }
+.ws-lbl { font-size:9px; color:var(--text-light); text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
+.w-graph-wrap { padding:0 16px 16px; }
+.w-graph-title { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-light); margin-bottom:8px; }
+svg.wgraph { width:100%; overflow:visible; }
+.w-entries { padding:0 16px 8px; }
+.w-entry { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--cream-dark); }
+.w-entry:last-child { border-bottom:none; }
+.w-entry-date { font-size:13px; color:var(--text-light); }
+.w-entry-val { font-family:'DM Mono',monospace; font-size:15px; font-weight:500; color:var(--green-deep); }
+.w-entry-del { background:none; border:none; color:#ccc; font-size:18px; cursor:pointer; padding:4px; }
+.w-empty { text-align:center; padding:24px; color:var(--text-light); font-size:13px; }
+</style>
+</head>
+<body>
+
+<!-- ===== SCREEN: PLAN ===== -->
+<div class="screen active" id="screen-plan">
+
+  <div class="plan-hero">
+    <div class="plan-hero-label">Veganer Ernährungsplan · Christian</div>
+    <h1>7-Tage <span>Plan</span></h1>
+    <div class="plan-hero-sub">Ausdauer · Regeneration · +0,25 kg/Woche</div>
+    <button class="weight-fab" onclick="openWeight()">⚖️ Gewicht</button>
+  </div>
+
+  <div class="plan-stats">
+    <div class="stat-pill"><div class="stat-pill-val">~2.700</div><div class="stat-pill-label">kcal/Tag</div></div>
+    <div class="stat-pill"><div class="stat-pill-val">~100g</div><div class="stat-pill-label">Protein</div></div>
+    <div class="stat-pill"><div class="stat-pill-val">+0,25kg</div><div class="stat-pill-label">pro Woche</div></div>
+    <div class="stat-pill"><div class="stat-pill-val">100%</div><div class="stat-pill-label">Vegan</div></div>
+  </div>
+
+  <div class="section-header">📅 Die 7 Tage</div>
+  <div style="font-size:12px;color:var(--text-light);padding:0 16px 12px;">Tippe auf einen Tag zum Aufklappen</div>
+
+  <!-- Days injected by JS -->
+  <div id="days-container"></div>
+
+  <div class="section-header">💊 Supplements</div>
+
+  <div class="supp-card"><div class="supp-row"><div><div class="supp-name">L-Thyroxin</div><div class="supp-when">🌅 Früh, nüchtern (mind. 30 Min vor Essen)</div></div><div class="supp-dose">75 µg</div></div></div>
+  <div class="supp-card"><div class="supp-row"><div><div class="supp-name">Omega-3 Algenöl</div><div class="supp-when">🌅 Morgens zum Frühstück</div></div><div class="supp-dose">1–2 Kapseln<br>350mg DHA<br>180mg EPA</div></div></div>
+  <div class="supp-card"><div class="supp-row"><div><div class="supp-name">Folplus (B6/B9/B12)</div><div class="supp-when">🍽️ Mittags</div></div><div class="supp-dose">1 Tablette</div></div></div>
+  <div class="supp-card"><div class="supp-row"><div><div class="supp-name">Kreatin Monohydrat</div><div class="supp-when">🏃 Nach dem Training</div></div><div class="supp-dose">3–5g im Shake</div></div></div>
+  <div class="supp-card"><div class="supp-row"><div><div class="supp-name">Magnesium Glycinat</div><div class="supp-when">🌙 Abends vor Schlaf</div></div><div class="supp-dose">2 Tabletten<br>200mg</div></div></div>
+  <div class="supp-card"><div class="supp-row"><div><div class="supp-name">Vitamin D3 + K2</div><div class="supp-when">🌙 Abends</div></div><div class="supp-dose">2000 IE<br>+ K2 MK-7</div></div></div>
+
+  <div class="pb"></div>
+
+</div><!-- /screen-plan -->
+
+<!-- ===== SCREEN: NÄHRSTOFFE ===== -->
+<div class="screen" id="screen-naehrstoffe">
+  <div class="naehr-sticky">
+    <div class="ref-hero">
+      <h1>Zutaten & <span>Inhaltsstoffe</span></h1>
+      <div class="calc-row">
+        <span class="calc-label">🔢 Menge:</span>
+        <input type="number" class="calc-input" id="gramInput" value="100" min="1" max="1000" inputmode="numeric">
+        <span class="calc-label">g → Werte passen sich an</span>
+      </div>
+    </div>
+    <div class="cat-filter" id="cat-filter">
+      <button class="cat-btn active" onclick="filterCat('all',this)">🌿 Alle</button>
+      <button class="cat-btn" onclick="filterCat('obst',this)">🍌 Obst</button>
+      <button class="cat-btn" onclick="filterCat('getreide',this)">🌾 Getreide</button>
+      <button class="cat-btn" onclick="filterCat('huelsenfruechte',this)">🫘 Hülsenfrüchte</button>
+      <button class="cat-btn" onclick="filterCat('protein',this)">💪 Protein</button>
+      <button class="cat-btn" onclick="filterCat('gemuese',this)">🥦 Gemüse</button>
+      <button class="cat-btn" onclick="filterCat('fette',this)">🥑 Fette & Nüsse</button>
+    </div>
+    <div class="tagesinfo-bar">
+      <strong>Tagesbedarf (aktiv, ~70kg):</strong> 2700 kcal · 100g Protein · 3500mg Kalium · 400mg Magnesium · 14mg Eisen
+    </div>
+  </div>
+
+  <div id="foods-container" class="pb"></div>
+</div>
+
+<!-- ===== SCREEN: REZEPTE ===== -->
+<div class="screen" id="screen-rezepte">
+  <div class="rezept-hero">
+    <h1>Meine <span>Rezepte</span></h1>
+    <div class="rezept-hero-sub">Vegan · Glutenreduziert · Meal Prep</div>
+  </div>
+
+  <!-- KI REZEPTSUCHE -->
+  <div class="ai-search-box">
+    <div class="ai-search-label">🤖 KI-Rezeptvorschlag</div>
+    <div class="ai-search-hint">Was hast du da? Was hast du Lust drauf?</div>
+    <textarea class="ai-search-input" id="aiPrompt" placeholder="z.B. &quot;Ich habe Tofu, Brokkoli und Quinoa&quot; oder &quot;Etwas Warmes mit Süßkartoffel&quot;..." rows="3"></textarea>
+    <button class="ai-search-btn" onclick="askAI()" id="aiBtn">✨ Rezept generieren</button>
+  </div>
+
+  <div id="ai-result"></div>
+
+  <div style="padding-top:4px">
+    <div id="recipes-container" class="pb"></div>
+  </div>
+</div>
+
+<!-- ===== SCREEN: TIPPS ===== -->
+<div class="screen" id="screen-tipps">
+  <div class="tips-hero">
+    <h1>Wichtige <span>Tipps</span></h1>
+    <div class="tips-hero-sub">Kalium · Hydration · Gluten · Gewicht</div>
+  </div>
+
+  <div style="padding-top:16px">
+    <div class="tip-card">
+      <div class="tip-icon">🫙</div>
+      <div class="tip-title">Kalium auffüllen (Blutwert war niedrig!)</div>
+      <ul class="tip-list">
+        <li>Täglich mind. 1–2 Bananen (~360 mg Kalium/Stück)</li>
+        <li>Weiße Bohnen: 561 mg Kalium pro 100g – Top-Quelle</li>
+        <li>Süßkartoffel, Avocado, Spinat täglich einbauen</li>
+        <li>Gemüsebrühe nach langen Läufen: Natrium + Kalium</li>
+        <li>Datteln als Snack: 696 mg Kalium pro 100g</li>
+      </ul>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-icon">💧</div>
+      <div class="tip-title">Hydration an Lauftagen</div>
+      <ul class="tip-list">
+        <li>Vor dem Lauf: 400–500ml Wasser + Elektrolyt-Drink</li>
+        <li>Nach dem Lauf: mind. 500ml in der ersten Stunde</li>
+        <li>Kopfschmerzen oft durch Natrium- oder Magnesiummangel</li>
+        <li>Magnesium Glycinat abends → hilft präventiv!</li>
+        <li>Lauftage: Ziel 2,5–3 Liter Gesamtflüssigkeit</li>
+      </ul>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-icon">🏃</div>
+      <div class="tip-title">Post-Run Shake (Timing ist wichtig)</div>
+      <ul class="tip-list">
+        <li>Innerhalb 30–45 Min nach dem Lauf trinken</li>
+        <li>Banane + Hafermilch + Proteinpulver + Kreatin (3–5g)</li>
+        <li>Schnelle Kohlenhydrate + Protein = optimale Regeneration</li>
+        <li>An Ruhetagen kein Shake nötig, Kreatin trotzdem täglich</li>
+      </ul>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-icon">🌾</div>
+      <div class="tip-title">Gluten reduzieren ohne Verzicht</div>
+      <ul class="tip-list">
+        <li>Linsennudeln statt Weizennudeln (2× mehr Protein!)</li>
+        <li>Hafermehl statt Weizenmehl beim Backen</li>
+        <li>Reiswaffeln statt Weizenbrot (weniger Blähungen)</li>
+        <li>Quinoa und Reis als Beilage statt Couscous/Bulgur</li>
+      </ul>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-icon">📈</div>
+      <div class="tip-title">Auf 70 kg zunehmen</div>
+      <ul class="tip-list">
+        <li>Ziel: +250 kcal täglich über Erhaltungsbedarf</li>
+        <li>Wöchentlich wiegen – immer morgens, nüchtern</li>
+        <li>Nach 2 Wochen ohne Fortschritt: Portionen +10–15%</li>
+        <li>Leftover-Prinzip: abends doppelt kochen spart Zeit</li>
+        <li>0,25 kg/Woche = gesunder, nachhaltiger Aufbau</li>
+      </ul>
+    </div>
+
+    <div class="tip-card pb">
+      <div class="tip-icon">🧪</div>
+      <div class="tip-title">Supplement-Timing Reminder</div>
+      <ul class="tip-list">
+        <li>L-Thyroxin: nüchtern, mind. 30 Min vor Kaffee/Essen</li>
+        <li>Omega-3: morgens zum Frühstück (mit Fett besser aufgenommen)</li>
+        <li>Kreatin: täglich nach dem Training, auch an Ruhetagen</li>
+        <li>Magnesium Glycinat: abends → entspannend, fördert Schlaf</li>
+        <li>D3+K2: abends mit einer fetthaltigen Mahlzeit</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showScreen('plan',this)">
+    <span class="tab-icon">📅</span>
+    <span class="tab-label">Plan</span>
+  </button>
+  <button class="tab-btn" onclick="showScreen('naehrstoffe',this)">
+    <span class="tab-icon">🔬</span>
+    <span class="tab-label">Nährstoffe</span>
+  </button>
+  <button class="tab-btn" onclick="showScreen('rezepte',this)">
+    <span class="tab-icon">🍳</span>
+    <span class="tab-label">Rezepte</span>
+  </button>
+  <button class="tab-btn" onclick="showScreen('tipps',this)">
+    <span class="tab-icon">💡</span>
+    <span class="tab-label">Tipps</span>
+  </button>
+</div>
+
+<!-- WEIGHT MODAL -->
+<div class="modal-overlay" id="weightModal" onclick="closeWeightOnBg(event)">
+  <div class="modal" id="weightModalInner">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <div class="modal-title">⚖️ Gewichtstracker</div>
+      <button class="modal-close" onclick="closeWeight()">✕</button>
+    </div>
+    <div class="w-input-row">
+      <div class="w-field">
+        <label>Gewicht eintragen</label>
+        <input type="number" id="weightInput" inputmode="decimal" step="0.1" placeholder="66.5">
+      </div>
+      <button class="w-add-btn" onclick="addWeight()">+ Eintragen</button>
+    </div>
+    <div class="w-stats" id="wStats"></div>
+    <div class="w-graph-wrap">
+      <div class="w-graph-title">Verlauf</div>
+      <div id="wGraphWrap"></div>
+    </div>
+    <div class="w-entries" id="wEntries"></div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const days = [
+  { tag:'Tag 1 · Montag', run:true, mahlzeiten:[
+    {emoji:'🌅',typ:'Frühstück',name:'Granola + Haferflocken + Banane + Hafermilch + 1 EL Leinöl + 1 EL Chiasamen',naehr:'Omega-3, Kalium, Ballaststoffe',kcal:'~650'},
+    {emoji:'🍽️',typ:'Mittagessen',name:'Rote Linsensuppe mit Kokosmilch & Spinat (Leftover vom Vorabend)',naehr:'Eisen, Folsäure, Protein, Kalium',kcal:'~600'},
+    {emoji:'🌙',typ:'Abendessen',name:'Rote Linsensuppe mit Kokosmilch, Spinat, Süßkartoffel & Dinkelbrötchen',naehr:'Protein ~28g, Eisen, Folsäure',kcal:'~750'},
+    {emoji:'🍌',typ:'Post-Run Shake',name:'Banane + Hafermilch + Proteinpulver + Kreatin + Walnüsse',naehr:'Protein ~30g, Kreatin, Omega-3',kcal:'~450'},
+  ], total:'~2.450 kcal · ~95g Protein', tipp:'Shake direkt nach dem Lauf. Leinöl ins Granola morgens.'},
+  { tag:'Tag 2 · Dienstag', run:false, mahlzeiten:[
+    {emoji:'🌅',typ:'Frühstück',name:'Overnight Oats: Haferflocken + Chiasamen + Hafermilch + Beeren + Mandelmus',naehr:'Calcium, Omega-3, Antioxidantien',kcal:'~600'},
+    {emoji:'🍽️',typ:'Mittagessen',name:'Kichererbsen-Curry mit Tomaten, Paprika & Reis (Leftover)',naehr:'Protein ~25g, Eisen, Zink',kcal:'~650'},
+    {emoji:'🌙',typ:'Abendessen',name:'Kichererbsen-Tomaten-Curry mit Paprika, Koriander & Basmatireis',naehr:'Protein ~30g, Zink, Eisen, Vitamin C',kcal:'~800'},
+    {emoji:'🥑',typ:'Snack',name:'Avocado auf Reiswaffeln + Banane + Walnüsse',naehr:'Gesunde Fette, Kalium, Omega-3',kcal:'~400'},
+  ], total:'~2.450 kcal · ~88g Protein', tipp:'Ruhetag: Kichererbsen liefern Zink. Walnüsse als Omega-3 Quelle.'},
+  { tag:'Tag 3 · Mittwoch', run:true, mahlzeiten:[
+    {emoji:'🌅',typ:'Frühstück',name:'Smoothie-Bowl: Banane + Mango + Hafermilch + Chiasamen + Granola + Leinöl',naehr:'Kalium, Omega-3, Kohlenhydrate',kcal:'~650'},
+    {emoji:'🍽️',typ:'Mittagessen',name:'Tempeh-Gemüse-Pfanne mit Brokkoli, Paprika & Quinoa (Leftover)',naehr:'Protein ~32g, Calcium, Eisen',kcal:'~650'},
+    {emoji:'🌙',typ:'Abendessen',name:'Gebratener Tempeh mit Brokkoli, Paprika, Sojasoße & Quinoa',naehr:'Protein ~35g, Calcium, Zink',kcal:'~780'},
+    {emoji:'🍌',typ:'Post-Run Shake',name:'Hafermilch + Banane + Proteinpulver + Kreatin + Apfel',naehr:'Protein ~30g, Kreatin, schnelle KH',kcal:'~420'},
+  ], total:'~2.500 kcal · ~105g Protein', tipp:'Tempeh: mehr Protein als Tofu, fermentiert = besser verträglich.'},
+  { tag:'Tag 4 · Donnerstag', run:false, mahlzeiten:[
+    {emoji:'🌅',typ:'Frühstück',name:'Granola + Haferflocken + Hafermilch + Erdbeeren + Hanfsamen + Leinöl',naehr:'Omega-3, Protein, Vitamin C',kcal:'~620'},
+    {emoji:'🍽️',typ:'Mittagessen',name:'Weißer-Bohnen-Eintopf mit Kartoffeln & Karotten (Leftover)',naehr:'Kalium, Protein ~22g, Ballaststoffe',kcal:'~580'},
+    {emoji:'🌙',typ:'Abendessen',name:'Weißer-Bohnen-Eintopf mit Kartoffeln, Karotten, Thymian & Dinkel-Brot',naehr:'Protein ~28g, Kalium 561mg/100g!',kcal:'~800'},
+    {emoji:'🥜',typ:'Snack',name:'Reiswaffeln mit Erdnussbutter + Banane + Walnüsse',naehr:'Protein, gesunde Fette, Kalium',kcal:'~420'},
+  ], total:'~2.420 kcal · ~85g Protein', tipp:'Weiße Bohnen: beste pflanzliche Kaliumquelle – direkt für deinen Blutwert.'},
+  { tag:'Tag 5 · Freitag', run:true, mahlzeiten:[
+    {emoji:'🌅',typ:'Frühstück',name:'Warmer Grießbrei mit Hafermilch + Proteinpulver + Beeren + Mandelmus',naehr:'Protein ~30g, Calcium, Antioxidantien',kcal:'~680'},
+    {emoji:'🍽️',typ:'Mittagessen',name:'Linsennudeln mit Avocado-Walnuss-Pesto & Spinat (Leftover)',naehr:'Protein ~28g, Omega-3, Folsäure',kcal:'~650'},
+    {emoji:'🌙',typ:'Abendessen',name:'Linsennudeln mit Avocado-Walnuss-Pesto, Spinat & Cherrytomaten',naehr:'Protein ~30g, Omega-3, Eisen',kcal:'~750'},
+    {emoji:'🍌',typ:'Post-Run Shake',name:'Banane + Hafermilch + Proteinpulver + Kreatin + Cashews',naehr:'Protein ~32g, Zink (Cashews), Kreatin',kcal:'~480'},
+  ], total:'~2.560 kcal · ~105g Protein', tipp:'Linsennudeln: 2× mehr Protein als Weizennudeln, weniger Gluten.'},
+  { tag:'Tag 6 · Samstag', run:true, mahlzeiten:[
+    {emoji:'🌅',typ:'Frühstück',name:'Tofu-Scramble mit Kurkuma, Paprika, Tomaten & Reiswaffeln',naehr:'Protein ~28g, Vitamin C, Eisen',kcal:'~650'},
+    {emoji:'🍽️',typ:'Mittagessen',name:'Buddha Bowl: Quinoa, Kichererbsen, Avocado, Gurke, Tahini-Dressing',naehr:'Alle Aminosäuren, gesunde Fette',kcal:'~700'},
+    {emoji:'🌙',typ:'Abendessen',name:'Vegane Linsen-Bolognese mit Champignons auf Dinkel-Spaghetti',naehr:'Protein ~32g, Eisen, Zink, B-Vitamine',kcal:'~800'},
+    {emoji:'🍌',typ:'Post-Run Shake',name:'Protein-Shake + Banane + 3 Datteln',naehr:'Protein ~28g, Kreatin, Kalium',kcal:'~460'},
+  ], total:'~2.610 kcal · ~100g Protein', tipp:'Langer Lauftag: Datteln für schnelle Energie. Heute mind. 3L Wasser!'},
+  { tag:'Tag 7 · Sonntag', run:false, mahlzeiten:[
+    {emoji:'🌅',typ:'Frühstück',name:'Hafermehl-Pancakes + Chiasamen + Ahornsirup + frische Beeren',naehr:'KH, Ballaststoffe, Antioxidantien',kcal:'~700'},
+    {emoji:'🍽️',typ:'Mittagessen',name:'Resteverwertung: Bowl aus Wochenresten + frische Avocado',naehr:'Variierend, sättigend',kcal:'~600'},
+    {emoji:'🌙',typ:'Abendessen',name:'Asiatischer Tofu-Wok mit Brokkoli, Zuckerschoten, Sesam & Reisnudeln',naehr:'Protein ~28g, Calcium (Sesam)',kcal:'~780'},
+    {emoji:'🌙',typ:'Abend-Snack',name:'Haferflocken mit Hafermilch, Walnüssen, Leinöl & Zimt',naehr:'Omega-3, Magnesium, langsame KH',kcal:'~400'},
+  ], total:'~2.480 kcal · ~88g Protein', tipp:'Hafermehl-Pancakes: weniger Gluten als Weizen. Perfekter Wochenabschluss!'},
+];
+
+const recipes = {
+  fruehstueck: [
+    { name:'Hafermehl-Pancakes (Sonntags-Spezial)', meta:'⏱ 20 Min · 8–10 Pancakes',
+      zutaten:['200g Hafermehl','1 EL Chiasamen + 3 EL Wasser (10 Min quellen)','300ml Hafermilch','1 TL Backpulver, Prise Salz','1 EL Ahornsirup + Vanilleextrakt','Kokosfett zum Braten','Beeren + Ahornsirup zum Servieren'],
+      schritte:['Chiasamen mit Wasser mischen, 10 Min quellen.','Trockene Zutaten mischen.','Hafermilch, Chia-Ei, Sirup, Vanille hinzufügen.','Teig 5 Min ruhen lassen.','Je 2–3 EL pro Pancake, 3 Min je Seite.','Mit Beeren und Ahornsirup servieren.'],
+      naehr:'~680 kcal · ~18g Protein · Ballaststoffe, Omega-3'},
+    { name:'Tofu-Scramble mit Gemüse', meta:'⏱ 15 Min · 2 Portionen · schnell',
+      zutaten:['400g fester Tofu','½ TL Kurkuma, ½ TL Paprikapulver','2 EL Hefeflocken','1 Paprika gewürfelt','Cherrytomaten halbiert','2 EL Sojasoße, 1 EL Olivenöl','Salz, Pfeffer, Knoblauchpulver','Optional: 30g Hanfsamen für +10g Protein'],
+      schritte:['Tofu mit einer Gabel grob zerbröseln.','Olivenöl erhitzen, Paprika 3 Min anbraten.','Tofu dazugeben, Gewürze einmischen.','5 Min bei mittlerer Hitze braten.','Tomaten, Hefeflocken, Sojasoße unterheben.','Mit Reiswaffeln servieren. Hanfsamen drüber = Protein-Boost.'],
+      naehr:'~310 kcal · ~26g Protein (+10g mit Hanfsamen) · Calcium, Vitamin C'},
+    { name:'Vegane Shakshuka', meta:'⏱ 25 Min · 2 Portionen',
+      zutaten:['1 Dose gehackte Tomaten (400g)','1 rote Paprika gewürfelt','1 Zwiebel, 3 Knoblauchzehen','200g fester Tofu gewürfelt','1 TL Kreuzkümmel, 1 TL Paprikapulver','½ TL Chiliflocken, Prise Zimt','2 EL Olivenöl, Salz, Pfeffer','Frische Petersilie, Dinkeltoast'],
+      schritte:['Zwiebel & Knoblauch in Olivenöl anbraten (4 Min).','Gewürze 1 Min mitrösten.','Paprika 3 Min mitbraten.','Tomaten dazugeben, 10 Min köcheln bis Sauce eindickt.','Tofu-Würfel in die Sauce setzen, 5 Min mitgaren.','Mit Petersilie und Dinkeltoast servieren.'],
+      naehr:'~320 kcal · ~22g Protein · Vitamin C, Eisen, Lycopin'},
+  ],
+  mittagabend: [
+    { name:'Rote Linsensuppe mit Kokosmilch & Spinat', meta:'⏱ 25 Min · 2 Portionen (Leftover)',
+      zutaten:['200g rote Linsen trocken','1 Süßkartoffel gewürfelt','1 Dose Kokosmilch (400ml)','100g Spinat','Zwiebel, Knoblauch, Ingwer','1 TL Kurkuma, 1 TL Kreuzkümmel','500ml Gemüsebrühe','1 EL Olivenöl'],
+      schritte:['Zwiebel & Knoblauch in Olivenöl dünsten (3 Min).','Gewürze + Ingwer kurz mitrösten (1 Min).','Linsen, Süßkartoffel, Brühe, Kokosmilch hinzufügen.','25 Min köcheln bis Linsen weich sind.','Spinat unterheben, 2 Min ziehen lassen.','Zweite Portion für morgen Mittag aufheben!'],
+      naehr:'~580 kcal · ~28g Protein · Eisen, Folsäure, Kalium'},
+    { name:'Tempeh-Brokkoli-Pfanne mit Quinoa', meta:'⏱ 30 Min · 2 Portionen (Leftover)',
+      zutaten:['200g Tempeh gewürfelt','1 Brokkoli in Röschen','2 Paprika gewürfelt','200g Quinoa','3 EL Sojasoße, 2 EL Sesamöl','Knoblauch, Ingwer','Sesam zum Garnieren'],
+      schritte:['Quinoa kochen (~15 Min).','Tempeh in Sesamöl goldbraun braten (8 Min).','Knoblauch, Ingwer, Paprika, Brokkoli dazugeben.','Mit Sojasoße ablöschen, 5 Min garen.','Mit Quinoa servieren, Sesam drüber.'],
+      naehr:'~750 kcal · ~35g Protein · Calcium, Zink, alle Aminosäuren'},
+    { name:'Linsennudeln mit Avocado-Walnuss-Pesto', meta:'⏱ 20 Min · 2 Portionen (Leftover)',
+      zutaten:['200g Linsennudeln','1 reife Avocado','30g Walnüsse','1 Handvoll Spinat','2 EL Olivenöl, Saft ½ Zitrone','1 Knoblauchzehe','Cherrytomaten, Hefeflocken'],
+      schritte:['Linsennudeln kochen (~8 Min).','Avocado, Walnüsse, Spinat, Knoblauch, Olivenöl & Zitrone mixen.','Mit Salz, Pfeffer, Hefeflocken abschmecken.','Nudeln abgießen, Pesto untermischen.','Mit Cherrytomaten servieren.'],
+      naehr:'~720 kcal · ~30g Protein · Omega-3, Folsäure, Eisen'},
+    { name:'Vegane Spaghetti Carbonara', meta:'⏱ 20 Min · 2 Portionen · ⭐ Lieblingsgericht',
+      zutaten:['250g Spaghetti (oder Linsennudeln für mehr Protein)','150g Cashewkerne (mind. 2 Std. eingeweicht)','1 EL helle Misopaste','100ml Wasser','2 EL Hefeflocken','10 getrocknete Tomaten in Öl','1 TL Sojasoße','½ TL Liquid Smoke (optional)','Veganer Parmesan: 100g Cashews + 50g Mandeln + 3 EL Hefeflocken + 1 TL Salz'],
+      schritte:['Cashews + Misopaste + Hefeflocken mixen, Wasser zugeben bis cremige Masse entsteht. Würzen.','Getrocknete Tomaten klein schneiden, 5 Min anbraten. Sojasoße + Liquid Smoke dazu, 2 Min weiter.','Spaghetti al dente kochen – Kochwasser auffangen!','Spaghetti + Cashew-Sauce vermengen, Kochwasser für Sämigkeit zugeben.','Tomaten unterheben, mit veganem Parmesan servieren.'],
+      naehr:'~720 kcal · ~28g Protein (mit Linsennudeln ~38g) · Calcium, Magnesium'},
+    { name:'Cremiges Tomaten-Risotto', meta:'⏱ 35 Min · 2 Portionen · ⭐ Lieblingsgericht',
+      zutaten:['150g Risottoreis','250g Tomaten passiert','50ml Kokosmilch','500ml Gemüsebrühe (heiß, nach Bedarf)','80ml Weißwein (oder mehr Brühe)','20g getrocknete Tomaten in Öl','80g Cherrytomaten','1 Zwiebel, 2 Knoblauchzehen','20g Margarine','1 TL Oregano, Prise Zucker','10g frisches Basilikum, Salz, Pfeffer','Optional: 30g Hefeflocken für Käse-Note + Protein'],
+      schritte:['Zwiebel + Knoblauch fein würfeln.','Margarine erhitzen, Zwiebel 4 Min glasig dünsten.','Risottoreis dazugeben, 2 Min anrösten.','Mit Weißwein ablöschen, komplett einkochen lassen.','Tomaten passiert + Kokosmilch + Oregano + Zucker einrühren.','Heiße Brühe schöpfkellenweise zugeben, immer rühren (~20 Min).','Cherrytomaten + getrocknete Tomaten in den letzten 5 Min dazu.','Mit Basilikum, Hefeflocken und Pfeffer servieren.'],
+      naehr:'~580 kcal · ~14g Protein (+8g mit Hefeflocken) · Lycopin, Kalium, Vitamin C'},
+    { name:'Kichererbsen-Kokos-Curry', meta:'⏱ 25 Min · 2 Portionen (Leftover)',
+      zutaten:['1 Dose Kichererbsen (400g)','1 Dose Kokosmilch (400ml)','1 Dose gehackte Tomaten','1 Zwiebel, 3 Knoblauchzehen','1 TL Garam Masala, 1 TL Kurkuma','1 TL Kreuzkümmel, Chili nach Wunsch','200g Basmatireis','Koriander + Limette'],
+      schritte:['Zwiebel + Knoblauch in Öl anbraten (4 Min).','Gewürze 1 Min rösten bis es duftet.','Tomaten hinzufügen, 5 Min einkochen.','Kokosmilch + Kichererbsen einrühren.','15 Min köcheln bis Sauce eindickt.','Mit Basmatireis + Koriander + Limette servieren.'],
+      naehr:'~780 kcal · ~30g Protein · Eisen, Zink, Vitamin C'},
+    { name:'Mega Meal Prep Bowl (4 Tage)', meta:'⏱ 45 Min · 4 Portionen · Meal Prep',
+      zutaten:['400g rote Linsen','300g Quinoa','2 Süßkartoffeln gewürfelt','200g Kichererbsen (Dose)','2 Handvoll Spinat','Kreuzkümmel, Paprika, Kurkuma','4 EL Tahini, Saft 1 Zitrone','1 L Gemüsebrühe, 2 EL Olivenöl'],
+      schritte:['Linsen + Quinoa getrennt kochen (20 Min).','Süßkartoffeln mit Olivenöl + Gewürzen im Ofen: 200°C, 25 Min.','Kichererbsen abtropfen, kurz anbraten.','Tahini-Dressing: Tahini + Zitrone + 4 EL Wasser + Salz verrühren.','4 Behälter befüllen: je Linsen, Quinoa, Süßkartoffel, Kichererbsen.','Spinat oben drauf. Dressing separat. 4 Tage haltbar.'],
+      naehr:'~720 kcal · ~32g Protein · Kalium, Eisen, Folsäure'},
+  ],
+  kuchen: [
+    { name:'Veganer Zitronen-Mohn-Kuchen', meta:'⏱ 20 Min + 60 Min Backzeit · 1 Kastenform',
+      zutaten:['450g Weizenmehl Type 405 (oder Dinkelmehl)','16g (1,5 EL) Backpulver','8g (1,5 TL) Vanillezucker','½ TL Salz','3 Zitronen (Abrieb + Saft)','200g Zucker','200g pflanzliche Margarine (weich!)','200ml Hafermilch','100ml Sprudelwasser','4 EL Mohnsamen','Glasur: 250g Puderzucker + 3 EL Zitronensaft'],
+      schritte:['Ofen auf 200°C vorheizen.','Mehl, Backpulver, Vanillezucker, Salz, Zitronenabrieb mischen.','Margarine + Zucker separat aufschlagen – wichtig für lockeren Teig!','Margarine-Zucker zur Mehlmischung, kurz vermengen.','Hafermilch, Sprudelwasser + 60ml Zitronensaft dazu. Nicht überrühren!','Mohnsamen kurz unterrühren.','In gefettete Kastenform füllen. 60 Min bei 200°C backen.','Nach 15 Min: oben längs einschneiden.','Heiß raus: mehrmals mit Gabel einstechen, mit Zitronensaft bestreichen.','Ausgekühlt: Puderzucker-Glasur drüber, trocknen lassen.'],
+      naehr:'Pro Scheibe (~12 Stück): ~320 kcal · ~4g Protein · Calcium'},
+    { name:'Veganer Schoko-Bananen-Kuchen', meta:'⏱ 15 Min + 50 Min Backzeit · Proteinreich',
+      zutaten:['3 sehr reife Bananen (~300g)','200g Hafermehl','2 EL Kakaopulver ungesüßt','2 EL Chiasamen + 6 EL Wasser (Chia-Ei)','100ml Hafermilch','80ml Ahornsirup','2 EL Kokosöl geschmolzen','2 TL Backpulver, 1 TL Vanille, Prise Salz','50g dunkle Schokolade oder Drops','Optional: 2 EL Proteinpulver für +14g Protein'],
+      schritte:['Chiasamen mit Wasser mischen, 10 Min quellen lassen.','Ofen auf 175°C vorheizen, Kastenform einfetten.','Bananen in Schüssel zerdrücken.','Hafermilch, Sirup, Kokosöl, Chia-Ei, Vanille dazumischen.','Hafermehl, Kakao, Backpulver, Salz (+ Proteinpulver) unterrühren.','Schokodrops unterheben.','50 Min backen. Stäbchenprobe. Vollständig auskühlen lassen.'],
+      naehr:'Pro Scheibe: ~210 kcal · ~5g Protein (+3g mit Pulver) · Kalium, Magnesium, Ballaststoffe'},
+  ],
+};
+
+// Render days
+function renderDays() {
+  const c = document.getElementById('days-container');
+  c.innerHTML = days.map((d,i) => `
+    <div class="day-card">
+      <div class="day-card-header ${d.run?'run':'rest'}">
+        <div class="day-card-title">${d.tag}</div>
+        <span class="day-badge ${d.run?'badge-run':'badge-rest'}">${d.run?'🏃 Lauftag':'😴 Ruhetag'}</span>
+      </div>
+      <button class="day-toggle" onclick="toggleDay(${i},this)">
+        Mahlzeiten anzeigen <span class="day-toggle-arrow">▼</span>
+      </button>
+      <div class="day-content" id="day-content-${i}">
+        ${d.mahlzeiten.map(m=>`
+          <div class="meal-row">
+            <div class="meal-emoji">${m.emoji}</div>
+            <div class="meal-info">
+              <div class="meal-type">${m.typ}</div>
+              <div class="meal-name">${m.name}</div>
+              <div class="meal-naehr">${m.naehr}</div>
+              <span class="meal-kcal">${m.kcal} kcal</span>
+            </div>
+          </div>`).join('')}
+        <div class="day-footer-row">
+          <div class="day-tipp">💡 ${d.tipp}</div>
+          <div class="day-total">${d.total}</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleDay(i, btn) {
+  const content = document.getElementById('day-content-'+i);
+  content.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+
+// Render recipes with categories
+function renderRecipes() {
+  const c = document.getElementById('recipes-container');
+  const cats = [
+    {key:'fruehstueck', label:'🌅 Frühstück'},
+    {key:'mittagabend', label:'🍽️ Mittag & Abend'},
+    {key:'kuchen', label:'🎂 Kuchen & Backen'},
+  ];
+  let html = '';
+  let globalIdx = 0;
+  cats.forEach(cat => {
+    html += `<div class="recipe-cat-title">${cat.label}</div>`;
+    recipes[cat.key].forEach((r) => {
+      const idx = globalIdx++;
+      html += `<div class="recipe-card">
+        <div class="recipe-header" onclick="toggleRecipe(${idx})">
+          <div>
+            <div class="recipe-name">${r.name}</div>
+            <div class="recipe-meta">${r.meta}</div>
+          </div>
+          <span style="font-size:12px;color:var(--text-light);flex-shrink:0;margin-left:8px;">▼</span>
+        </div>
+        <div class="recipe-content" id="recipe-${idx}">
+          <div class="recipe-sub">Zutaten</div>
+          <ul class="recipe-list">${r.zutaten.map(z=>`<li>${z}</li>`).join('')}</ul>
+          <div class="recipe-sub">Zubereitung</div>
+          <ol class="recipe-steps">${r.schritte.map(s=>`<li>${s}</li>`).join('')}</ol>
+          <div class="recipe-naehr">✅ ${r.naehr}</div>
+        </div>
+      </div>`;
+    });
+  });
+  html += '<div class="pb"></div>';
+  c.innerHTML = html;
+}
+
+function toggleRecipe(i) {
+  document.getElementById('recipe-'+i).classList.toggle('open');
+}
+
+// ===== NÄHRSTOFFE =====
+const daily = { kcal:2700,protein:100,carbs:340,fat:90,fiber:30,kalium:3500,magnesium:400,eisen:14,calcium:1000,vitamin_c:100,omega3:2500,zink:10 };
+
+const foods = [
+  {id:'banane',cat:'obst',name:'Banane',emoji:'🍌',n:{kcal:89,protein:1.1,carbs:23,fat:0.3,fiber:2.6,kalium:358,magnesium:27,eisen:0.3,calcium:5,vitamin_c:8.7,omega3:0,zink:0.2}},
+  {id:'erdbeeren',cat:'obst',name:'Erdbeeren',emoji:'🍓',n:{kcal:32,protein:0.7,carbs:7.7,fat:0.3,fiber:2.0,kalium:153,magnesium:13,eisen:0.4,calcium:16,vitamin_c:59,omega3:65,zink:0.1}},
+  {id:'avocado',cat:'obst',name:'Avocado',emoji:'🥑',n:{kcal:160,protein:2.0,carbs:8.5,fat:14.7,fiber:6.7,kalium:485,magnesium:29,eisen:0.6,calcium:12,vitamin_c:10,omega3:110,zink:0.6}},
+  {id:'mango',cat:'obst',name:'Mango',emoji:'🥭',n:{kcal:60,protein:0.8,carbs:15,fat:0.4,fiber:1.6,kalium:168,magnesium:10,eisen:0.2,calcium:11,vitamin_c:36,omega3:0,zink:0.1}},
+  {id:'datteln',cat:'obst',name:'Datteln (getrocknet)',emoji:'🌴',n:{kcal:277,protein:1.8,carbs:75,fat:0.2,fiber:6.7,kalium:696,magnesium:54,eisen:1.0,calcium:64,vitamin_c:0,omega3:0,zink:0.4}},
+  {id:'haferflocken',cat:'getreide',name:'Haferflocken',emoji:'🌾',n:{kcal:372,protein:13.5,carbs:59,fat:7.1,fiber:10,kalium:429,magnesium:129,eisen:4.6,calcium:54,vitamin_c:0,omega3:1100,zink:3.4}},
+  {id:'quinoa',cat:'getreide',name:'Quinoa (gekocht)',emoji:'🌿',n:{kcal:120,protein:4.4,carbs:21,fat:1.9,fiber:2.8,kalium:172,magnesium:64,eisen:1.5,calcium:17,vitamin_c:0,omega3:160,zink:1.1}},
+  {id:'reis',cat:'getreide',name:'Basmatireis (gekocht)',emoji:'🍚',n:{kcal:130,protein:2.7,carbs:28,fat:0.3,fiber:0.4,kalium:35,magnesium:12,eisen:0.2,calcium:10,vitamin_c:0,omega3:0,zink:0.5}},
+  {id:'dinkel',cat:'getreide',name:'Dinkelspaghetti (gekocht)',emoji:'🍝',n:{kcal:142,protein:6.2,carbs:27,fat:1.0,fiber:3.5,kalium:150,magnesium:40,eisen:1.5,calcium:20,vitamin_c:0,omega3:60,zink:1.1}},
+  {id:'linsennudeln',cat:'getreide',name:'Linsennudeln (gekocht)',emoji:'🍜',n:{kcal:145,protein:9.0,carbs:24,fat:1.0,fiber:4.5,kalium:230,magnesium:45,eisen:2.8,calcium:25,vitamin_c:0,omega3:50,zink:1.5}},
+  {id:'rote-linsen',cat:'huelsenfruechte',name:'Rote Linsen (trocken)',emoji:'🫘',n:{kcal:353,protein:25,carbs:60,fat:1.1,fiber:10.8,kalium:677,magnesium:122,eisen:7.5,calcium:51,vitamin_c:4,omega3:370,zink:3.8}},
+  {id:'kichererbsen',cat:'huelsenfruechte',name:'Kichererbsen (gekocht)',emoji:'🟡',n:{kcal:164,protein:8.9,carbs:27,fat:2.6,fiber:7.6,kalium:291,magnesium:48,eisen:2.9,calcium:49,vitamin_c:1.3,omega3:40,zink:1.5}},
+  {id:'weisse-bohnen',cat:'huelsenfruechte',name:'Weiße Bohnen (gekocht)',emoji:'⚪',n:{kcal:139,protein:9.7,carbs:25,fat:0.5,fiber:10.5,kalium:561,magnesium:66,eisen:3.7,calcium:90,vitamin_c:0,omega3:170,zink:1.4}},
+  {id:'tofu',cat:'protein',name:'Tofu (fest)',emoji:'⬜',n:{kcal:76,protein:8.1,carbs:1.9,fat:4.2,fiber:0.3,kalium:121,magnesium:30,eisen:1.6,calcium:176,vitamin_c:0,omega3:730,zink:0.8}},
+  {id:'tempeh',cat:'protein',name:'Tempeh',emoji:'🟫',n:{kcal:195,protein:19.9,carbs:9.4,fat:10.8,fiber:7.0,kalium:412,magnesium:81,eisen:2.7,calcium:111,vitamin_c:0,omega3:330,zink:1.7}},
+  {id:'proteinpulver',cat:'protein',name:'Proteinpulver vegan (3 TL≈20g)',emoji:'💪',n:{kcal:380,protein:75,carbs:10,fat:5,fiber:3,kalium:500,magnesium:80,eisen:5,calcium:200,vitamin_c:0,omega3:0,zink:3}},
+  {id:'spinat',cat:'gemuese',name:'Spinat (frisch)',emoji:'🌿',n:{kcal:23,protein:2.9,carbs:3.6,fat:0.4,fiber:2.2,kalium:558,magnesium:87,eisen:2.7,calcium:99,vitamin_c:28,omega3:138,zink:0.5}},
+  {id:'brokkoli',cat:'gemuese',name:'Brokkoli',emoji:'🥦',n:{kcal:34,protein:2.8,carbs:6.6,fat:0.4,fiber:2.6,kalium:316,magnesium:21,eisen:0.7,calcium:47,vitamin_c:89,omega3:130,zink:0.4}},
+  {id:'suesskartoffel',cat:'gemuese',name:'Süßkartoffel',emoji:'🍠',n:{kcal:86,protein:1.6,carbs:20,fat:0.1,fiber:3.0,kalium:337,magnesium:25,eisen:0.6,calcium:30,vitamin_c:2.4,omega3:0,zink:0.3}},
+  {id:'paprika',cat:'gemuese',name:'Paprika (rot)',emoji:'🫑',n:{kcal:31,protein:1.0,carbs:6.0,fat:0.3,fiber:2.1,kalium:211,magnesium:12,eisen:0.4,calcium:7,vitamin_c:140,omega3:30,zink:0.2}},
+  {id:'kartoffel',cat:'gemuese',name:'Kartoffel (gekocht)',emoji:'🥔',n:{kcal:77,protein:2.0,carbs:17,fat:0.1,fiber:1.8,kalium:421,magnesium:23,eisen:0.3,calcium:5,vitamin_c:13,omega3:0,zink:0.3}},
+  {id:'walnuesse',cat:'fette',name:'Walnüsse',emoji:'🫙',n:{kcal:654,protein:15.2,carbs:13.7,fat:65.2,fiber:6.7,kalium:441,magnesium:158,eisen:2.9,calcium:98,vitamin_c:1.3,omega3:9080,zink:3.1}},
+  {id:'cashews',cat:'fette',name:'Cashews',emoji:'🥜',n:{kcal:553,protein:18.2,carbs:30,fat:43.8,fiber:3.3,kalium:660,magnesium:292,eisen:6.7,calcium:37,vitamin_c:0.5,omega3:62,zink:5.8}},
+  {id:'leinsamen',cat:'fette',name:'Leinsamen / Leinöl (1 EL≈14g)',emoji:'🟤',n:{kcal:534,protein:18.3,carbs:28.9,fat:42.2,fiber:27.3,kalium:813,magnesium:392,eisen:5.7,calcium:255,vitamin_c:0.6,omega3:22800,zink:4.3}},
+  {id:'chiasamen',cat:'fette',name:'Chiasamen',emoji:'⚫',n:{kcal:486,protein:16.5,carbs:42.1,fat:30.7,fiber:34.4,kalium:407,magnesium:335,eisen:7.7,calcium:631,vitamin_c:1.6,omega3:17550,zink:4.6}},
+  {id:'erdnussbutter',cat:'fette',name:'Erdnussbutter',emoji:'🥜',n:{kcal:588,protein:25,carbs:20,fat:50,fiber:6,kalium:649,magnesium:168,eisen:1.9,calcium:49,vitamin_c:0,omega3:0,zink:2.9}},
+  {id:'mandelmus',cat:'fette',name:'Mandelmus',emoji:'🤎',n:{kcal:614,protein:21,carbs:20,fat:56,fiber:10.5,kalium:748,magnesium:270,eisen:3.7,calcium:270,vitamin_c:0,omega3:0,zink:3.1}},
+  {id:'hafermilch',cat:'getreide',name:'Hafermilch (250ml=1 Glas)',emoji:'🥛',n:{kcal:46,protein:1.0,carbs:8.6,fat:1.5,fiber:0.8,kalium:115,magnesium:13,eisen:0.4,calcium:120,vitamin_c:0,omega3:60,zink:0.1}},
+];
+
+const nutrientMeta = [
+  {key:'protein',label:'Protein',unit:'g',cls:'c-protein'},
+  {key:'carbs',label:'Kohlenhydrate',unit:'g',cls:'c-carbs'},
+  {key:'fat',label:'Fett',unit:'g',cls:'c-fat'},
+  {key:'fiber',label:'Ballaststoffe',unit:'g',cls:'c-fiber'},
+  {key:'kalium',label:'Kalium',unit:'mg',cls:'c-kalium'},
+  {key:'magnesium',label:'Magnesium',unit:'mg',cls:'c-magnesium'},
+  {key:'eisen',label:'Eisen',unit:'mg',cls:'c-eisen'},
+  {key:'calcium',label:'Calcium',unit:'mg',cls:'c-calcium'},
+  {key:'vitamin_c',label:'Vitamin C',unit:'mg',cls:'c-vitamin_c'},
+  {key:'omega3',label:'Omega-3',unit:'mg',cls:'c-omega3'},
+  {key:'zink',label:'Zink',unit:'mg',cls:'c-zink'},
+];
+
+const catLabels = {
+  obst:{label:'🍌 Obst'},getreide:{label:'🌾 Getreide & Pasta'},
+  huelsenfruechte:{label:'🫘 Hülsenfrüchte'},protein:{label:'💪 Protein-Quellen'},
+  gemuese:{label:'🥦 Gemüse'},fette:{label:'🥑 Fette, Nüsse & Samen'},
+};
+
+let currentGrams = 100;
+let currentCat = 'all';
+
+function renderFoods() {
+  const c = document.getElementById('foods-container');
+  let html = '';
+  const cats = currentCat === 'all' ? Object.keys(catLabels) : [currentCat];
+  cats.forEach(cat => {
+    const catFoods = foods.filter(f => f.cat === cat);
+    if (!catFoods.length) return;
+    html += `<div class="cat-title">${catLabels[cat].label}</div>`;
+    catFoods.forEach(food => {
+      const g = currentGrams / 100;
+      const kcalVal = (food.n.kcal * g).toFixed(0);
+      const rows = nutrientMeta.map(m => {
+        const val = food.n[m.key] * g;
+        const p = Math.min((val / daily[m.key]) * 100, 100);
+        const vStr = m.key==='omega3' ? (val>=1000?(val/1000).toFixed(1)+'g':val.toFixed(0)+'mg') : val.toFixed(1)+m.unit;
+        const pStr = p < 1 ? '<1%' : Math.round(p)+'%';
+        return `<div class="n-row">
+          <div class="n-dot ${m.cls}"></div>
+          <div class="n-name">${m.label}</div>
+          <div class="n-bar-wrap"><div class="n-bar ${m.cls}" style="width:${p}%"></div></div>
+          <div class="n-val">${vStr}</div>
+          <div class="n-pct">${pStr}</div>
+        </div>`;
+      }).join('');
+      html += `<div class="food-card">
+        <div class="food-header-row">
+          <div class="food-name-wrap"><span class="food-emoji">${food.emoji}</span><span class="food-name">${food.name}</span></div>
+          <span class="food-portion">${currentGrams}g</span>
+        </div>
+        <div class="food-kcal-big"><span class="kcal-num">${kcalVal}</span><span class="kcal-u">kcal</span></div>
+        <div class="nutrient-rows">${rows}</div>
+      </div>`;
+    });
+  });
+  c.innerHTML = html;
+}
+
+function filterCat(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFoods();
+}
+
+document.getElementById('gramInput').addEventListener('input', function() {
+  const v = parseInt(this.value);
+  if (v > 0 && v <= 2000) { currentGrams = v; renderFoods(); }
+});
+
+// ===== KI REZEPTSUCHE =====
+async function askAI() {
+  const prompt = document.getElementById('aiPrompt').value.trim();
+  if (!prompt) return;
+  const btn = document.getElementById('aiBtn');
+  btn.disabled = true; btn.textContent = '⏳ Generiere...';
+  document.getElementById('ai-result').innerHTML = '<div class="ai-loading">🤖 Rezept wird erstellt...</div>';
+  try {
+    const res = await fetch('/api/rezept', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt })
+    });
+    const raw = await res.text();
+    console.log('RAW RESPONSE:', raw);
+    let r;
+    try { r = JSON.parse(raw); } catch(e) { throw new Error('Server-Antwort: ' + raw.slice(0, 200)); }
+    if (r.error) throw new Error(r.error);
+    document.getElementById('ai-result').innerHTML = `
+      <div class="ai-result-card">
+        <div class="ai-result-header">
+          <div class="ai-result-title">✨ ${r.name}</div>
+          <div class="ai-result-meta">${r.meta}</div>
+        </div>
+        <div class="ai-result-body">
+          <div class="ai-result-sub">Zutaten</div>
+          <ul class="ai-result-list">${r.zutaten.map(z=>`<li>${z}</li>`).join('')}</ul>
+          <div class="ai-result-sub">Zubereitung</div>
+          <ol class="ai-result-steps">${r.schritte.map(s=>`<li>${s}</li>`).join('')}</ol>
+          <div class="ai-result-naehr">✅ ${r.naehr}</div>
+          ${r.tipp ? `<div style="margin-top:8px;font-size:11px;color:var(--text-light);font-style:italic;">💡 ${r.tipp}</div>` : ''}
+        </div>
+      </div>`;
+  } catch(e) {
+    document.getElementById('ai-result').innerHTML = `<div class="ai-error">⚠️ ${e.message}</div>`;
+  }
+  btn.disabled = false; btn.textContent = '✨ Rezept generieren';
+}
+
+// ===== NAVIGATION =====
+function showScreen(name, btn) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ===== WEIGHT TRACKER (Backend) =====
+let weightData = [];
+
+async function loadWeightData() {
+  try {
+    const res = await fetch('/api/weight');
+    weightData = await res.json();
+  } catch(e) {
+    weightData = [];
+  }
+}
+
+async function saveWeightData(data) {
+  await fetch('/api/weight', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data })
+  });
+}
+
+async function openWeight() {
+  document.getElementById('weightModal').classList.add('open');
+  document.getElementById('wEntries').innerHTML = '<div class="w-empty">⏳ Lade Daten...</div>';
+  await loadWeightData();
+  renderWeight();
+}
+function closeWeight() {
+  document.getElementById('weightModal').classList.remove('open');
+}
+function closeWeightOnBg(e) {
+  if (e.target === document.getElementById('weightModal')) closeWeight();
+}
+
+async function addWeight() {
+  const input = document.getElementById('weightInput');
+  const raw = input.value.replace(',', '.');
+  const v = parseFloat(raw);
+  if (isNaN(v) || v < 30 || v > 200) {
+    input.style.borderColor = '#e74c3c';
+    setTimeout(() => input.style.borderColor = '', 1000);
+    return;
+  }
+  const today = new Date().toISOString().split('T')[0];
+  const idx = weightData.findIndex(e => e.date === today);
+  if (idx >= 0) weightData[idx].weight = v;
+  else weightData.push({ date: today, weight: v });
+  weightData.sort((a, b) => a.date.localeCompare(b.date));
+  await saveWeightData(weightData);
+  input.value = '';
+  input.style.borderColor = 'var(--green-light)';
+  setTimeout(() => input.style.borderColor = '', 1000);
+  renderWeight();
+}
+
+async function deleteWeight(date) {
+  weightData = weightData.filter(e => e.date !== date);
+  await saveWeightData(weightData);
+  renderWeight();
+}
+
+function renderWeight() {
+  const data = weightData;
+  const goal = 70;
+
+  // Stats
+  const last = data.length ? data[data.length - 1].weight : null;
+  const first = data.length ? data[0].weight : null;
+  const diff = (last !== null && first !== null && data.length > 1) ? (last - first) : null;
+  const toGoal = last !== null ? (goal - last) : null;
+  document.getElementById('wStats').innerHTML = `
+    <div class="ws"><div class="ws-val">${last !== null ? last.toFixed(1) + ' kg' : '—'}</div><div class="ws-lbl">Aktuell</div></div>
+    <div class="ws"><div class="ws-val" style="color:${diff === null ? 'var(--green-deep)' : diff >= 0 ? 'var(--green-mid)' : '#e74c3c'}">${diff === null ? '—' : (diff >= 0 ? '+' : '') + diff.toFixed(1) + ' kg'}</div><div class="ws-lbl">Verlauf</div></div>
+    <div class="ws"><div class="ws-val">${toGoal !== null ? (toGoal > 0 ? '+' : '') + (-toGoal).toFixed(1) + ' kg' : '4 kg'}</div><div class="ws-lbl">Bis 70 kg</div></div>`;
+
+  // Graph
+  const wrap = document.getElementById('wGraphWrap');
+  if (data.length < 2) {
+    wrap.innerHTML = '<div class="w-empty">Mindestens 2 Einträge für den Verlaufsgraph</div>';
+  } else {
+    const W = wrap.clientWidth || 320;
+    const H = 130; const PAD = 20; const PL = 34;
+    const weights = data.map(d => d.weight);
+    const minW = Math.min(...weights, goal) - 1;
+    const maxW = Math.max(...weights, goal) + 1;
+    const toX = i => PL + (i / (data.length - 1)) * (W - PL - PAD);
+    const toY = v => PAD + (1 - (v - minW) / (maxW - minW)) * (H - PAD * 2);
+
+    const yVals = [minW, (minW + maxW) / 2, maxW];
+    const yLabels = yVals.map(v =>
+      `<text x="${PL - 4}" y="${toY(v) + 4}" font-size="9" fill="#999" text-anchor="end">${v.toFixed(1)}</text>`
+    ).join('');
+
+    const goalY = toY(goal);
+    const goalLine = `<line x1="${PL}" y1="${goalY}" x2="${W - PAD}" y2="${goalY}" stroke="#52b788" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.6"/>
+      <text x="${W - PAD + 2}" y="${goalY + 4}" font-size="9" fill="#52b788" opacity="0.8">70</text>`;
+
+    const pathD = data.map((d, i) => `${i === 0 ? 'M' : 'L'}${toX(i)} ${toY(d.weight)}`).join(' ');
+    const areaD = pathD + ` L${toX(data.length - 1)} ${H - PAD} L${toX(0)} ${H - PAD} Z`;
+    const dots = data.map((d, i) =>
+      `<circle cx="${toX(i)}" cy="${toY(d.weight)}" r="4" fill="#2d6a4f" stroke="white" stroke-width="2"/>`
+    ).join('');
+    const xLabels = [0, data.length - 1].map(i =>
+      `<text x="${toX(i)}" y="${H - 2}" font-size="9" fill="#999" text-anchor="middle">${data[i].date.slice(5)}</text>`
+    ).join('');
+
+    wrap.innerHTML = `<svg class="wgraph" viewBox="0 0 ${W} ${H}" height="${H}">
+      <defs><linearGradient id="wgrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#52b788" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="#52b788" stop-opacity="0"/>
+      </linearGradient></defs>
+      ${yLabels}${goalLine}
+      <path d="${areaD}" fill="url(#wgrad)"/>
+      <path d="${pathD}" fill="none" stroke="#2d6a4f" stroke-width="2.5" stroke-linejoin="round"/>
+      ${dots}${xLabels}
+    </svg>`;
+  }
+
+  // List
+  document.getElementById('wEntries').innerHTML = data.length === 0
+    ? '<div class="w-empty">Noch keine Einträge – trag dein Gewicht ein!</div>'
+    : [...data].reverse().map(e => `
+        <div class="w-entry">
+          <span class="w-entry-date">${new Date(e.date + 'T12:00:00').toLocaleDateString('de-DE', { day: '2-digit', month: 'short', year: '2-digit' })}</span>
+          <span class="w-entry-val">${e.weight.toFixed(1)} kg</span>
+          <button class="w-entry-del" onclick="deleteWeight('${e.date}')">🗑</button>
+        </div>`).join('');
+}
+
+// ===== INIT
+renderDays();
+renderRecipes();
+renderFoods();
+</script>
+</body>
+</html>

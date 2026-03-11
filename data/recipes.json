@@ -260,5 +260,35 @@
     ],
     "naehr": "Pro Scheibe: ~210 kcal · ~5g Protein (+3g mit Pulver) · Kalium, Magnesium, Ballaststoffe",
     "savedAt": "2026-03-11T13:01:10.171Z"
+  },
+  {
+    "name": "Veganer Apfelkuchen für Läufer",
+    "meta": "⏱ 45 Min · 8 Portionen",
+    "kategorie": "🍽️ Mittag & Abend",
+    "zutaten": [
+      "200g Haferflocken",
+      "150g Datteln",
+      "100g Nüsse (Walnüsse oder Mandeln)",
+      "2 Äpfel",
+      "1/2 TL Zimt",
+      "1/4 TL Nelken",
+      "1/4 TL Salz",
+      "100g pflanzliches Öl (z.B. Kokosnussöl)",
+      "200g Sojajoghurt"
+    ],
+    "schritte": [
+      "Backofen auf 180°C vorheizen",
+      "Eine Springform mit Öl einpinseln",
+      "Haferflocken, Datteln, Nüsse, Zimt, Nelken und Salz vermischen",
+      "Äpfel schälen, entkernen und in Scheiben schneiden",
+      "Die Hälfte der Haferflocken-Mischung in die Springform geben",
+      "Äpfel auf die Haferflocken legen",
+      "Restliche Haferflocken-Mischung auf die Äpfel geben",
+      "Sojajoghurt und pflanzliches Öl vermischen und über den Kuchen geben",
+      "45 Minuten backen"
+    ],
+    "naehr": "~350 kcal · ~10g Protein · 60g Kohlenhydrate",
+    "tipp": "Dieser Kuchen ist reich an Kohlenhydraten und kann als Energiequelle für Läufer dienen. Durch die Verwendung von Haferflocken und Nüssen ist er auch reich an Ballaststoffen und gesunden Fetten. Um das Ziel von 2700kcal/Tag zu erreichen, kann der Kuchen mit anderen kalorienreichen Lebensmitteln wie Nüssen, Samen oder Avocado kombiniert werden.",
+    "savedAt": "2026-03-11T16:38:50.117Z"
   }
 ]

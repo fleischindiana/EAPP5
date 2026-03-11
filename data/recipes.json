@@ -97,5 +97,28 @@
     ],
     "naehr": "~580 kcal · ~28g Protein · Eisen, Folsäure, Kalium",
     "savedAt": "2026-03-11T13:01:02.900Z"
+  },
+  {
+    "name": "Tempeh-Brokkoli-Pfanne mit Quinoa",
+    "meta": "⏱ 30 Min · 2 Portionen (Leftover)",
+    "kategorie": "🍽️ Mittag & Abend",
+    "zutaten": [
+      "200g Tempeh gewürfelt",
+      "1 Brokkoli in Röschen",
+      "2 Paprika gewürfelt",
+      "200g Quinoa",
+      "3 EL Sojasoße, 2 EL Sesamöl",
+      "Knoblauch, Ingwer",
+      "Sesam zum Garnieren"
+    ],
+    "schritte": [
+      "Quinoa kochen (~15 Min).",
+      "Tempeh in Sesamöl goldbraun braten (8 Min).",
+      "Knoblauch, Ingwer, Paprika, Brokkoli dazugeben.",
+      "Mit Sojasoße ablöschen, 5 Min garen.",
+      "Mit Quinoa servieren, Sesam drüber."
+    ],
+    "naehr": "~750 kcal · ~35g Protein · Calcium, Zink, alle Aminosäuren",
+    "savedAt": "2026-03-11T13:01:03.754Z"
   }
 ]

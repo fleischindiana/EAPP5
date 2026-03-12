@@ -9,24 +9,6 @@
     "checked": false
   },
   {
-    "id": 1773322059183.9011,
-    "name": "1 rote paprika gewürfelt",
-    "amount": null,
-    "unit": null,
-    "display": "1 rote paprika gewürfelt",
-    "cat": 1,
-    "checked": true
-  },
-  {
-    "id": 1773322059183.682,
-    "name": "1 zwiebel, 3 knoblauchzehen",
-    "amount": null,
-    "unit": null,
-    "display": "1 zwiebel, 3 knoblauchzehen",
-    "cat": 1,
-    "checked": true
-  },
-  {
     "id": 1773322059183.7468,
     "name": "fester tofu gewürfelt",
     "amount": 200,
@@ -61,15 +43,6 @@
     "display": "150g Dinkelmehl type 630",
     "cat": 7,
     "checked": false
-  },
-  {
-    "id": 1773322066077.2668,
-    "name": "sojamilch",
-    "amount": 250,
-    "unit": "ml",
-    "display": "250ml Sojamilch",
-    "cat": 5,
-    "checked": true
   },
   {
     "id": 1773322066077.7124,

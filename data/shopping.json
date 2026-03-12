@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "id": 1773321979767.3027,
+    "name": "dinkelmehl type 630",
+    "amount": 150,
+    "unit": "g",
+    "display": "150g Dinkelmehl type 630",
+    "cat": 7,
+    "checked": false
+  },
+  {
+    "id": 1773321979767.1396,
+    "name": "sojamilch",
+    "amount": 250,
+    "unit": "ml",
+    "display": "250ml Sojamilch",
+    "cat": 5,
+    "checked": false
+  },
+  {
+    "id": 1773321979767.4648,
+    "name": "mineralwasser",
+    "amount": 100,
+    "unit": "ml",
+    "display": "100ml Mineralwasser",
+    "cat": 9,
+    "checked": false
+  },
+  {
+    "id": 1773321979767.194,
+    "name": "fruchtmus",
+    "amount": 360,
+    "unit": "g",
+    "display": "360g Fruchtmus",
+    "cat": 6,
+    "checked": false
+  }
+]

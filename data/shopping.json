@@ -88,5 +88,32 @@
     "display": "200 g Basmatireis",
     "cat": 7,
     "checked": false
+  },
+  {
+    "id": 1773316822754.5928,
+    "name": "hafermehl",
+    "amount": 200,
+    "unit": "g",
+    "display": "200 g Hafermehl",
+    "cat": 7,
+    "checked": false
+  },
+  {
+    "id": 1773316822754.483,
+    "name": "chiasamen + 3 el wasser",
+    "amount": 1,
+    "unit": "el",
+    "display": "1 el Chiasamen + 3 el wasser",
+    "cat": 7,
+    "checked": false
+  },
+  {
+    "id": 1773316822754.7012,
+    "name": "hafermilch",
+    "amount": 300,
+    "unit": "ml",
+    "display": "300 ml Hafermilch",
+    "cat": 5,
+    "checked": false
   }
 ]

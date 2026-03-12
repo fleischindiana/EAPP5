@@ -20,9 +20,9 @@
   {
     "id": 1773316650654.7258,
     "name": "wasser",
-    "amount": 200,
+    "amount": 250,
     "unit": "ml",
-    "display": "200 ml Wasser",
+    "display": "250 ml Wasser",
     "cat": 9,
     "checked": false
   },
@@ -33,6 +33,15 @@
     "unit": null,
     "display": "10 getrocknete tomaten in öl",
     "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773316748506.8855,
+    "name": "semola",
+    "amount": 100,
+    "unit": "g",
+    "display": "100 g Semola",
+    "cat": 7,
     "checked": false
   }
 ]

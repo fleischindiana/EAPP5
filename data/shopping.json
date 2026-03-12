@@ -52,5 +52,41 @@
     "display": "Frische petersilie, dinkeltoast",
     "cat": 2,
     "checked": false
+  },
+  {
+    "id": 1773322066077.251,
+    "name": "dinkelmehl type 630",
+    "amount": 150,
+    "unit": "g",
+    "display": "150g Dinkelmehl type 630",
+    "cat": 7,
+    "checked": false
+  },
+  {
+    "id": 1773322066077.2668,
+    "name": "sojamilch",
+    "amount": 250,
+    "unit": "ml",
+    "display": "250ml Sojamilch",
+    "cat": 5,
+    "checked": false
+  },
+  {
+    "id": 1773322066077.7124,
+    "name": "mineralwasser",
+    "amount": 100,
+    "unit": "ml",
+    "display": "100ml Mineralwasser",
+    "cat": 9,
+    "checked": false
+  },
+  {
+    "id": 1773322066077.2446,
+    "name": "fruchtmus",
+    "amount": 360,
+    "unit": "g",
+    "display": "360g Fruchtmus",
+    "cat": 6,
+    "checked": false
   }
 ]

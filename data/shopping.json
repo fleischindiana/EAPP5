@@ -115,5 +115,59 @@
     "display": "Geröstete nüsse",
     "cat": 99,
     "checked": false
+  },
+  {
+    "id": 1773321995334.4624,
+    "name": "rote linsen trocken",
+    "amount": 200,
+    "unit": "g",
+    "display": "200g Rote linsen trocken",
+    "cat": 6,
+    "checked": false
+  },
+  {
+    "id": 1773321995334.5947,
+    "name": "1 süßkartoffel gewürfelt",
+    "amount": null,
+    "unit": null,
+    "display": "1 süßkartoffel gewürfelt",
+    "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773321995334.6802,
+    "name": "kokosmilch",
+    "amount": 1,
+    "unit": "Dose",
+    "display": "1 Dose Kokosmilch",
+    "cat": 5,
+    "checked": false
+  },
+  {
+    "id": 1773321995334.5264,
+    "name": "spinat",
+    "amount": 100,
+    "unit": "g",
+    "display": "100g Spinat",
+    "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773321995334.6736,
+    "name": "zwiebel, knoblauch, ingwer",
+    "amount": null,
+    "unit": null,
+    "display": "Zwiebel, knoblauch, ingwer",
+    "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773321995334.5708,
+    "name": "gemüsebrühe",
+    "amount": 500,
+    "unit": "ml",
+    "display": "500ml Gemüsebrühe",
+    "cat": 9,
+    "checked": false
   }
 ]

@@ -34,5 +34,86 @@
     "display": "360g Fruchtmus",
     "cat": 6,
     "checked": false
+  },
+  {
+    "id": 1773321991265.5308,
+    "name": "8 weißbrotscheiben",
+    "amount": null,
+    "unit": null,
+    "display": "8 weißbrotscheiben",
+    "cat": 3,
+    "checked": false
+  },
+  {
+    "id": 1773321991265.4023,
+    "name": "pflanzliche milch",
+    "amount": 250,
+    "unit": "ml",
+    "display": "250ml Pflanzliche milch",
+    "cat": 5,
+    "checked": false
+  },
+  {
+    "id": 1773321991265.4487,
+    "name": "weizenmehl",
+    "amount": 70,
+    "unit": "g",
+    "display": "70g Weizenmehl",
+    "cat": 7,
+    "checked": false
+  },
+  {
+    "id": 1773321991265.4927,
+    "name": "vegane butter",
+    "amount": null,
+    "unit": null,
+    "display": "Vegane butter",
+    "cat": 4,
+    "checked": false
+  },
+  {
+    "id": 1773321991266.732,
+    "name": "vegane schlagsahne",
+    "amount": 100,
+    "unit": "ml",
+    "display": "100ml Vegane schlagsahne",
+    "cat": 4,
+    "checked": false
+  },
+  {
+    "id": 1773321991266.3318,
+    "name": "veganer quark",
+    "amount": 3,
+    "unit": "EL",
+    "display": "3 EL Veganer quark",
+    "cat": 4,
+    "checked": false
+  },
+  {
+    "id": 1773321991266.5444,
+    "name": "abrieb von 0.5 limette",
+    "amount": null,
+    "unit": null,
+    "display": "Abrieb von 0.5 limette",
+    "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773321991266.9028,
+    "name": "frisches obst und beeren",
+    "amount": null,
+    "unit": null,
+    "display": "Frisches obst und beeren",
+    "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773321991266.229,
+    "name": "geröstete nüsse",
+    "amount": null,
+    "unit": null,
+    "display": "Geröstete nüsse",
+    "cat": 99,
+    "checked": false
   }
 ]

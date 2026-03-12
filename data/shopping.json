@@ -45,33 +45,6 @@
     "checked": false
   },
   {
-    "id": 1773316774512.2031,
-    "name": "kichererbsen",
-    "amount": 1,
-    "unit": "dos",
-    "display": "1 dos Kichererbsen",
-    "cat": 1,
-    "checked": true
-  },
-  {
-    "id": 1773316774512.242,
-    "name": "kokosmilch",
-    "amount": 1,
-    "unit": "dos",
-    "display": "1 dos Kokosmilch",
-    "cat": 5,
-    "checked": true
-  },
-  {
-    "id": 1773316774512.0947,
-    "name": "gehackte tomaten",
-    "amount": 1,
-    "unit": "dos",
-    "display": "1 dos Gehackte tomaten",
-    "cat": 1,
-    "checked": true
-  },
-  {
     "id": 1773316774512.4438,
     "name": "1 zwiebel, 3 knoblauchzehen",
     "amount": null,
@@ -79,15 +52,6 @@
     "display": "1 zwiebel, 3 knoblauchzehen",
     "cat": 1,
     "checked": false
-  },
-  {
-    "id": 1773316774512.7114,
-    "name": "basmatireis",
-    "amount": 200,
-    "unit": "g",
-    "display": "200 g Basmatireis",
-    "cat": 7,
-    "checked": true
   },
   {
     "id": 1773316822754.5928,
@@ -106,14 +70,5 @@
     "display": "1 el Chiasamen + 3 el wasser",
     "cat": 7,
     "checked": false
-  },
-  {
-    "id": 1773316822754.7012,
-    "name": "hafermilch",
-    "amount": 300,
-    "unit": "ml",
-    "display": "300 ml Hafermilch",
-    "cat": 5,
-    "checked": true
   }
 ]

@@ -503,5 +503,36 @@
     "quelle": "Zucker&Jagdwurst",
     "tipp": "Kartoffeln stampfen, nicht aufschlagen – sonst wird der Teig zu klebrig.",
     "savedAt": "2026-03-12T12:15:07.997Z"
+  },
+  {
+    "name": "Vegane Dunkelbiersoße",
+    "meta": "⏱ 45 Min · ca. 500 ml",
+    "kategorie": "🍽️ Mittag & Abend",
+    "zutaten": [
+      "2 große Karotten",
+      "⅓ Knollensellerie",
+      "1 mittelgroße Zwiebel",
+      "½ Stange Lauch",
+      "3 getrocknete Shiitakepilze",
+      "1 EL Tomatenmark",
+      "1 TL Sojasoße",
+      "ca. 300ml Dunkelbier (alternativ Malzbier)",
+      "500ml Gemüsebrühe",
+      "1 Lorbeerblatt",
+      "2 Wacholderbeeren",
+      "1 TL Agavendicksaft",
+      "optional: Speisestärke zum Binden"
+    ],
+    "schritte": [
+      "Gemüse (Karotten, Sellerie, Zwiebel, Lauch) grob würfeln. In einem Topf mit etwas Öl bei hoher Hitze kräftig anrösten bis alles dunkel und karamellisiert ist (8–10 Min).",
+      "Tomatenmark einrühren und 1–2 Min mitrösten. Shiitakepilze und alle Gewürze dazugeben.",
+      "Mit Dunkelbier ablöschen und kurz einkochen lassen. Gemüsebrühe, Sojasoße und Agavendicksaft zugeben.",
+      "30–35 Min bei mittlerer Hitze köcheln. Durch ein feines Sieb abseihen und gut ausdrücken.",
+      "Bei Bedarf mit in Wasser aufgelöster Speisestärke auf gewünschte Konsistenz binden."
+    ],
+    "naehr": "~60 kcal pro 100 ml · tiefes Umami-Aroma, perfekt zu Seitan oder Knödeln",
+    "quelle": "VeganAufBayrisch",
+    "tipp": "Je länger rösten, desto tiefer und kräftiger wird der Geschmack.",
+    "savedAt": "2026-03-12T12:15:08.661Z"
   }
 ]

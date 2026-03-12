@@ -43,5 +43,50 @@
     "display": "100 g Semola",
     "cat": 7,
     "checked": false
+  },
+  {
+    "id": 1773316774512.2031,
+    "name": "kichererbsen",
+    "amount": 1,
+    "unit": "dos",
+    "display": "1 dos Kichererbsen",
+    "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773316774512.242,
+    "name": "kokosmilch",
+    "amount": 1,
+    "unit": "dos",
+    "display": "1 dos Kokosmilch",
+    "cat": 5,
+    "checked": false
+  },
+  {
+    "id": 1773316774512.0947,
+    "name": "gehackte tomaten",
+    "amount": 1,
+    "unit": "dos",
+    "display": "1 dos Gehackte tomaten",
+    "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773316774512.4438,
+    "name": "1 zwiebel, 3 knoblauchzehen",
+    "amount": null,
+    "unit": null,
+    "display": "1 zwiebel, 3 knoblauchzehen",
+    "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773316774512.7114,
+    "name": "basmatireis",
+    "amount": 200,
+    "unit": "g",
+    "display": "200 g Basmatireis",
+    "cat": 7,
+    "checked": false
   }
 ]

@@ -284,5 +284,33 @@
     ],
     "naehr": "Pro Scheibe: ~210 kcal · ~5g Protein (+3g mit Pulver) · Kalium, Magnesium, Ballaststoffe",
     "savedAt": "2026-03-12T10:22:53.834Z"
+  },
+  {
+    "name": "Frühstückstoasts mit veganem Ricotta & Erdbeeren",
+    "meta": "⏱ 45 Min + 2 Std. Ruhe · 4 Portionen",
+    "kategorie": "🌅 Frühstück",
+    "zutaten": [
+      "200g fester Tofu",
+      "75g feste Kokoscreme (oberer Teil einer Dose Kokosmilch)",
+      "75g veganer Joghurt",
+      "1 TL Vanilleextrakt",
+      "2 EL Ahornsirup",
+      "1 EL Orangensaft",
+      "Abrieb von ½ Orange",
+      "4 dicke Scheiben Weißbrot",
+      "500g Erdbeeren",
+      "2 EL Zucker",
+      "1 EL Balsamicoessig",
+      "frische Minzblätter"
+    ],
+    "schritte": [
+      "Tofu gut abtropfen, mit Kokoscreme, Joghurt, Vanilleextrakt, Ahornsirup, Orangensaft und -abrieb in einen Zerkleinerer geben. Je nach Wunsch freikrümelig oder glatt mixen. Abschmecken.",
+      "Ricotta mindestens 2 Stunden (am besten über Nacht) im Kühlschrank durchziehen lassen.",
+      "Ofen auf 180°C vorheizen. Erdbeeren entstielen, halbieren, auf Backpapier legen. Mit Zucker bestreuen, Balsamico beträufeln. 20–25 Min backen bis der Saft austritt. Abkühlen lassen.",
+      "Brotscheiben toasten, dick mit Ricotta bestreichen, mit Ahornsirup beträufeln. Erdbeeren darauf, mit Minze und Pfeffer garnieren."
+    ],
+    "naehr": "~380 kcal · ~12g Protein · Calcium, Vitamin C, gesunde Fette",
+    "tipp": "Ricotta abends vorbereiten – morgens sofort fertig.",
+    "savedAt": "2026-03-12T10:22:55.103Z"
   }
 ]

@@ -600,5 +600,34 @@
     "quelle": "Selfmade",
     "tipp": "Perfekt zu Dunkelbiersoße oder Sauerbraten.",
     "savedAt": "2026-03-12T12:15:10.928Z"
+  },
+  {
+    "name": "Pizza-Teig mit Lievito Madre",
+    "meta": "⏱ 24–48 Std. · 4 Pizzen à ~250g",
+    "kategorie": "🫓 Teige & Brote",
+    "zutaten": [
+      "540g Weizenmehl Tipo 00 (oder 405/550)",
+      "340g Wasser",
+      "120g Lievito Madre (aktiv, 50% Hydration)",
+      "14g Salz",
+      "10g Olivenöl (optional)",
+      "── Starter aktivieren (3–4 Std. vorher) ──",
+      "50g Lievito Madre",
+      "100g Weizenmehl Tipo 00",
+      "50g Wasser"
+    ],
+    "schritte": [
+      "Lievito Madre 3–4 Stunden vorher füttern (50g LM + 100g Mehl + 50g Wasser) und bei 24–26°C gehen lassen bis das Volumen sich verdoppelt hat.",
+      "Wasser und LM vermischen, Mehl zugeben und grob vermengen. 20 Min Autolyse stehen lassen.",
+      "Salz und optional Olivenöl zugeben, 8–10 Min kneten bis der Teig glatt, elastisch und leicht klebrig ist. Ziel-Teigtemperatur: 23–25°C.",
+      "Stockgare: 2–3 Std. bei 22–24°C. Alle 45 Min einmal dehnen und falten.",
+      "Teig in 4 Stücke à 240–260g teilen und zu glatten Kugeln formen.",
+      "Beste Variante: 24 Std. im Kühlschrank (4–6°C), danach 2 Std. akklimatisieren. Schnell: 3–4 Std. bei Raumtemperatur.",
+      "Teig nicht ausrollen – von innen nach außen mit den Händen drücken, Rand nicht entgasen. Bei 250–300°C mit Pizzastein 5–7 Min backen."
+    ],
+    "naehr": "~650 kcal pro Pizza (Teig) · ~18g Protein · lange Fermentation = beste Verträglichkeit",
+    "quelle": "Selfmade",
+    "tipp": "48 Stunden Kühlschrankgare bringt deutlich mehr Aroma und Struktur.",
+    "savedAt": "2026-03-12T12:15:11.805Z"
   }
 ]

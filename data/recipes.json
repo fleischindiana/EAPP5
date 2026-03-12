@@ -55,5 +55,35 @@
     "naehr": "~310 kcal · ~26g Protein (+10g mit Hanfsamen) · Calcium, Vitamin C",
     "quelle": "Selfmade",
     "savedAt": "2026-03-12T13:08:50.227Z"
+  },
+  {
+    "name": "Vegane Shakshuka",
+    "meta": "⏱ 25 Min · 2 Portionen",
+    "kategorie": "🌅 Frühstück",
+    "zutaten": [
+      "1 Dose gehackte Tomaten (400g)",
+      "1 rote Paprika gewürfelt",
+      "1 Zwiebel, 3 Knoblauchzehen",
+      "200g fester Tofu gewürfelt",
+      "1 TL Kreuzkümmel",
+      "1 TL Paprikapulver",
+      "½ TL Chiliflocken",
+      "Prise Zimt",
+      "2 EL Olivenöl",
+      "Salz",
+      "Pfeffer",
+      "Frische Petersilie, Dinkeltoast"
+    ],
+    "schritte": [
+      "Zwiebel & Knoblauch in Olivenöl anbraten (4 Min).",
+      "Gewürze 1 Min mitrösten.",
+      "Paprika 3 Min mitbraten.",
+      "Tomaten dazugeben, 10 Min köcheln bis Sauce eindickt.",
+      "Tofu-Würfel in die Sauce setzen, 5 Min mitgaren.",
+      "Mit Petersilie und Dinkeltoast servieren."
+    ],
+    "naehr": "~320 kcal · ~22g Protein · Vitamin C, Eisen, Lycopin",
+    "quelle": "Selfmade",
+    "savedAt": "2026-03-12T13:08:50.886Z"
   }
 ]

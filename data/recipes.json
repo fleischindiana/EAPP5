@@ -224,5 +224,37 @@
     ],
     "naehr": "~720 kcal · ~32g Protein · Kalium, Eisen, Folsäure",
     "savedAt": "2026-03-12T10:22:52.210Z"
+  },
+  {
+    "name": "Veganer Zitronen-Mohn-Kuchen",
+    "meta": "⏱ 20 Min + 60 Min Backzeit · 1 Kastenform",
+    "kategorie": "🎂 Kuchen & Backen",
+    "zutaten": [
+      "450g Weizenmehl Type 405 (oder Dinkelmehl)",
+      "16g (1,5 EL) Backpulver",
+      "8g (1,5 TL) Vanillezucker",
+      "½ TL Salz",
+      "3 Zitronen (Abrieb + Saft)",
+      "200g Zucker",
+      "200g pflanzliche Margarine (weich!)",
+      "200ml Hafermilch",
+      "100ml Sprudelwasser",
+      "4 EL Mohnsamen",
+      "Glasur: 250g Puderzucker + 3 EL Zitronensaft"
+    ],
+    "schritte": [
+      "Ofen auf 200°C vorheizen.",
+      "Mehl, Backpulver, Vanillezucker, Salz, Zitronenabrieb mischen.",
+      "Margarine + Zucker separat aufschlagen – wichtig für lockeren Teig!",
+      "Margarine-Zucker zur Mehlmischung, kurz vermengen.",
+      "Hafermilch, Sprudelwasser + 60ml Zitronensaft dazu. Nicht überrühren!",
+      "Mohnsamen kurz unterrühren.",
+      "In gefettete Kastenform füllen. 60 Min bei 200°C backen.",
+      "Nach 15 Min: oben längs einschneiden.",
+      "Heiß raus: mehrmals mit Gabel einstechen, mit Zitronensaft bestreichen.",
+      "Ausgekühlt: Puderzucker-Glasur drüber, trocknen lassen."
+    ],
+    "naehr": "Pro Scheibe (~12 Stück): ~320 kcal · ~4g Protein · Calcium",
+    "savedAt": "2026-03-12T10:22:52.996Z"
   }
 ]

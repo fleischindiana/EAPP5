@@ -2,25 +2,25 @@
   {
     "id": 1773315165639.4653,
     "name": "spaghetti (oder linsennudeln für mehr protein)",
-    "amount": 250,
+    "amount": 500,
     "unit": "g",
-    "text": "250 g Spaghetti (oder linsennudeln für mehr protein)",
+    "text": "500 g Spaghetti (oder linsennudeln für mehr protein)",
     "checked": false
   },
   {
     "id": 1773315165639.876,
     "name": "cashewkerne (mind. 2 std. eingeweicht)",
-    "amount": 300,
+    "amount": 450,
     "unit": "g",
-    "text": "300 g Cashewkerne (mind. 2 std. eingeweicht)",
+    "text": "450 g Cashewkerne (mind. 2 std. eingeweicht)",
     "checked": false
   },
   {
     "id": 1773315165639.3186,
     "name": "wasser",
-    "amount": 200,
+    "amount": 300,
     "unit": "ml",
-    "text": "200 ml Wasser",
+    "text": "300 ml Wasser",
     "checked": false
   },
   {

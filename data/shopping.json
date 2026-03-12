@@ -10,17 +10,17 @@
   {
     "id": 1773315165639.876,
     "name": "cashewkerne (mind. 2 std. eingeweicht)",
-    "amount": 150,
+    "amount": 300,
     "unit": "g",
-    "text": "150 g Cashewkerne (mind. 2 std. eingeweicht)",
+    "text": "300 g Cashewkerne (mind. 2 std. eingeweicht)",
     "checked": false
   },
   {
     "id": 1773315165639.3186,
     "name": "wasser",
-    "amount": 100,
+    "amount": 200,
     "unit": "ml",
-    "text": "100 ml Wasser",
+    "text": "200 ml Wasser",
     "checked": false
   },
   {
@@ -29,6 +29,30 @@
     "amount": null,
     "unit": null,
     "text": "10 getrocknete tomaten in öl",
+    "checked": false
+  },
+  {
+    "id": 1773315171288.3948,
+    "name": "spaghetti",
+    "amount": 250,
+    "unit": "g",
+    "text": "250 g Spaghetti",
+    "checked": false
+  },
+  {
+    "id": 1773315171288.6543,
+    "name": "liquid smoke",
+    "amount": 0.5,
+    "unit": "tl",
+    "text": "0,5 tl Liquid smoke",
+    "checked": false
+  },
+  {
+    "id": 1773315171288.4988,
+    "name": "veganer parmesan zum servieren",
+    "amount": null,
+    "unit": null,
+    "text": "Veganer parmesan zum servieren",
     "checked": false
   }
 ]

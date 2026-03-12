@@ -38,9 +38,9 @@
   {
     "id": 1773317766073.7676,
     "name": "gehackte tomaten",
-    "amount": 1,
+    "amount": 2,
     "unit": "Dose",
-    "display": "1 Dose Gehackte tomaten",
+    "display": "2 Dose Gehackte tomaten",
     "cat": 1,
     "checked": false
   },
@@ -65,18 +65,18 @@
   {
     "id": 1773317766073.3435,
     "name": "fester tofu gewürfelt",
-    "amount": 200,
+    "amount": 400,
     "unit": "g",
-    "display": "200g Fester tofu gewürfelt",
+    "display": "400g Fester tofu gewürfelt",
     "cat": 4,
     "checked": false
   },
   {
     "id": 1773317766073.6858,
     "name": "chiliflocken",
-    "amount": 0.5,
+    "amount": 1,
     "unit": "TL",
-    "display": "0,5 TL Chiliflocken",
+    "display": "1 TL Chiliflocken",
     "cat": 99,
     "checked": false
   },

@@ -1,1 +1,31 @@
-[]
+[
+  {
+    "name": "Hafermehl-Pancakes (Sonntags-Spezial)",
+    "meta": "⏱ 20 Min · 8–10 Pancakes",
+    "kategorie": "🌅 Frühstück",
+    "zutaten": [
+      "200g Hafermehl",
+      "1 EL Chiasamen",
+      "3 EL Wasser",
+      "300ml Hafermilch",
+      "1 TL Backpulver",
+      "Prise Salz",
+      "1 EL Ahornsirup",
+      "1 TL Vanilleextrakt",
+      "Kokosfett zum Braten",
+      "frische Beeren",
+      "Ahornsirup zum Servieren"
+    ],
+    "schritte": [
+      "Chiasamen mit Wasser mischen, 10 Min quellen.",
+      "Trockene Zutaten mischen.",
+      "Hafermilch, Chia-Ei, Sirup, Vanille hinzufügen.",
+      "Teig 5 Min ruhen lassen.",
+      "Je 2–3 EL pro Pancake, 3 Min je Seite.",
+      "Mit Beeren und Ahornsirup servieren."
+    ],
+    "naehr": "~680 kcal · ~18g Protein · Ballaststoffe, Omega-3",
+    "quelle": "Selfmade",
+    "savedAt": "2026-03-12T13:08:49.285Z"
+  }
+]

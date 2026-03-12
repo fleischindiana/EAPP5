@@ -316,5 +316,37 @@
     "naehr": "Pro Scheibe (~12 Stück): ~320 kcal · ~4g Protein · Calcium",
     "quelle": "Selfmade",
     "savedAt": "2026-03-12T12:15:03.083Z"
+  },
+  {
+    "name": "Veganer Schoko-Bananen-Kuchen",
+    "meta": "⏱ 15 Min + 50 Min Backzeit · Proteinreich",
+    "kategorie": "🎂 Kuchen & Backen",
+    "zutaten": [
+      "3 sehr reife Bananen (~300g)",
+      "200g Hafermehl",
+      "2 EL Kakaopulver ungesüßt",
+      "2 EL Chiasamen",
+      "6 EL Wasser",
+      "100ml Hafermilch",
+      "80ml Ahornsirup",
+      "2 EL Kokosöl geschmolzen",
+      "2 TL Backpulver",
+      "1 TL Vanille",
+      "Prise Salz",
+      "50g dunkle Schokolade oder Drops",
+      "Optional: 2 EL Proteinpulver für +14g Protein"
+    ],
+    "schritte": [
+      "Chiasamen mit Wasser mischen, 10 Min quellen lassen.",
+      "Ofen auf 175°C vorheizen, Kastenform einfetten.",
+      "Bananen in Schüssel zerdrücken.",
+      "Hafermilch, Sirup, Kokosöl, Chia-Ei, Vanille dazumischen.",
+      "Hafermehl, Kakao, Backpulver, Salz (+ Proteinpulver) unterrühren.",
+      "Schokodrops unterheben.",
+      "50 Min backen. Stäbchenprobe. Vollständig auskühlen lassen."
+    ],
+    "naehr": "Pro Scheibe: ~210 kcal · ~5g Protein (+3g mit Pulver) · Kalium, Magnesium, Ballaststoffe",
+    "quelle": "Selfmade",
+    "savedAt": "2026-03-12T12:15:03.803Z"
   }
 ]

@@ -82,5 +82,29 @@
     "recipe": "Vegane Spaghetti Carbonara",
     "checked": false,
     "id": 1773311044424.2432
+  },
+  {
+    "text": "250g Spaghetti",
+    "recipe": "Vegane Spaghetti Carbonara (Cashew)",
+    "checked": false,
+    "id": 1773311049910.1768
+  },
+  {
+    "text": "150g Cashewkerne (mind. 2 Std. eingeweicht)",
+    "recipe": "Vegane Spaghetti Carbonara (Cashew)",
+    "checked": false,
+    "id": 1773311049910.6594
+  },
+  {
+    "text": "100ml Wasser",
+    "recipe": "Vegane Spaghetti Carbonara (Cashew)",
+    "checked": false,
+    "id": 1773311049910.8828
+  },
+  {
+    "text": "veganer Parmesan zum Servieren",
+    "recipe": "Vegane Spaghetti Carbonara (Cashew)",
+    "checked": false,
+    "id": 1773311049910.994
   }
 ]

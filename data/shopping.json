@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "text": "200g Hafermehl",
+    "recipe": "Hafermehl-Pancakes (Sonntags-Spezial)",
+    "checked": false,
+    "id": 1773310751165.01
+  },
+  {
+    "text": "1 EL Chiasamen + 3 EL Wasser (10 Min quellen)",
+    "recipe": "Hafermehl-Pancakes (Sonntags-Spezial)",
+    "checked": false,
+    "id": 1773310751165.5022
+  },
+  {
+    "text": "300ml Hafermilch",
+    "recipe": "Hafermehl-Pancakes (Sonntags-Spezial)",
+    "checked": false,
+    "id": 1773310751165.9644
+  },
+  {
+    "text": "Kokosfett zum Braten",
+    "recipe": "Hafermehl-Pancakes (Sonntags-Spezial)",
+    "checked": false,
+    "id": 1773310751165.5742
+  }
+]

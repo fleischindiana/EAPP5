@@ -114,6 +114,6 @@
     "unit": "ml",
     "display": "300 ml Hafermilch",
     "cat": 5,
-    "checked": false
+    "checked": true
   }
 ]

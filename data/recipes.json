@@ -27,5 +27,33 @@
     "naehr": "~680 kcal · ~18g Protein · Ballaststoffe, Omega-3",
     "quelle": "Selfmade",
     "savedAt": "2026-03-12T12:14:54.750Z"
+  },
+  {
+    "name": "Tofu-Scramble mit Gemüse",
+    "meta": "⏱ 15 Min · 2 Portionen · schnell",
+    "kategorie": "🌅 Frühstück",
+    "zutaten": [
+      "400g fester Tofu",
+      "½ TL Kurkuma",
+      "½ TL Paprikapulver",
+      "2 EL Hefeflocken",
+      "1 Paprika gewürfelt",
+      "Cherrytomaten halbiert",
+      "2 EL Sojasoße",
+      "1 EL Olivenöl",
+      "Salz, Pfeffer, Knoblauchpulver",
+      "Optional: 30g Hanfsamen für +10g Protein"
+    ],
+    "schritte": [
+      "Tofu mit einer Gabel grob zerbröseln.",
+      "Olivenöl erhitzen, Paprika 3 Min anbraten.",
+      "Tofu dazugeben, Gewürze einmischen.",
+      "5 Min bei mittlerer Hitze braten.",
+      "Tomaten, Hefeflocken, Sojasoße unterheben.",
+      "Mit Reiswaffeln servieren. Hanfsamen drüber = Protein-Boost."
+    ],
+    "naehr": "~310 kcal · ~26g Protein (+10g mit Hanfsamen) · Calcium, Vitamin C",
+    "quelle": "Selfmade",
+    "savedAt": "2026-03-12T12:14:55.885Z"
   }
 ]

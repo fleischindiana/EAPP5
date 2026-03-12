@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "id": 1773316650654.2793,
+    "name": "spaghetti",
+    "amount": 250,
+    "unit": "g",
+    "display": "250 g Spaghetti",
+    "cat": 7,
+    "checked": false
+  },
+  {
+    "id": 1773316650654.6738,
+    "name": "cashewkerne",
+    "amount": 150,
+    "unit": "g",
+    "display": "150 g Cashewkerne",
+    "cat": 7,
+    "checked": false
+  },
+  {
+    "id": 1773316650654.7258,
+    "name": "wasser",
+    "amount": 100,
+    "unit": "ml",
+    "display": "100 ml Wasser",
+    "cat": 9,
+    "checked": false
+  },
+  {
+    "id": 1773316650654.7646,
+    "name": "10 getrocknete tomaten in öl",
+    "amount": null,
+    "unit": null,
+    "display": "10 getrocknete tomaten in öl",
+    "cat": 1,
+    "checked": false
+  }
+]

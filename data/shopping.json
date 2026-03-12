@@ -1,1 +1,34 @@
-[]
+[
+  {
+    "id": 1773315234538.854,
+    "name": "spaghetti (oder linsennudeln für mehr protein)",
+    "amount": 250,
+    "unit": "g",
+    "text": "250 g Spaghetti (oder linsennudeln für mehr protein)",
+    "checked": false
+  },
+  {
+    "id": 1773315234538.5945,
+    "name": "cashewkerne (mind. 2 std. eingeweicht)",
+    "amount": 150,
+    "unit": "g",
+    "text": "150 g Cashewkerne (mind. 2 std. eingeweicht)",
+    "checked": false
+  },
+  {
+    "id": 1773315234538.3574,
+    "name": "wasser",
+    "amount": 100,
+    "unit": "ml",
+    "text": "100 ml Wasser",
+    "checked": false
+  },
+  {
+    "id": 1773315234538.1985,
+    "name": "10 getrocknete tomaten in öl",
+    "amount": null,
+    "unit": null,
+    "text": "10 getrocknete tomaten in öl",
+    "checked": false
+  }
+]

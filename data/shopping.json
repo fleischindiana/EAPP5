@@ -52,5 +52,41 @@
     "display": "Frische petersilie, dinkeltoast",
     "cat": 2,
     "checked": false
+  },
+  {
+    "id": 1773322143937.3354,
+    "name": "fester tofu",
+    "amount": 400,
+    "unit": "g",
+    "display": "400g Fester tofu",
+    "cat": 4,
+    "checked": false
+  },
+  {
+    "id": 1773322143937.3235,
+    "name": "1 paprika gewürfelt",
+    "amount": null,
+    "unit": null,
+    "display": "1 paprika gewürfelt",
+    "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773322143937.101,
+    "name": "cherrytomaten halbiert",
+    "amount": null,
+    "unit": null,
+    "display": "Cherrytomaten halbiert",
+    "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773322143937.1113,
+    "name": "optional: 30g hanfsamen für +10g protein",
+    "amount": null,
+    "unit": null,
+    "display": "Optional: 30g hanfsamen für +10g protein",
+    "cat": 7,
+    "checked": false
   }
 ]

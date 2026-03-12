@@ -462,5 +462,46 @@
     "quelle": "Zucker&Jagdwurst",
     "tipp": "Cashews mindestens 2 Std. einweichen für eine besonders cremige Sauce.",
     "savedAt": "2026-03-12T12:15:07.354Z"
+  },
+  {
+    "name": "Gefüllte Knödel mit Rosenkohl & Cranberrysoße",
+    "meta": "⏱ 80 Min · 4 Portionen",
+    "kategorie": "🍽️ Mittag & Abend",
+    "zutaten": [
+      "800g festkochende Kartoffeln",
+      "100g Kartoffelstärke",
+      "50g Mehl",
+      "50g weiche vegane Butter",
+      "1 TL Muskat",
+      "1 Zwiebel",
+      "1 Knoblauchzehe",
+      "150g Pilze",
+      "250g veganes Hack",
+      "1 TL Paprikapulver",
+      "1 TL Oregano",
+      "½ TL Cayennepfeffer",
+      "1–2 EL Sojasoße",
+      "200g frische Cranberrys",
+      "100ml veganer Rotwein",
+      "4 EL Zucker",
+      "1 TL Zimt",
+      "2 Orangen (Abrieb und Saft)",
+      "500g Rosenkohl",
+      "4 EL Pflanzenöl",
+      "1 EL Agavendicksaft"
+    ],
+    "schritte": [
+      "Kartoffeln mit Schale ca. 20 Min kochen bis gar. Abgießen und ausdampfen lassen.",
+      "Cranberrys mit Rotwein, Zucker, Zimt, Orangensaft und -abrieb 5–10 Min köcheln bis die Soße andickt. Warm halten.",
+      "Kartoffeln schälen und mit einer Kartoffelpresse zerdrücken (nicht aufschlagen!). Stärke, Mehl und weiche Butter unterarbeiten. Mit Salz, Pfeffer und Muskat würzen.",
+      "Zwiebel, Knoblauch und Pilze fein hacken. In Öl anschwitzen, veganes Hack + Gewürze zugeben, 5–10 Min braten. Mit Sojasoße ablöschen. Abkühlen lassen.",
+      "Ofen auf 200°C vorheizen. Rosenkohl halbieren, mit Öl, Agavendicksaft, Salz und Pfeffer in eine Form geben. 15 Min rösten, dann Zucker drüber und 5–10 Min karamellisieren.",
+      "Aus der Füllung 8 Bällchen formen. Knödelteig in 8 Portionen teilen, je flach drücken, Füllungsbällchen einwickeln und zu einem runden Kloß formen.",
+      "Wasser salzen, auf 90°C erhitzen (sieden, nicht kochen). Klöße 20 Min ziehen lassen – fertig wenn sie aufschwimmen. Mit Cranberrysoße und Rosenkohl servieren."
+    ],
+    "naehr": "~580 kcal · ~22g Protein · Kalium, Vitamin C, Eisen",
+    "quelle": "Zucker&Jagdwurst",
+    "tipp": "Kartoffeln stampfen, nicht aufschlagen – sonst wird der Teig zu klebrig.",
+    "savedAt": "2026-03-12T12:15:07.997Z"
   }
 ]

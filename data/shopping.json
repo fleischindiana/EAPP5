@@ -1,1 +1,56 @@
-[]
+[
+  {
+    "id": 1773322108145.055,
+    "name": "gehackte tomaten",
+    "amount": 1,
+    "unit": "Dose",
+    "display": "1 Dose Gehackte tomaten",
+    "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773322108145.6064,
+    "name": "1 rote paprika gewürfelt",
+    "amount": null,
+    "unit": null,
+    "display": "1 rote paprika gewürfelt",
+    "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773322108145.5327,
+    "name": "1 zwiebel, 3 knoblauchzehen",
+    "amount": null,
+    "unit": null,
+    "display": "1 zwiebel, 3 knoblauchzehen",
+    "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773322108145.6494,
+    "name": "fester tofu gewürfelt",
+    "amount": 200,
+    "unit": "g",
+    "display": "200g Fester tofu gewürfelt",
+    "cat": 4,
+    "checked": false
+  },
+  {
+    "id": 1773322108145.9207,
+    "name": "chiliflocken",
+    "amount": 0.5,
+    "unit": "TL",
+    "display": "0,5 TL Chiliflocken",
+    "cat": 99,
+    "checked": false
+  },
+  {
+    "id": 1773322108145.3047,
+    "name": "frische petersilie, dinkeltoast",
+    "amount": null,
+    "unit": null,
+    "display": "Frische petersilie, dinkeltoast",
+    "cat": 2,
+    "checked": false
+  }
+]

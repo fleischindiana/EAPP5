@@ -402,5 +402,37 @@
     "quelle": "Zucker&Jagdwurst",
     "tipp": "Mineralwasser macht den Teig besonders luftig – nicht weglassen!",
     "savedAt": "2026-03-12T13:09:01.244Z"
+  },
+  {
+    "name": "Vegane French Toasts",
+    "meta": "⏱ 30 Min · 4 Portionen",
+    "kategorie": "🌅 Frühstück",
+    "zutaten": [
+      "8 Weißbrotscheiben",
+      "250ml pflanzliche Milch",
+      "70g Weizenmehl",
+      "3 EL Agavendicksaft oder Ahornsirup",
+      "5g Vanillepaste",
+      "1 TL Zimt",
+      "vegane Butter",
+      "Pflanzenöl zum Braten",
+      "100ml vegane Schlagsahne",
+      "1 TL Sahnesteif",
+      "1 TL Vanillezucker",
+      "3 EL veganer Quark",
+      "Abrieb von ½ Limette",
+      "frisches Obst und Beeren",
+      "geröstete Nüsse"
+    ],
+    "schritte": [
+      "Vegane Schlagsahne mit Sahnesteif und Vanillezucker aufschlagen, Quark und Limettenabrieb unterrühren. Obst waschen und klein schneiden.",
+      "Pflanzliche Milch, Mehl, Agavendicksaft, Vanillepaste, Zimt und Salz in einem tiefen Teller vermengen.",
+      "Vegane Butter und einen Schuss Öl in einer Pfanne erhitzen. Brotscheiben in der Mischung wenden und von beiden Seiten goldbraun braten.",
+      "Mit Beeren, Obst, Limettensahne und gerösteten Nüssen servieren."
+    ],
+    "naehr": "~450 kcal · ~11g Protein · Kohlenhydrate, Calcium",
+    "quelle": "Zucker&Jagdwurst",
+    "tipp": "Eine Prise Kala Namak in die Einweich-Mischung gibt einen leichten Ei-Geschmack.",
+    "savedAt": "2026-03-12T13:09:02.245Z"
   }
 ]

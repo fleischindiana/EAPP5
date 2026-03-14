@@ -543,5 +543,32 @@
     "quelle": "Selfmade",
     "tipp": "48 Stunden Kühlschrankgare bringt deutlich mehr Aroma und Struktur.",
     "savedAt": "2026-03-14T09:01:44.303Z"
+  },
+  {
+    "name": "Einfache Sonntagsbrötchen",
+    "meta": "⏱ 40 Min + 8–12 Std. Ruhe · 8 Brötchen",
+    "kategorie": "🫓 Teige & Brote",
+    "zutaten": [
+      "10g frische Hefe",
+      "350g lauwarmes Wasser",
+      "1 TL Zucker",
+      "370g Weizenmehl Type 550",
+      "100g Weizenvollkornmehl",
+      "10g Salz",
+      "1–2 EL Olivenöl",
+      "Optional: Kürbiskerne, Sonnenblumenkerne, Walnüsse"
+    ],
+    "schritte": [
+      "Hefe zerbröseln und mit Zucker und lauwarmem Wasser verrühren. Kurz stehen lassen.",
+      "Beide Mehle und Salz dazugeben, mit einem Löffel zu einem Teig verrühren.",
+      "Auflaufform mit Olivenöl einpinseln, Teig gleichmäßig verteilen. Mit Frischhaltefolie abdecken, 8–12 Std. im Kühlschrank gehen lassen.",
+      "Teig auf bemehlte Fläche stürzen, in 8 Teile teilen. Jedes Stück plattdrücken, optional Kerne drauf, gegenüberliegende Ecken übereinanderlegen. Auf Backpapier setzen.",
+      "Ofen mit Blech auf 240°C vorheizen. Ofenfeste Schale mit Wasser bereitstellen.",
+      "Teiglinge auf das heiße Blech legen. Wasserschale auf den Boden, etwas Wasser in den Ofen kippen für Dampf, Tür schnell schließen. Ca. 25 Min backen bis goldbraun."
+    ],
+    "naehr": "~210 kcal · ~7g Protein · Ballaststoffe (Vollkorn)",
+    "quelle": "Zucker&Jagdwurst",
+    "tipp": "Der Dampf im Ofen sorgt für eine knusprige Kruste – nicht weglassen!",
+    "savedAt": "2026-03-14T09:01:44.941Z"
   }
 ]

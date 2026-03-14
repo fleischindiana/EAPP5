@@ -557,5 +557,38 @@
     "quelle": "Zucker&Jagdwurst",
     "tipp": "Der Dampf im Ofen sorgt für eine knusprige Kruste – nicht weglassen!",
     "savedAt": "2026-03-14T08:52:42.222Z"
+  },
+  {
+    "name": "Sauerteigbrot mit Kartoffel & Walnuss",
+    "meta": "⏱ 2 Tage · 1 Brot (∅ 22 cm)",
+    "kategorie": "🫓 Teige & Brote",
+    "zutaten": [
+      "── Starter anfrischen ──",
+      "30g Weizensauerteigstarter",
+      "30g Wasser",
+      "30g Weizenmehl Type 550",
+      "── Teig ──",
+      "300ml Wasser",
+      "60g Sauerteigstarter (aktiviert)",
+      "400g Weizenmehl Type 550",
+      "8g Salz",
+      "140g festkochende Kartoffeln",
+      "80g Walnüsse",
+      "Roggenmehl zum Bestäuben"
+    ],
+    "schritte": [
+      "TAG 1 VORMITTAGS: Starter mit lauwarmem Wasser verrühren, Mehl zugeben. 3–4 Std. warm stellen bis Bläschen entstehen. Test: 1 TL in Wasser – schwimmt er, ist er aktiv.",
+      "TAG 1 MITTAGS: 275ml Wasser (33°C) mit 60g aktivem Starter und Mehl verkneten. Abgedeckt 1 Std. Autolyse.",
+      "25ml Wasser mit Salz auflösen, zum Teig geben und gut verkneten. Alle 30 Min dehnen und falten – insgesamt 5 Mal.",
+      "Kartoffeln kochen, schälen und zerstampfen. Walnüsse grob hacken und trocken rösten. Beides abkühlen lassen.",
+      "Beim 6. Falten: Kartoffeln und Walnüsse einarbeiten. Teig abgedeckt mindestens 12 Std. in den Kühlschrank.",
+      "TAG 2: Teig auf feuchter Fläche rundformen. In bemehlten Gärkorb legen (Naht oben). 60–90 Min gehen lassen.",
+      "Gusseisernen Topf im Ofen auf 250°C vorheizen. Teig einritzen, in den Topf stürzen. Mit Deckel 20 Min backen.",
+      "Deckel abnehmen, auf 230°C reduzieren, weitere 20–25 Min backen bis tiefbraune Kruste. Komplett auskühlen lassen!"
+    ],
+    "naehr": "~220 kcal pro Scheibe · ~7g Protein · Ballaststoffe, Omega-3 (Walnuss), Kalium",
+    "quelle": "Zucker&Jagdwurst",
+    "tipp": "Nicht zu früh anschneiden – die Krume braucht min. 2 Std. um zu setzen.",
+    "savedAt": "2026-03-14T08:52:42.866Z"
   }
 ]

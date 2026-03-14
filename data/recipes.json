@@ -191,5 +191,40 @@
     "naehr": "~720 kcal · ~28g Protein (mit Linsennudeln ~38g) · Calcium, Magnesium",
     "quelle": "Selfmade",
     "savedAt": "2026-03-14T11:58:31.792Z"
+  },
+  {
+    "name": "Cremiges Tomaten-Risotto",
+    "meta": "⏱ 35 Min · 2 Portionen",
+    "kategorie": "🍽️ Mittag & Abend",
+    "zutaten": [
+      "150g Risottoreis",
+      "250g Tomaten passiert",
+      "50ml Kokosmilch",
+      "500ml Gemüsebrühe (heiß, nach Bedarf)",
+      "80ml Weißwein (oder mehr Brühe)",
+      "20g getrocknete Tomaten in Öl",
+      "80g Cherrytomaten",
+      "1 Zwiebel, 2 Knoblauchzehen",
+      "20g Margarine",
+      "1 TL Oregano",
+      "Prise Zucker",
+      "10g frisches Basilikum",
+      "Salz",
+      "Pfeffer",
+      "30g Hefeflocken (optional, für Käse-Note)"
+    ],
+    "schritte": [
+      "Zwiebel + Knoblauch fein würfeln.",
+      "Margarine erhitzen, Zwiebel 4 Min glasig dünsten.",
+      "Risottoreis dazugeben, 2 Min anrösten.",
+      "Mit Weißwein ablöschen, komplett einkochen lassen.",
+      "Tomaten passiert + Kokosmilch + Oregano + Zucker einrühren.",
+      "Heiße Brühe schöpfkellenweise zugeben, immer rühren (~20 Min).",
+      "Cherrytomaten + getrocknete Tomaten in den letzten 5 Min dazu.",
+      "Mit Basilikum, Hefeflocken und Pfeffer servieren."
+    ],
+    "naehr": "~580 kcal · ~14g Protein (+8g mit Hefeflocken) · Lycopin, Kalium, Vitamin C",
+    "quelle": "Selfmade",
+    "savedAt": "2026-03-14T11:58:32.385Z"
   }
 ]

@@ -1,6 +1,6 @@
 [
   {
-    "name": "Hafermehl-Pancakes (Sonntags-Spezial)",
+    "name": "Hafermehl-Pancakes",
     "meta": "⏱ 20 Min · 8–10 Pancakes",
     "kategorie": "🌅 Frühstück",
     "zutaten": [
@@ -40,7 +40,9 @@
       "Cherrytomaten halbiert",
       "2 EL Sojasoße",
       "1 EL Olivenöl",
-      "Salz, Pfeffer, Knoblauchpulver",
+      "Salz",
+      "Pfeffer",
+      "Knoblauchpulver",
       "Optional: 30g Hanfsamen für +10g Protein"
     ],
     "schritte": [
@@ -120,18 +122,19 @@
     "meta": "⏱ 30 Min · 2 Portionen (Leftover)",
     "kategorie": "🍽️ Mittag & Abend",
     "zutaten": [
-      "200g Tempeh gewürfelt",
+      "200g Tempeh",
       "1 Brokkoli",
       "2 Paprika",
       "200g Quinoa",
       "3 EL Sojasoße",
       "2 EL Sesamöl",
-      "Knoblauch, Ingwer",
-      "Sesam zum Garnieren"
+      "Knoblauch",
+      "Ingwer",
+      "Sesam"
     ],
     "schritte": [
       "Quinoa kochen (~15 Min).",
-      "Tempeh in Sesamöl goldbraun braten (8 Min).",
+      "Tempeh gewürfelt in Sesamöl goldbraun braten (8 Min).",
       "Knoblauch, Ingwer, Paprika, Brokkoli dazugeben.",
       "Mit Sojasoße ablöschen, 5 Min garen.",
       "Mit Quinoa servieren, Sesam drüber."
@@ -146,9 +149,9 @@
     "kategorie": "🍽️ Mittag & Abend",
     "zutaten": [
       "200g Linsennudeln",
-      "1 reife Avocado",
+      "1 Avocado",
       "30g Walnüsse",
-      "1 Handvoll Spinat",
+      "Spinat",
       "2 EL Olivenöl",
       "Saft ½ Zitrone",
       "1 Knoblauchzehe",
@@ -170,19 +173,19 @@
     "meta": "⏱ 20 Min · 2 Portionen",
     "kategorie": "🍽️ Mittag & Abend",
     "zutaten": [
-      "250g Spaghetti (oder Linsennudeln für mehr Protein)",
-      "150g Cashewkerne (mind. 2 Std. eingeweicht)",
+      "250g Spaghetti",
+      "150g Cashewkerne",
       "1 EL helle Misopaste",
       "100ml Wasser",
       "2 EL Hefeflocken",
       "10 getrocknete Tomaten in Öl",
       "1 TL Sojasoße",
-      "½ TL Liquid Smoke (optional)",
+      "½ TL Liquid Smoke",
       "100g Cashews (für Parmesan)",
       "50g Mandeln (für Parmesan)"
     ],
     "schritte": [
-      "Cashews + Misopaste + Hefeflocken mixen, Wasser zugeben bis cremige Masse entsteht. Würzen.",
+      "Cashews (2h eingeweicht) + Misopaste + Hefeflocken mixen, Wasser zugeben bis cremige Masse entsteht. Würzen.",
       "Getrocknete Tomaten klein schneiden, 5 Min anbraten. Sojasoße + Liquid Smoke dazu, 2 Min weiter.",
       "Spaghetti al dente kochen – Kochwasser auffangen!",
       "Spaghetti + Cashew-Sauce vermengen, Kochwasser für Sämigkeit zugeben.",
@@ -200,11 +203,12 @@
       "150g Risottoreis",
       "250g Tomaten passiert",
       "50ml Kokosmilch",
-      "500ml Gemüsebrühe (heiß, nach Bedarf)",
-      "80ml Weißwein (oder mehr Brühe)",
+      "500ml Gemüsebrühe",
+      "80ml Weißwein",
       "20g getrocknete Tomaten in Öl",
       "80g Cherrytomaten",
-      "1 Zwiebel, 2 Knoblauchzehen",
+      "1 Zwiebel",
+      "2 Knoblauchzehen",
       "20g Margarine",
       "1 TL Oregano",
       "Prise Zucker",
@@ -299,7 +303,7 @@
       "3 Zitronen (Abrieb)",
       "3 EL Zitronensaft",
       "200g Zucker",
-      "200g pflanzliche Margarine (weich!)",
+      "200g pflanzliche Margarine",
       "200ml Hafermilch",
       "100ml Sprudelwasser",
       "4 EL Mohnsamen",
@@ -327,7 +331,7 @@
     "meta": "⏱ 15 Min + 50 Min Backzeit · Proteinreich",
     "kategorie": "🎂 Kuchen & Backen",
     "zutaten": [
-      "3 sehr reife Bananen (~300g)",
+      "3 Bananen",
       "200g Hafermehl",
       "2 EL Kakaopulver ungesüßt",
       "2 EL Chiasamen",
@@ -395,7 +399,7 @@
       "100ml Mineralwasser",
       "1 EL Agavendicksaft",
       "1 EL neutrales Pflanzenöl",
-      "360g Fruchtmus (z.B. Zwetschge)",
+      "360g Fruchtmus",
       "5 EL Puderzucker",
       "Pflanzenöl zum Braten"
     ],
@@ -536,7 +540,9 @@
       "2 große Zwiebeln",
       "2 Karotten",
       "1 Stück Sellerie (~80–100g)",
-      "3 Lorbeerblätter, 6 Wacholderbeeren, 3 Nelken",
+      "3 Lorbeerblätter",
+      "6 Wacholderbeeren",
+      "3 Nelken",
       "2–3 getrocknete Shiitakepilze",
       "── Sauce ──",
       "2 TL Zucker",
@@ -576,7 +582,7 @@
       "In gut gesalzenem kochendem Wasser 2–3 Min kochen bis sie aufschwimmen. Mit Sauce nach Wahl servieren."
     ],
     "naehr": "~350 kcal · ~10g Protein · Kohlenhydrate, pflanzlich",
-    "quelle": "Selfmade",
+    "quelle": "Pechi",
     "tipp": "Perfekt zu Dunkelbiersoße oder Sauerbraten.",
     "savedAt": "2026-03-14T12:12:38.540Z"
   },
@@ -605,7 +611,7 @@
       "Teig nicht ausrollen – von innen nach außen mit den Händen drücken, Rand nicht entgasen. Bei 250–300°C mit Pizzastein 5–7 Min backen."
     ],
     "naehr": "~650 kcal pro Pizza (Teig) · ~18g Protein · lange Fermentation = beste Verträglichkeit",
-    "quelle": "Selfmade",
+    "quelle": "ChatGpt",
     "tipp": "48 Stunden Kühlschrankgare bringt deutlich mehr Aroma und Struktur.",
     "savedAt": "2026-03-14T12:12:39.726Z"
   },

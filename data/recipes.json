@@ -382,5 +382,32 @@
     "quelle": "Zucker&Jagdwurst",
     "tipp": "Ricotta abends vorbereiten – morgens sofort fertig.",
     "savedAt": "2026-03-14T12:12:33.565Z"
+  },
+  {
+    "name": "Kaiserschmarrn",
+    "meta": "⏱ 30 Min · 4 Portionen",
+    "kategorie": "🌅 Frühstück",
+    "zutaten": [
+      "150g Dinkelmehl Type 630",
+      "8g Backpulver",
+      "50g Speisestärke",
+      "250ml Sojamilch",
+      "100ml Mineralwasser",
+      "1 EL Agavendicksaft",
+      "1 EL neutrales Pflanzenöl",
+      "360g Fruchtmus (z.B. Zwetschge)",
+      "5 EL Puderzucker",
+      "Pflanzenöl zum Braten"
+    ],
+    "schritte": [
+      "Mehl, Backpulver und Stärke mischen. Sojamilch, Mineralwasser, Agavendicksaft, Öl und Salz glatt rühren. Mehlmischung dazugeben und zügig zu einem glatten Teig verrühren.",
+      "Öl in einer großen Pfanne erhitzen, Teig hineingießen. Mit Deckel bei mittlerer Hitze 3–5 Min backen bis Blasen entstehen und der Rand sich löst.",
+      "Mit Messer in 8 Stücke schneiden, vorsichtig wenden, weitere 3–5 Min goldbraun backen. Mit Pfannenwender in mundgerechte Stücke teilen.",
+      "4 EL Puderzucker durch ein Sieb darüberstreuen, bei mittlerer Hitze unterrühren bis karamellisiert. Mit restlichem Puderzucker und Fruchtmus servieren."
+    ],
+    "naehr": "~420 kcal · ~9g Protein · Ballaststoffe, schnelle Energie",
+    "quelle": "Zucker&Jagdwurst",
+    "tipp": "Mineralwasser macht den Teig besonders luftig – nicht weglassen!",
+    "savedAt": "2026-03-14T12:12:34.259Z"
   }
 ]

@@ -169,5 +169,34 @@
     "naehr": "~580 kcal · ~14g Protein (+8g mit Hefeflocken) · Lycopin, Kalium, Vitamin C",
     "quelle": "Selfmade",
     "savedAt": "2026-03-14T08:52:31.348Z"
+  },
+  {
+    "name": "Kichererbsen-Kokos-Curry",
+    "meta": "⏱ 25 Min · 2 Portionen (Leftover)",
+    "kategorie": "🍽️ Mittag & Abend",
+    "zutaten": [
+      "1 Dose Kichererbsen (400g)",
+      "1 Dose Kokosmilch (400ml)",
+      "1 Dose gehackte Tomaten",
+      "1 Zwiebel, 3 Knoblauchzehen",
+      "1 TL Garam Masala",
+      "1 TL Kurkuma",
+      "1 TL Kreuzkümmel",
+      "Chili nach Wunsch",
+      "200g Basmatireis",
+      "frischer Koriander",
+      "1 Limette"
+    ],
+    "schritte": [
+      "Zwiebel + Knoblauch in Öl anbraten (4 Min).",
+      "Gewürze 1 Min rösten bis es duftet.",
+      "Tomaten hinzufügen, 5 Min einkochen.",
+      "Kokosmilch + Kichererbsen einrühren.",
+      "15 Min köcheln bis Sauce eindickt.",
+      "Mit Basmatireis + Koriander + Limette servieren."
+    ],
+    "naehr": "~780 kcal · ~30g Protein · Eisen, Zink, Vitamin C",
+    "quelle": "Selfmade",
+    "savedAt": "2026-03-14T08:52:31.953Z"
   }
 ]

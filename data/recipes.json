@@ -164,5 +164,32 @@
     "naehr": "~720 kcal · ~30g Protein · Omega-3, Folsäure, Eisen",
     "quelle": "Selfmade",
     "savedAt": "2026-03-14T12:12:27.383Z"
+  },
+  {
+    "name": "Spaghetti Carbonara",
+    "meta": "⏱ 20 Min · 2 Portionen",
+    "kategorie": "🍽️ Mittag & Abend",
+    "zutaten": [
+      "250g Spaghetti (oder Linsennudeln für mehr Protein)",
+      "150g Cashewkerne (mind. 2 Std. eingeweicht)",
+      "1 EL helle Misopaste",
+      "100ml Wasser",
+      "2 EL Hefeflocken",
+      "10 getrocknete Tomaten in Öl",
+      "1 TL Sojasoße",
+      "½ TL Liquid Smoke (optional)",
+      "100g Cashews (für Parmesan)",
+      "50g Mandeln (für Parmesan)"
+    ],
+    "schritte": [
+      "Cashews + Misopaste + Hefeflocken mixen, Wasser zugeben bis cremige Masse entsteht. Würzen.",
+      "Getrocknete Tomaten klein schneiden, 5 Min anbraten. Sojasoße + Liquid Smoke dazu, 2 Min weiter.",
+      "Spaghetti al dente kochen – Kochwasser auffangen!",
+      "Spaghetti + Cashew-Sauce vermengen, Kochwasser für Sämigkeit zugeben.",
+      "Tomaten unterheben, mit veganem Parmesan servieren."
+    ],
+    "naehr": "~720 kcal · ~28g Protein (mit Linsennudeln ~38g) · Calcium, Magnesium",
+    "quelle": "Selfmade",
+    "savedAt": "2026-03-14T12:12:28.395Z"
   }
 ]

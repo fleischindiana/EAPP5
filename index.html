@@ -651,6 +651,23 @@ body.dark-mode html { background: linear-gradient(135deg, #0f1a14 0%, #141f18 50
 </div>
 
 
+<!-- Shopping List Modal -->
+<div class="shop-modal" id="shop-modal">
+  <div class="shop-modal-hero">
+    <button class="shop-close" onclick="closeShoppingList()">✕</button>
+    <h2>Einkaufs<em>liste</em></h2>
+    <button onclick="clearCheckedItems()" class="shop-clear-checked" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:7px 12px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;">✓ Abgehakte löschen</button>
+  </div>
+  <div class="shop-body" id="shop-body">
+    <div class="shop-empty">Noch keine Zutaten.<br>Öffne ein Rezept und tippe auf 🛒</div>
+  </div>
+  <div class="shop-footer">
+    <button class="shop-clear-all" onclick="clearAllItems()">🗑️ Liste leeren</button>
+  </div>
+</div>
+
+</div><!-- end app-shell -->
+
 <script>
 // ===== DATA =====
 const days = [
@@ -1518,20 +1535,5 @@ loadSavedRecipes();
 loadHealthHistory();
 renderFoods();
 </script>
-<!-- Shopping List Modal -->
-<div class="shop-modal" id="shop-modal">
-  <div class="shop-modal-hero">
-    <button class="shop-close" onclick="closeShoppingList()">✕</button>
-    <h2>Einkaufs<em>liste</em></h2>
-    <button onclick="clearCheckedItems()" class="shop-clear-checked" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:7px 12px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;">✓ Abgehakte löschen</button>
-  </div>
-  <div class="shop-body" id="shop-body">
-    <div class="shop-empty">Noch keine Zutaten.<br>Öffne ein Rezept und tippe auf 🛒</div>
-  </div>
-  <div class="shop-footer">
-    <button class="shop-clear-all" onclick="clearAllItems()">🗑️ Liste leeren</button>
-  </div>
-</div>
-</div><!-- end app-shell -->
 </body>
 </html>

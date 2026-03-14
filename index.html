@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ernährung">
+<meta name="theme-color" content="#3a6b50">
+<title>Ernährungsplan</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sage-deep: #3a6b50;
+  --sage-mid: #6a9e7a;
+  --sage-light: #b8d4bf;
+  --sage-pale: #e4eee8;
+  --sage-mist: #f4f8f5;
+  --bg: #edf5f0;
+  --white: #ffffff;
+  --text: #1e2d24;
+  --text-light: #5a7a65;
+  --text-muted: #96b5a0;
+  --safe-bottom: env(safe-area-inset-bottom, 20px);
+  --safe-top: env(safe-area-inset-top, 44px);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+input, textarea, select { font-size:16px !important; }
+
+html { min-height:100dvh; background: linear-gradient(135deg, #dceee3 0%, #c8e0d0 50%, #d8eedd 100%); }
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text);
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+}
+
+/* ── App-Shell: phone-first, centered on desktop ── */
+.app-shell {
+  width: 100%;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  html {
+    background:
+      radial-gradient(ellipse at 8% 15%, rgba(106,158,122,0.20) 0%, transparent 40%),
+      radial-gradient(ellipse at 92% 85%, rgba(58,107,80,0.15) 0%, transparent 40%),
+      linear-gradient(135deg, #dceee3 0%, #c8e0cf 60%, #d8eedd 100%);
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(58,107,80,0.06) 1.5px, transparent 1.5px);
+    background-size: 36px 36px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  body { align-items: flex-start; background: transparent; }
+
+  /* Full width app shell – hero/tabbar stretch, content centered */
+  .app-shell {
+    width: 100%;
+    background: var(--bg);
+    height: 100dvh;
+    overflow: hidden;
+    border-radius: 0;
+    box-shadow: none;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Hero: full width color, but inner content centered */
+  .plan-hero, .screen-hero, .tips-hero, .naehr-hero {
+    padding-top: 28px;
+    padding-bottom: 20px;
+  }
+  .plan-hero > *, .screen-hero > *, .tips-hero > *, .naehr-hero > * {
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 28px;
+    padding-right: 28px;
+    box-sizing: border-box;
+  }
+  /* Hero h1 needs display block for centering */
+  .plan-hero h1, .hero-title, .tips-hero h1 { font-size: 32px; display:block; }
+
+  /* Tab bar: full width, but inner items centered */
+  .tab-bar { width: 100%; }
+  .tab-inner { max-width: 700px; margin: 0 auto; }
+
+  /* Screen content: centered column */
+  .screen { padding-left: 0; padding-right: 0; }
+
+  /* Center all screen content in a max-width column */
+  .screen > * {
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  /* Direct children that use padding should be constrained */
+  .plan-stats { max-width: 700px; margin: 0 auto; padding-left: 20px; padding-right: 20px; }
+  .day-card, .supp-card { max-width: calc(700px - 32px); margin-left: auto !important; margin-right: auto !important; }
+  .tip-card, .recipe-card, .ai-search-box, .ai-result-card, .food-card { max-width: calc(700px - 32px); margin-left: auto !important; margin-right: auto !important; }
+  .section-header, .cat-filter, .tagesinfo-bar, .cat-title, .recipe-cat-title { max-width: 700px; margin-left: auto; margin-right: auto; padding-left: 20px; }
+
+  .modal-overlay { align-items: flex-end; }
+  .modal { max-width: 700px; }
+
+  /* Shopping modal centered */
+  .shop-modal-hero, .shop-body, .shop-footer {
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+}
+
+/* SCREENS */
+.screen { display:none; flex:1; overflow-y:auto; overflow-x:hidden; padding-bottom:calc(var(--safe-bottom) + 72px); }
+.screen.active { display:block; }
+.screen::-webkit-scrollbar { display:none; }
+
+/* TAB BAR */
+.tab-bar {
+  flex-shrink: 0;
+  background: var(--white);
+  border-top: 1px solid var(--sage-pale);
+  display: flex;
+  justify-content: center;
+  padding-bottom: var(--safe-bottom);
+  box-shadow: 0 -2px 16px rgba(58,107,80,0.08);
+  z-index: 100;
+}
+.tab-inner {
+  display: flex;
+  width: 100%;
+  max-width: 700px;
+  justify-content: space-around;
+}
+.tab-btn {
+  flex:1; display:flex; flex-direction:column; align-items:center;
+  padding: 10px 0 8px; border:none; background:none; cursor:pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.2s;
+}
+.tab-icon { font-size:20px; margin-bottom:3px; transition:transform 0.2s; }
+.tab-label { font-size:10px; font-weight:600; letter-spacing:0.5px; color:var(--text-muted); text-transform:uppercase; }
+.tab-btn.active .tab-label { color:var(--sage-deep); }
+.tab-btn.active .tab-icon { transform:scale(1.15); }
+
+/* HERO */
+.plan-hero {
+  background: var(--sage-deep);
+  padding: calc(var(--safe-top) + 10px) 20px 18px;
+  position: relative;
+}
+.plan-hero h1 {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 28px;
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+.plan-hero h1 em { font-style:normal; color:var(--sage-light); }
+.plan-hero-sub { font-size:12px; color:rgba(255,255,255,0.5); font-weight:300; }
+.weight-fab {
+  position:absolute; right:20px; top:calc(var(--safe-top) + 12px);
+  background: rgba(255,255,255,0.13);
+  border: 1px solid rgba(255,255,255,0.22);
+  color: white; border-radius: 20px;
+  padding: 7px 14px; font-size:12px;
+  font-family:'Plus Jakarta Sans',sans-serif; font-weight:500; cursor:pointer;
+}
+
+/* STATS */
+.plan-stats { display:flex; gap:8px; padding:14px 16px 0; }
+.stat-pill {
+  background:var(--white); border-radius:12px; padding:9px 10px;
+  flex:1; box-shadow:0 2px 8px rgba(58,107,80,0.08); text-align:center;
+}
+.stat-pill-val { font-size:13px; font-weight:700; color:var(--sage-deep); }
+.stat-pill-label { font-size:9px; color:var(--text-muted); font-weight:600; margin-top:2px; text-transform:uppercase; letter-spacing:0.3px; }
+
+/* SECTION HEADER */
+.section-header { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-muted); padding:20px 16px 10px; }
+
+/* DAY CARDS */
+.day-card { margin:8px 16px 0; background:var(--white); border-radius:16px; overflow:hidden; box-shadow:0 2px 10px rgba(58,107,80,0.07); }
+.day-card-header { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; }
+.day-card-header.run { background:var(--sage-pale); }
+.day-card-header.rest { background:var(--sage-mist); }
+.day-card-title { font-size:13px; font-weight:600; color:var(--text); }
+.day-badge { font-size:10px; font-weight:600; padding:3px 10px; border-radius:20px; }
+.badge-run { background:rgba(58,107,80,0.12); color:var(--sage-deep); }
+.badge-rest { background:rgba(150,181,160,0.2); color:var(--text-light); }
+.day-toggle {
+  width:100%; padding:9px 16px; border:none; background:none;
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:12px; color:var(--text-light);
+  font-weight:500; cursor:pointer; text-align:left;
+  display:flex; justify-content:space-between; align-items:center;
+  border-top:1px solid var(--sage-pale);
+}
+.day-toggle.open .day-toggle-arrow { transform:rotate(180deg); }
+.day-toggle-arrow { transition:transform 0.2s; }
+.day-content { display:none; padding:0 16px 14px; }
+.day-content.open { display:block; }
+.meal-row { display:flex; gap:10px; padding:8px 0; border-bottom:1px solid var(--sage-mist); }
+.meal-row:last-of-type { border-bottom:none; }
+.meal-emoji { font-size:18px; flex-shrink:0; width:26px; text-align:center; padding-top:2px; }
+.meal-type { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); margin-bottom:2px; }
+.meal-name { font-size:12px; color:var(--text); line-height:1.4; margin-bottom:3px; }
+.meal-naehr { font-size:11px; color:var(--text-light); }
+.meal-kcal { font-size:10px; font-weight:600; background:var(--sage-pale); color:var(--sage-deep); padding:2px 8px; border-radius:10px; display:inline-block; margin-top:3px; }
+.day-footer-row { padding-top:10px; }
+.day-tipp { font-size:11px; color:var(--text-light); font-style:italic; margin-bottom:4px; }
+.day-total { font-size:12px; font-weight:600; color:var(--sage-deep); }
+
+/* SUPPLEMENTS */
+.supp-card { margin:0 16px 8px; background:var(--white); border-radius:14px; padding:12px 16px; box-shadow:0 2px 8px rgba(58,107,80,0.07); }
+.supp-row { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+.supp-name { font-size:13px; font-weight:600; color:var(--text); margin-bottom:2px; }
+.supp-when { font-size:11px; color:var(--text-light); }
+.supp-dose { font-size:11px; font-weight:600; color:var(--sage-deep); text-align:right; flex-shrink:0; }
+
+/* ── NÄHRSTOFFE ── */
+.naehr-sticky { position:sticky; top:0; z-index:10; }
+.screen-hero, .naehr-hero, .tips-hero {
+  background: var(--sage-deep);
+  padding: calc(var(--safe-top) + 10px) 20px 18px;
+  position: relative;
+}
+.hero-title, .screen-hero h1, .naehr-hero h1, .tips-hero h1 {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 28px;
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+.hero-title em, .screen-hero h1 em, .naehr-hero h1 em, .tips-hero h1 em {
+  font-style: normal;
+  color: var(--sage-light);
+}
+.calc-row { display:flex; align-items:center; gap:8px; margin-top:8px; }
+.calc-label { font-size:11px; color:rgba(255,255,255,0.6); }
+.calc-input { width:64px; padding:6px 10px; border-radius:8px; border:none; background:rgba(255,255,255,0.15); color:white; font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:600; outline:none; text-align:center; }
+.cat-filter { display:flex; gap:6px; padding:10px 16px; overflow-x:auto; background:var(--bg); }
+.cat-filter::-webkit-scrollbar { display:none; }
+.cat-btn { flex-shrink:0; padding:6px 14px; border-radius:20px; border:1.5px solid var(--sage-pale); background:var(--white); font-family:'Plus Jakarta Sans',sans-serif; font-size:11px; font-weight:600; color:var(--text-light); cursor:pointer; }
+.cat-btn.active { background:var(--sage-deep); color:white; border-color:var(--sage-deep); }
+.tagesinfo-bar { background:var(--white); padding:9px 16px; font-size:10px; color:var(--text-muted); border-top:1px solid var(--sage-pale); line-height:1.5; }
+.cat-title { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-muted); padding:14px 16px 6px; }
+.food-card { margin:0 16px 10px; background:var(--white); border-radius:16px; padding:14px 16px; box-shadow:0 2px 8px rgba(58,107,80,0.07); }
+.food-header-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+.food-name-wrap { display:flex; align-items:center; gap:8px; }
+.food-emoji { font-size:20px; }
+.food-name { font-size:13px; font-weight:600; color:var(--text); }
+.food-portion { font-size:11px; font-weight:600; color:var(--text-muted); background:var(--sage-pale); padding:2px 8px; border-radius:10px; }
+.food-kcal-big { font-size:11px; color:var(--text-muted); margin-bottom:10px; }
+.kcal-num { font-size:18px; font-weight:700; color:var(--sage-deep); margin-right:3px; }
+.kcal-u { font-size:11px; color:var(--text-muted); }
+.nutrient-rows { display:flex; flex-direction:column; gap:4px; }
+.n-row { display:flex; align-items:center; gap:6px; }
+.n-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.n-name { font-size:10px; color:var(--text-light); width:82px; flex-shrink:0; }
+.n-bar-wrap { flex:1; height:4px; background:var(--sage-pale); border-radius:2px; overflow:hidden; }
+.n-bar { height:100%; border-radius:2px; }
+.n-val { font-size:10px; color:var(--text); width:44px; text-align:right; flex-shrink:0; font-weight:500; }
+.n-pct { font-size:10px; color:var(--text-muted); width:26px; text-align:right; flex-shrink:0; }
+.c-protein{background:#6a9e7a;} .c-carbs{background:#b8d4bf;} .c-fat{background:#f0c4a0;}
+.c-fiber{background:#c9bfda;} .c-kalium{background:#7cc4a0;} .c-magnesium{background:#90b8a0;}
+.c-eisen{background:#d4a0a0;} .c-calcium{background:#90b4c8;} .c-vitamin_c{background:#e8d060;}
+.c-omega3{background:#70a0c0;} .c-zink{background:#c8a860;}
+
+/* ── REZEPTE ── */
+.ai-search-box { margin:12px 16px 0; background:var(--white); border-radius:16px; padding:14px; box-shadow:0 2px 8px rgba(58,107,80,0.07); }
+.ai-search-label { font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--text-muted); margin-bottom:4px; }
+.ai-search-hint { font-size:12px; color:var(--text-light); margin-bottom:10px; }
+.ai-search-input { width:100%; padding:10px 14px; border-radius:10px; border:1.5px solid var(--sage-pale); background:var(--sage-mist); font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; color:var(--text); outline:none; margin-bottom:8px; }
+.ai-search-input:focus { border-color:var(--sage-mid); }
+.ai-search-btn { width:100%; padding:11px; background:var(--sage-deep); color:white; border:none; border-radius:10px; font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; }
+.ai-loading { text-align:center; padding:20px; color:var(--text-light); font-size:13px; }
+.ai-error { color:#c0392b; font-size:13px; padding:12px 16px; }
+.ai-result-card { margin:12px 16px 0; background:var(--white); border-radius:16px; overflow:hidden; box-shadow:0 2px 8px rgba(58,107,80,0.07); }
+.ai-result-header { padding:14px 16px 10px; background:var(--sage-pale); }
+.ai-result-title { font-size:15px; font-weight:600; color:var(--sage-deep); font-family:'Fraunces',serif; font-style:italic; }
+.ai-result-meta { font-size:11px; color:var(--text-light); margin-top:2px; }
+.ai-result-body { padding:12px 16px 14px; }
+.ai-result-sub,.recipe-sub { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--sage-mid); margin:10px 0 6px; }
+.ai-result-sub:first-child { margin-top:0; }
+.ai-result-list,.recipe-list { list-style:none; }
+.ai-result-list li,.recipe-list li { font-size:12px; padding:4px 0; border-bottom:1px solid var(--sage-mist); display:flex; gap:6px; }
+.ai-result-list li::before,.recipe-list li::before { content:'·'; color:var(--sage-mid); font-size:16px; flex-shrink:0; }
+.ai-result-list li:last-child,.recipe-list li:last-child { border-bottom:none; }
+.ai-result-steps,.recipe-steps { list-style:none; counter-reset:s; }
+.ai-result-steps li,.recipe-steps li { font-size:12px; padding:6px 0; border-bottom:1px solid var(--sage-mist); display:flex; gap:10px; counter-increment:s; }
+.ai-result-steps li::before,.recipe-steps li::before { content:counter(s); background:var(--sage-pale); color:var(--sage-deep); width:20px; height:20px; min-width:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; }
+.ai-result-steps li:last-child,.recipe-steps li:last-child { border-bottom:none; }
+.ai-result-naehr,.recipe-naehr { margin-top:10px; background:var(--sage-pale); border-radius:8px; padding:9px 12px; font-size:11px; color:var(--sage-deep); font-weight:500; }
+.recipe-cat-title { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text-muted); padding:16px 16px 8px; }
+.recipe-card { margin:0 16px 8px; background:var(--white); border-radius:16px; overflow:hidden; box-shadow:0 2px 8px rgba(58,107,80,0.07); }
+.recipe-header { padding:13px 16px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; }
+.recipe-name { font-size:13px; font-weight:600; color:var(--text); }
+.recipe-meta { font-size:11px; color:var(--text-light); margin-top:2px; }
+.recipe-content { display:none; padding:0 16px 14px; border-top:1px solid var(--sage-pale); }
+.recipe-content.open { display:block; }
+
+/* ── Shopping List ── */
+.shop-btn { background:none; border:none; cursor:pointer; font-size:20px; padding:4px 8px; flex-shrink:0; }
+.shop-badge { position:relative; display:inline-block; }
+.shop-badge-count { position:absolute; top:-5px; right:-5px; background:var(--sage-deep); color:white; border-radius:99px; font-size:9px; font-weight:700; padding:1px 4px; min-width:14px; text-align:center; display:none; }
+.recipe-add-cart { display:flex; align-items:center; gap:8px; margin-top:12px; padding:9px 14px; background:var(--sage-pale); border:1.5px solid var(--sage-light); border-radius:10px; font-family:"Plus Jakarta Sans",sans-serif; font-size:13px; font-weight:600; color:var(--sage-deep); cursor:pointer; width:100%; }
+.recipe-add-cart:active { opacity:0.7; }
+.shop-modal { position:fixed; inset:0; z-index:200; display:none; flex-direction:column; background:var(--bg); }
+.shop-modal.open { display:flex; }
+.shop-modal-hero { background:var(--sage-deep); padding:calc(var(--safe-top) + 16px) 20px 18px; display:flex; align-items:center; gap:12px; }
+.shop-modal-hero h2 { font-family:"Fraunces",serif; font-style:italic; font-weight:300; font-size:24px; color:white; flex:1; }
+.shop-modal-hero h2 em { font-style:normal; color:var(--sage-light); }
+.shop-close { background:none; border:none; color:white; font-size:22px; cursor:pointer; padding:4px; }
+.shop-body { flex:1; overflow-y:auto; padding:16px; }
+.shop-recipe-group { margin-bottom:4px; }
+.shop-recipe-label { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); padding:12px 0 6px; }
+.shop-item { display:flex; align-items:center; gap:12px; padding:10px 14px; background:var(--white); border-radius:12px; margin-bottom:6px; cursor:pointer; }
+.shop-item.checked { opacity:0.45; }
+.shop-item.checked .shop-item-text { text-decoration:line-through; color:var(--text-muted); }
+.shop-item-check { width:22px; height:22px; border-radius:6px; border:2px solid var(--sage-light); flex-shrink:0; display:flex; align-items:center; justify-content:center; background:transparent; transition:all .15s; }
+.shop-item.checked .shop-item-check { background:var(--sage-mid); border-color:var(--sage-mid); }
+.shop-item-text { font-size:13px; color:var(--text); flex:1; }
+.shop-item-recipe { font-size:10px; color:var(--text-muted); }
+.shop-empty { text-align:center; padding:40px 20px; color:var(--text-muted); font-size:14px; }
+.shop-footer { padding:16px; background:var(--white); border-top:1px solid var(--sage-pale); display:flex; gap:8px; }
+.shop-clear-checked { flex:1; padding:11px; border-radius:12px; border:1.5px solid var(--sage-pale); background:transparent; font-family:"Plus Jakarta Sans",sans-serif; font-size:13px; font-weight:600; color:var(--text-muted); cursor:pointer; }
+.shop-clear-all { flex:1; padding:11px; border-radius:12px; border:none; background:#fee; font-family:"Plus Jakarta Sans",sans-serif; font-size:13px; font-weight:600; color:#c0392b; cursor:pointer; }
+
+/* ── TIPPS ── */
+.tips-hero-sub { font-size:12px; color:rgba(255,255,255,0.5); font-weight:300; margin-top:4px; }
+.tip-card { margin:8px 16px 0; background:var(--white); border-radius:16px; padding:16px; box-shadow:0 2px 8px rgba(58,107,80,0.07); }
+.tip-icon { font-size:20px; margin-bottom:8px; }
+.tip-title { font-size:13px; font-weight:700; color:var(--text); margin-bottom:8px; }
+.tip-list { list-style:none; }
+.tip-list li { font-size:12px; color:var(--text-light); padding:4px 0; border-bottom:1px solid var(--sage-mist); display:flex; gap:8px; line-height:1.4; }
+.tip-list li::before { content:'→'; color:var(--sage-mid); flex-shrink:0; font-size:11px; padding-top:1px; }
+.tip-list li:last-child { border-bottom:none; }
+
+/* ── WEIGHT MODAL ── */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:200; align-items:flex-end; justify-content:center; backdrop-filter:blur(4px); }
+.modal-overlay.open { display:flex; }
+.modal { background:var(--white); border-radius:24px 24px 0 0; width:100%; max-width:430px; max-height:88dvh; overflow-y:auto; padding:0 0 calc(var(--safe-bottom)+16px); box-shadow:0 -8px 40px rgba(58,107,80,0.18); }
+.modal-handle { width:40px; height:4px; background:var(--sage-pale); border-radius:2px; margin:12px auto 0; }
+.modal-head { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; border-bottom:1px solid var(--sage-pale); }
+.modal-title { font-size:16px; font-weight:700; font-family:'Fraunces',serif; font-style:italic; color:var(--text); }
+.modal-close { background:var(--sage-pale); border:none; width:28px; height:28px; border-radius:50%; cursor:pointer; font-size:14px; color:var(--text-light); }
+.w-input-row { display:flex; gap:10px; padding:16px 20px; }
+.w-field { flex:1; }
+.w-field label { display:block; font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+.w-field input { width:100%; padding:10px 14px; border:1.5px solid var(--sage-pale); border-radius:12px; font-family:'Plus Jakarta Sans',sans-serif; font-size:16px; font-weight:600; color:var(--text); background:var(--sage-mist); outline:none; }
+.w-field input:focus { border-color:var(--sage-mid); }
+.w-add-btn { align-self:flex-end; padding:10px 18px; background:var(--sage-deep); color:white; border:none; border-radius:12px; font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; white-space:nowrap; }
+.w-stats { display:flex; gap:8px; padding:0 20px 16px; }
+.ws { flex:1; background:var(--sage-pale); border-radius:12px; padding:10px 12px; text-align:center; }
+.ws-val { font-size:16px; font-weight:700; color:var(--sage-deep); }
+.ws-lbl { font-size:10px; color:var(--text-muted); font-weight:600; margin-top:2px; }
+.w-graph-wrap { padding:0 20px 12px; }
+.w-graph-title { font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+.wgraph { width:100%; }
+.w-entries { padding:0 20px; }
+.w-entry { display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px solid var(--sage-mist); }
+.w-entry:last-child { border-bottom:none; }
+.w-entry-date { font-size:12px; color:var(--text-light); }
+.w-entry-val { font-size:14px; font-weight:700; color:var(--sage-deep); }
+.w-entry-del { background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:14px; padding:4px; }
+.w-empty { text-align:center; padding:20px; color:var(--text-muted); font-size:13px; }
+
+.pb { height:16px; }
+
+/* ── Dark Mode ── */
+body.dark-mode {
+  --bg: #1a2420;
+  --white: #243028;
+  --sage-pale: #2a3d32;
+  --sage-mist: #1e2e27;
+  --text: #e8f0eb;
+  --text-light: #9ab8a4;
+  --text-muted: #6a8f78;
+}
+body.dark-mode .tab-bar { background:#1e2e27; border-color:#2a3d32; }
+body.dark-mode .tab-label { color:#6a8f78; }
+body.dark-mode .tab-btn.active .tab-label { color:var(--sage-light); }
+body.dark-mode .day-card { background:#243028; }
+body.dark-mode .meal-row { background:#1e2e27; }
+body.dark-mode input, body.dark-mode textarea { background:#243028 !important; color:#e8f0eb !important; border-color:#2a3d32 !important; }
+body.dark-mode .modal { background:#1a2420; }
+body.dark-mode .modal-header { background:#243028; }
+body.dark-mode .shop-modal { background:#1a2420; }
+body.dark-mode .shop-item { background:#243028; }
+body.dark-mode html { background: linear-gradient(135deg, #0f1a14 0%, #141f18 50%, #0f1a14 100%); }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+<!-- PLAN -->
+<div class="screen active" id="screen-plan">
+  <div class="plan-hero">
+    <h1>14-Tage <em>Plan</em></h1>
+    <div class="plan-hero-sub">Ausdauer · Regeneration · +0,25 kg/Woche</div>
+    <div style="display:flex;gap:8px;position:absolute;top:20px;right:20px;">
+    <button onclick="toggleDark()" id="dark-btn" style="background:rgba(255,255,255,0.15);border:none;border-radius:20px;padding:6px 12px;font-size:16px;cursor:pointer;" title="Dunkelmodus">💡</button>
+    <button class="weight-fab" style="position:static;" onclick="openWeight()">⚖️ Gewicht</button>
+  </div>
+  </div>
+  <div class="plan-stats">
+    <div class="stat-pill"><div class="stat-pill-val">~2.700</div><div class="stat-pill-label">kcal/Tag</div></div>
+    <div class="stat-pill"><div class="stat-pill-val">~100g</div><div class="stat-pill-label">Protein</div></div>
+    <div class="stat-pill"><div class="stat-pill-val">+0,25kg</div><div class="stat-pill-label">pro Woche</div></div>
+    <div class="stat-pill"><div class="stat-pill-val">100%</div><div class="stat-pill-label">Vegan</div></div>
+  </div>
+  <div id="days-container"></div>
+  <div class="section-header">💊 Supplements</div>
+  <div class="supp-card"><div class="supp-row"><div><div class="supp-name">L-Thyroxin</div><div class="supp-when">🌅 Früh, nüchtern (mind. 30 Min vor Essen)</div></div><div class="supp-dose">75 µg</div></div></div>
+  <div class="supp-card"><div class="supp-row"><div><div class="supp-name">Omega-3 Algenöl</div><div class="supp-when">🌅 Morgens zum Frühstück</div></div><div class="supp-dose">1–2 Kapseln<br>350mg DHA<br>180mg EPA</div></div></div>
+  <div class="supp-card"><div class="supp-row"><div><div class="supp-name">Folplus (B6/B9/B12)</div><div class="supp-when">🍽️ Mittags</div></div><div class="supp-dose">1 Tablette</div></div></div>
+  <div class="supp-card"><div class="supp-row"><div><div class="supp-name">Kreatin Monohydrat</div><div class="supp-when">🏃 Nach dem Training</div></div><div class="supp-dose">3–5g im Shake</div></div></div>
+  <div class="supp-card"><div class="supp-row"><div><div class="supp-name">Magnesium Glycinat</div><div class="supp-when">🌙 Abends vor Schlaf</div></div><div class="supp-dose">2 Tabletten<br>200mg</div></div></div>
+  <div class="supp-card"><div class="supp-row"><div><div class="supp-name">Vitamin D3 + K2</div><div class="supp-when">🌙 Abends</div></div><div class="supp-dose">2000 IE<br>+ K2 MK-7</div></div></div>
+  <div class="pb"></div>
+</div>
+
+<!-- NÄHRSTOFFE -->
+<div class="screen" id="screen-naehrstoffe">
+  <div class="naehr-sticky">
+    <div class="screen-hero">
+      <h1 class="hero-title"><em>Nährstoffe</em> & Inhaltsstoffe</h1>
+      <div class="calc-row">
+        <span class="calc-label">🔢 Menge:</span>
+        <input type="number" class="calc-input" id="gramInput" value="100" min="1" max="1000" inputmode="numeric">
+        <span class="calc-label">g</span>
+      </div>
+    </div>
+    <div style="background:var(--bg);">
+      <div class="cat-filter" id="cat-filter">
+        <button class="cat-btn active" onclick="filterCat('all',this)">🌿 Alle</button>
+        <button class="cat-btn" onclick="filterCat('obst',this)">🍌 Obst</button>
+        <button class="cat-btn" onclick="filterCat('getreide',this)">🌾 Getreide</button>
+        <button class="cat-btn" onclick="filterCat('huelsenfruechte',this)">🫘 Hülsenfrüchte</button>
+        <button class="cat-btn" onclick="filterCat('protein',this)">💪 Protein</button>
+        <button class="cat-btn" onclick="filterCat('gemuese',this)">🥦 Gemüse</button>
+        <button class="cat-btn" onclick="filterCat('fette',this)">🥑 Fette & Nüsse</button>
+      </div>
+      <div class="tagesinfo-bar"><strong>Tagesbedarf:</strong> 2700 kcal · 100g Protein · 3500mg Kalium · 400mg Magnesium · 14mg Eisen</div>
+    </div>
+  </div>
+  <div id="foods-container" class="pb"></div>
+</div>
+
+<!-- REZEPTE -->
+<div class="screen" id="screen-rezepte">
+  <div class="screen-hero" style="display:flex;align-items:center;justify-content:space-between;">
+    <h1 class="hero-title">Meine <em>Rezepte</em></h1>
+    <button class="shop-btn" onclick="openShoppingList()" title="Einkaufsliste">
+      <span class="shop-badge">🛒<span class="shop-badge-count" id="shop-badge-count"></span></span>
+    </button>
+  </div>
+  <div class="ai-search-box">
+    <div class="ai-search-label">KI-Rezeptvorschlag</div>
+    <div class="ai-search-hint">Worauf hast du Lust?</div>
+    <input class="ai-search-input" type="text" id="aiPrompt" placeholder="z.B. Proteinreich nach dem Lauf, schnell...">
+    <button class="ai-search-btn" onclick="askAI()" id="aiBtn">✨ Rezept generieren</button>
+  </div>
+  <div id="ai-result"></div>
+  <div style="padding-top:4px">
+    <div id="saved-recipes-container"></div>
+    <div id="recipes-container" class="pb"></div>
+  </div>
+</div>
+
+<!-- TIPPS -->
+<div class="screen" id="screen-tipps">
+  <div class="tips-hero">
+    <h1 class="hero-title">Gesundheits<em>tipps</em></h1>
+    <div class="tips-hero-sub">Gesundheit · Hydration · Supplements</div>
+  </div>
+  <div style="padding-top:8px">
+    <div class="tip-card" style="border:1.5px solid var(--sage-light);">
+      <div class="tip-icon">🤖</div>
+      <div class="tip-title">KI-Gesundheitsassistent</div>
+      <p style="font-size:12px;color:var(--text-light);margin-bottom:12px;line-height:1.5;">Beschreibe ein aktuelles Problem – Kopfschmerzen, Müdigkeit, Muskelkater. Frühere Einträge fließen als Kontext ein.</p>
+      <textarea id="healthPromptInput" placeholder="z.B. Kopfschmerzen nach dem Laufen..." style="width:100%;min-height:72px;padding:10px;border-radius:10px;border:1.5px solid var(--sage-pale);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;resize:vertical;background:var(--sage-mist);color:var(--text);outline:none;"></textarea>
+      <button onclick="askHealthTip()" style="margin-top:10px;width:100%;padding:11px;background:var(--sage-deep);color:white;border:none;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">Tipp anfragen →</button>
+      <div id="healthTipResult" style="margin-top:12px;display:none;"></div>
+    </div>
+    <div id="health-history-container"></div>
+    <div style="margin-top:16px;">
+      <div class="tip-card">
+        <div class="tip-icon">🫙</div>
+        <div class="tip-title">Kalium auffüllen (Blutwert war niedrig!)</div>
+        <ul class="tip-list">
+          <li>Täglich mind. 1–2 Bananen (~360 mg Kalium/Stück)</li>
+          <li>Weiße Bohnen: 561 mg Kalium pro 100g – Top-Quelle</li>
+          <li>Süßkartoffel, Avocado, Spinat täglich einbauen</li>
+          <li>Gemüsebrühe nach langen Läufen: Natrium + Kalium</li>
+          <li>Datteln als Snack: 696 mg Kalium pro 100g</li>
+        </ul>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">💧</div>
+        <div class="tip-title">Hydration an Lauftagen</div>
+        <ul class="tip-list">
+          <li>Vor dem Lauf: 400–500ml Wasser + Elektrolyt-Drink</li>
+          <li>Nach dem Lauf: mind. 500ml in der ersten Stunde</li>
+          <li>Kopfschmerzen oft durch Natrium- oder Magnesiummangel</li>
+          <li>Magnesium Glycinat abends → hilft präventiv!</li>
+          <li>Lauftage: Ziel 2,5–3 Liter Gesamtflüssigkeit</li>
+        </ul>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🏃</div>
+        <div class="tip-title">Post-Run Shake (Timing ist wichtig)</div>
+        <ul class="tip-list">
+          <li>Innerhalb 30–45 Min nach dem Lauf trinken</li>
+          <li>Banane + Hafermilch + Proteinpulver + Kreatin (3–5g)</li>
+          <li>Schnelle Kohlenhydrate + Protein = optimale Regeneration</li>
+          <li>An Ruhetagen kein Shake nötig, Kreatin trotzdem täglich</li>
+        </ul>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">🌾</div>
+        <div class="tip-title">Gluten reduzieren ohne Verzicht</div>
+        <ul class="tip-list">
+          <li>Linsennudeln statt Weizennudeln (2× mehr Protein!)</li>
+          <li>Hafermehl statt Weizenmehl beim Backen</li>
+          <li>Reiswaffeln statt Weizenbrot (weniger Blähungen)</li>
+          <li>Quinoa und Reis als Beilage statt Couscous/Bulgur</li>
+        </ul>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">📈</div>
+        <div class="tip-title">Auf 70 kg zunehmen</div>
+        <ul class="tip-list">
+          <li>Ziel: +250 kcal täglich über Erhaltungsbedarf</li>
+          <li>Wöchentlich wiegen – immer morgens, nüchtern</li>
+          <li>Nach 2 Wochen ohne Fortschritt: Portionen +10–15%</li>
+          <li>Leftover-Prinzip: abends doppelt kochen spart Zeit</li>
+          <li>0,25 kg/Woche = gesunder, nachhaltiger Aufbau</li>
+        </ul>
+      </div>
+      <div class="tip-card" style="margin-bottom:24px;">
+        <div class="tip-icon">🧪</div>
+        <div class="tip-title">Supplement-Timing Reminder</div>
+        <ul class="tip-list">
+          <li>L-Thyroxin: nüchtern, mind. 30 Min vor Kaffee/Essen</li>
+          <li>Omega-3: morgens zum Frühstück (mit Fett besser aufgenommen)</li>
+          <li>Kreatin: täglich nach dem Training, auch an Ruhetagen</li>
+          <li>Magnesium Glycinat: abends → entspannend, fördert Schlaf</li>
+          <li>D3+K2: abends mit einer fetthaltigen Mahlzeit</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <div class="tab-inner">
+    <button class="tab-btn active" onclick="showScreen('plan',this)"><span class="tab-icon">📅</span><span class="tab-label">Plan</span></button>
+    <button class="tab-btn" onclick="showScreen('naehrstoffe',this)"><span class="tab-icon">🔬</span><span class="tab-label">Nährstoffe</span></button>
+    <button class="tab-btn" onclick="showScreen('rezepte',this)"><span class="tab-icon">🍳</span><span class="tab-label">Rezepte</span></button>
+    <button class="tab-btn" onclick="showScreen('tipps',this)"><span class="tab-icon">💡</span><span class="tab-label">Tipps</span></button>
+  </div>
+</div>
+
+<!-- WEIGHT MODAL -->
+<div class="modal-overlay" id="weightModal" onclick="closeWeightOnBg(event)">
+  <div class="modal" id="weightModalInner">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <div class="modal-title">Gewichtstracker</div>
+      <button class="modal-close" onclick="closeWeight()">✕</button>
+    </div>
+    <div class="w-input-row">
+      <div class="w-field">
+        <label>Gewicht eintragen</label>
+        <input type="number" id="weightInput" inputmode="decimal" step="0.1" placeholder="66.5">
+      </div>
+      <button class="w-add-btn" onclick="addWeight()">+ Eintragen</button>
+    </div>
+    <div class="w-stats" id="wStats"></div>
+    <div class="w-graph-wrap">
+      <div class="w-graph-title">Verlauf</div>
+      <div id="wGraphWrap"></div>
+    </div>
+    <div class="w-entries" id="wEntries"></div>
+  </div>
+</div>
+
+</div><!-- end app-shell -->
+
+<script>
+// ===== DATA =====
+const days = [
+  { tag:'Tag 1 · Montag', run:false, mahlzeiten:[
+    {emoji:'🌅',typ:'Frühstück',name:'Granola + Haferflocken + Banane + Hafermilch + 1 EL Leinöl + 1 EL Chiasamen',naehr:'Omega-3, Kalium, Ballaststoffe',kcal:'~650',rezept:'Hafermehl-Pancakes (Sonntags-Spezial)'},
+    {emoji:'🍽️',typ:'Mittagessen',name:'Rote Linsensuppe mit Kokosmilch & Spinat (Leftover)',naehr:'Eisen, Folsäure, Protein, Kalium',kcal:'~600',rezept:'Rote Linsensuppe mit Kokosmilch & Spinat'},
+    {emoji:'🌙',typ:'Abendessen',name:'Rote Linsensuppe mit Kokosmilch, Spinat, Süßkartoffel & Dinkelbrötchen',naehr:'Protein ~28g, Eisen, Folsäure',kcal:'~750',rezept:'Rote Linsensuppe mit Kokosmilch & Spinat'},
+  ], total:'~2.000 kcal · ~82g Protein', tipp:'Ruhetag: Leinöl ins Granola für Omega-3.'},
+  { tag:'Tag 2 · Dienstag', run:true, mahlzeiten:[
+    {emoji:'🌅',typ:'Frühstück',name:'Overnight Oats: Haferflocken + Chiasamen + Hafermilch + Beeren + Mandelmus',naehr:'Calcium, Omega-3, Antioxidantien',kcal:'~600',rezept:''},
+    {emoji:'🍽️',typ:'Mittagessen',name:'Kichererbsen-Curry mit Tomaten, Paprika & Reis (Leftover)',naehr:'Protein ~25g, Eisen, Zink',kcal:'~650',rezept:'Kichererbsen-Kokos-Curry'},
+    {emoji:'🌙',typ:'Abendessen',name:'Kichererbsen-Tomaten-Curry mit Paprika, Koriander & Basmatireis',naehr:'Protein ~30g, Zink, Eisen, Vitamin C',kcal:'~800',rezept:'Kichererbsen-Kokos-Curry'},
+    {emoji:'🍌',typ:'Post-Run Shake',name:'Banane + Hafermilch + Proteinpulver + Kreatin + Walnüsse',naehr:'Protein ~30g, Kreatin, Omega-3',kcal:'~450',rezept:''},
+  ], total:'~2.500 kcal · ~100g Protein', tipp:'Shake direkt nach dem Lauf.'},
+  { tag:'Tag 3 · Mittwoch', run:false, mahlzeiten:[
+    {emoji:'🌅',typ:'Frühstück',name:'Smoothie-Bowl: Banane + Mango + Hafermilch + Chiasamen + Granola + Leinöl',naehr:'Kalium, Omega-3, Kohlenhydrate',kcal:'~650',rezept:''},
+    {emoji:'🍽️',typ:'Mittagessen',name:'Tempeh-Gemüse-Pfanne mit Brokkoli, Paprika & Quinoa (Leftover)',naehr:'Protein ~32g, Calcium, Eisen',kcal:'~650',rezept:'Tempeh-Brokkoli-Pfanne mit Quinoa'},
+    {emoji:'🌙',typ:'Abendessen',name:'Gebratener Tempeh mit Brokkoli, Paprika, Sojasoße & Quinoa',naehr:'Protein ~35g, Calcium, Zink',kcal:'~780',rezept:'Tempeh-Brokkoli-Pfanne mit Quinoa'},
+  ], total:'~2.080 kcal · ~95g Protein', tipp:'Tempeh: mehr Protein als Tofu, fermentiert = besser verträglich.'},
+  { tag:'Tag 4 · Donnerstag', run:true, mahlzeiten:[
+    {emoji:'🌅',typ:'Frühstück',name:'Granola + Haferflocken + Hafermilch + Erdbeeren + Hanfsamen + Leinöl',naehr:'Omega-3, Protein, Vitamin C',kcal:'~620',rezept:''},
+    {emoji:'🍽️',typ:'Mittagessen',name:'Weißer-Bohnen-Eintopf mit Kartoffeln & Karotten (Leftover)',naehr:'Kalium, Protein ~22g, Ballaststoffe',kcal:'~580',rezept:''},
+    {emoji:'🌙',typ:'Abendessen',name:'Weißer-Bohnen-Eintopf mit Kartoffeln, Karotten, Thymian & Dinkel-Brot',naehr:'Protein ~28g, Kalium 561mg/100g!',kcal:'~800',rezept:''},
+    {emoji:'🍌',typ:'Post-Run Shake',name:'Hafermilch + Banane + Proteinpulver + Kreatin + Apfel',naehr:'Protein ~30g, Kreatin, schnelle KH',kcal:'~420',rezept:''},
+  ], total:'~2.420 kcal · ~93g Protein', tipp:'Weiße Bohnen: beste pflanzliche Kaliumquelle.'},
+  { tag:'Tag 5 · Freitag', run:false, mahlzeiten:[
+    {emoji:'🌅',typ:'Frühstück',name:'Warmer Grießbrei mit Hafermilch + Proteinpulver + Beeren + Mandelmus',naehr:'Protein ~30g, Calcium, Antioxidantien',kcal:'~680',rezept:''},
+    {emoji:'🍽️',typ:'Mittagessen',name:'Linsennudeln mit Avocado-Walnuss-Pesto & Spinat (Leftover)',naehr:'Protein ~28g, Omega-3, Folsäure',kcal:'~650',rezept:'Linsennudeln mit Avocado-Walnuss-Pesto'},
+    {emoji:'🌙',typ:'Abendessen',name:'Linsennudeln mit Avocado-Walnuss-Pesto, Spinat & Cherrytomaten',naehr:'Protein ~30g, Omega-3, Eisen',kcal:'~750',rezept:'Linsennudeln mit Avocado-Walnuss-Pesto'},
+  ], total:'~2.080 kcal · ~95g Protein', tipp:'Linsennudeln: 2× mehr Protein als Weizennudeln.'},
+  { tag:'Tag 6 · Samstag', run:true, mahlzeiten:[
+    {emoji:'🌅',typ:'Frühstück',name:'Tofu-Scramble mit Kurkuma, Paprika, Tomaten & Reiswaffeln',naehr:'Protein ~28g, Vitamin C, Eisen',kcal:'~650',rezept:'Tofu-Scramble mit Gemüse'},
+    {emoji:'🍽️',typ:'Mittagessen',name:'Buddha Bowl: Quinoa, Kichererbsen, Avocado, Gurke, Tahini-Dressing',naehr:'Alle Aminosäuren, gesunde Fette',kcal:'~700',rezept:'Meal Prep Bowl (4 Tage)'},
+    {emoji:'🌙',typ:'Abendessen',name:'Vegane Spaghetti Carbonara mit Cashew-Sauce & getrockneten Tomaten',naehr:'Protein ~28g, Calcium, Magnesium',kcal:'~720',rezept:'Vegane Spaghetti Carbonara'},
+    {emoji:'🍌',typ:'Post-Run Shake',name:'Protein-Shake + Banane + 3 Datteln',naehr:'Protein ~28g, Kreatin, Kalium',kcal:'~460',rezept:''},
+  ], total:'~2.530 kcal · ~100g Protein', tipp:'Langer Lauftag: Datteln für schnelle Energie. 3L Wasser!'},
+  { tag:'Tag 7 · Sonntag', run:true, mahlzeiten:[
+    {emoji:'🌅',typ:'Frühstück',name:'Hafermehl-Pancakes + Chiasamen + Ahornsirup + frische Beeren',naehr:'KH, Ballaststoffe, Antioxidantien',kcal:'~700',rezept:'Hafermehl-Pancakes (Sonntags-Spezial)'},
+    {emoji:'🍽️',typ:'Mittagessen',name:'Cremiges Tomaten-Risotto mit Kokosmilch & Hefeflocken',naehr:'Kalium, Lycopin, Vitamin C',kcal:'~580',rezept:'Cremiges Tomaten-Risotto'},
+    {emoji:'🌙',typ:'Abendessen',name:'Asiatischer Tofu-Wok mit Brokkoli, Zuckerschoten, Sesam & Reisnudeln',naehr:'Protein ~28g, Calcium (Sesam)',kcal:'~780',rezept:''},
+    {emoji:'🍌',typ:'Post-Run Shake',name:'Banane + Hafermilch + Proteinpulver + Kreatin + Cashews',naehr:'Protein ~32g, Zink, Kreatin',kcal:'~480',rezept:''},
+  ], total:'~2.540 kcal · ~100g Protein', tipp:'Sonntag Lauftag: gut tanken mit Pancakes morgens!'},
+];
+
+// Alle Rezepte kommen aus GitHub (data/recipes.json)
+// Einmalige Initialisierung der eingebauten Rezepte erfolgt über initBuiltinRecipes()
+
+const builtinRecipes = [
+  { name:'Hafermehl-Pancakes (Sonntags-Spezial)', meta:'⏱ 20 Min · 8–10 Pancakes', kategorie:'🌅 Frühstück',
+    zutaten:['200g Hafermehl','1 EL Chiasamen','3 EL Wasser','300ml Hafermilch','1 TL Backpulver','Prise Salz','1 EL Ahornsirup','1 TL Vanilleextrakt','Kokosfett zum Braten','frische Beeren'],
+    schritte:['Chiasamen mit Wasser mischen, 10 Min quellen.','Trockene Zutaten mischen.','Hafermilch, Chia-Ei, Sirup, Vanille hinzufügen.','Teig 5 Min ruhen lassen.','Je 2–3 EL pro Pancake, 3 Min je Seite.','Mit Beeren und Ahornsirup servieren.'],
+    naehr:'~680 kcal · ~18g Protein · Ballaststoffe, Omega-3',
+    quelle:'Selfmade'},
+  { name:'Tofu-Scramble mit Gemüse', meta:'⏱ 15 Min · 2 Portionen · schnell', kategorie:'🌅 Frühstück',
+    zutaten:['400g fester Tofu','½ TL Kurkuma','½ TL Paprikapulver','2 EL Hefeflocken','1 Paprika gewürfelt','Cherrytomaten halbiert','2 EL Sojasoße','1 EL Olivenöl','Salz, Pfeffer, Knoblauchpulver','Optional: 30g Hanfsamen für +10g Protein'],
+    schritte:['Tofu mit einer Gabel grob zerbröseln.','Olivenöl erhitzen, Paprika 3 Min anbraten.','Tofu dazugeben, Gewürze einmischen.','5 Min bei mittlerer Hitze braten.','Tomaten, Hefeflocken, Sojasoße unterheben.','Mit Reiswaffeln servieren. Hanfsamen drüber = Protein-Boost.'],
+    naehr:'~310 kcal · ~26g Protein (+10g mit Hanfsamen) · Calcium, Vitamin C',
+    quelle:'Selfmade'},
+  { name:'Vegane Shakshuka', meta:'⏱ 25 Min · 2 Portionen', kategorie:'🌅 Frühstück',
+    zutaten:['1 Dose gehackte Tomaten (400g)','1 rote Paprika gewürfelt','1 Zwiebel','3 Knoblauchzehen','200g fester Tofu gewürfelt','1 TL Kreuzkümmel','1 TL Paprikapulver','½ TL Chiliflocken','Prise Zimt','2 EL Olivenöl','Salz','Pfeffer','frische Petersilie'],
+    schritte:['Zwiebel & Knoblauch in Olivenöl anbraten (4 Min).','Gewürze 1 Min mitrösten.','Paprika 3 Min mitbraten.','Tomaten dazugeben, 10 Min köcheln bis Sauce eindickt.','Tofu-Würfel in die Sauce setzen, 5 Min mitgaren.','Mit Petersilie und Dinkeltoast servieren.'],
+    naehr:'~320 kcal · ~22g Protein · Vitamin C, Eisen, Lycopin',
+    quelle:'Selfmade'},
+  { name:'Rote Linsensuppe mit Kokosmilch & Spinat', meta:'⏱ 25 Min · 2 Portionen (Leftover)', kategorie:'🍽️ Mittag & Abend',
+    zutaten:['200g rote Linsen trocken','1 Süßkartoffel gewürfelt','1 Dose Kokosmilch (400ml)','100g Spinat','1 Zwiebel','2 Knoblauchzehen','1 Stück Ingwer (2cm)','1 TL Kurkuma','1 TL Kreuzkümmel','500ml Gemüsebrühe','1 EL Olivenöl'],
+    schritte:['Zwiebel & Knoblauch in Olivenöl dünsten (3 Min).','Gewürze + Ingwer kurz mitrösten (1 Min).','Linsen, Süßkartoffel, Brühe, Kokosmilch hinzufügen.','25 Min köcheln bis Linsen weich sind.','Spinat unterheben, 2 Min ziehen lassen.','Zweite Portion für morgen Mittag aufheben!'],
+    naehr:'~580 kcal · ~28g Protein · Eisen, Folsäure, Kalium',
+    quelle:'Selfmade'},
+  { name:'Tempeh-Brokkoli-Pfanne mit Quinoa', meta:'⏱ 30 Min · 2 Portionen (Leftover)', kategorie:'🍽️ Mittag & Abend',
+    zutaten:['200g Tempeh gewürfelt','1 Brokkoli in Röschen','2 Paprika gewürfelt','200g Quinoa','3 EL Sojasoße','2 EL Sesamöl','Knoblauch, Ingwer','Sesam zum Garnieren'],
+    schritte:['Quinoa kochen (~15 Min).','Tempeh in Sesamöl goldbraun braten (8 Min).','Knoblauch, Ingwer, Paprika, Brokkoli dazugeben.','Mit Sojasoße ablöschen, 5 Min garen.','Mit Quinoa servieren, Sesam drüber.'],
+    naehr:'~750 kcal · ~35g Protein · Calcium, Zink, alle Aminosäuren',
+    quelle:'Selfmade'},
+  { name:'Linsennudeln mit Avocado-Walnuss-Pesto', meta:'⏱ 20 Min · 2 Portionen (Leftover)', kategorie:'🍽️ Mittag & Abend',
+    zutaten:['200g Linsennudeln','1 reife Avocado','30g Walnüsse','1 Handvoll Spinat','2 EL Olivenöl','Saft ½ Zitrone','1 Knoblauchzehe','Cherrytomaten, Hefeflocken'],
+    schritte:['Linsennudeln kochen (~8 Min).','Avocado, Walnüsse, Spinat, Knoblauch, Olivenöl & Zitrone mixen.','Mit Salz, Pfeffer, Hefeflocken abschmecken.','Nudeln abgießen, Pesto untermischen.','Mit Cherrytomaten servieren.'],
+    naehr:'~720 kcal · ~30g Protein · Omega-3, Folsäure, Eisen',
+    quelle:'Selfmade'},
+  { name:'Vegane Spaghetti Carbonara', meta:'⏱ 20 Min · 2 Portionen', kategorie:'🍽️ Mittag & Abend',
+    zutaten:['250g Spaghetti (oder Linsennudeln für mehr Protein)','150g Cashewkerne (mind. 2 Std. eingeweicht)','1 EL helle Misopaste','100ml Wasser','2 EL Hefeflocken','10 getrocknete Tomaten in Öl','1 TL Sojasoße','½ TL Liquid Smoke (optional)','100g Cashews (für Parmesan)','50g Mandeln (für Parmesan)'],
+    schritte:['Cashews + Misopaste + Hefeflocken mixen, Wasser zugeben bis cremige Masse entsteht. Würzen.','Getrocknete Tomaten klein schneiden, 5 Min anbraten. Sojasoße + Liquid Smoke dazu, 2 Min weiter.','Spaghetti al dente kochen – Kochwasser auffangen!','Spaghetti + Cashew-Sauce vermengen, Kochwasser für Sämigkeit zugeben.','Tomaten unterheben, mit veganem Parmesan servieren.'],
+    naehr:'~720 kcal · ~28g Protein (mit Linsennudeln ~38g) · Calcium, Magnesium',
+    quelle:'Selfmade'},
+  { name:'Cremiges Tomaten-Risotto', meta:'⏱ 35 Min · 2 Portionen', kategorie:'🍽️ Mittag & Abend',
+    zutaten:['150g Risottoreis','250g Tomaten passiert','50ml Kokosmilch','500ml Gemüsebrühe (heiß, nach Bedarf)','80ml Weißwein (oder mehr Brühe)','20g getrocknete Tomaten in Öl','80g Cherrytomaten','1 Zwiebel, 2 Knoblauchzehen','20g Margarine','1 TL Oregano','Prise Zucker','10g frisches Basilikum','Salz','Pfeffer','30g Hefeflocken (optional, für Käse-Note)'],
+    schritte:['Zwiebel + Knoblauch fein würfeln.','Margarine erhitzen, Zwiebel 4 Min glasig dünsten.','Risottoreis dazugeben, 2 Min anrösten.','Mit Weißwein ablöschen, komplett einkochen lassen.','Tomaten passiert + Kokosmilch + Oregano + Zucker einrühren.','Heiße Brühe schöpfkellenweise zugeben, immer rühren (~20 Min).','Cherrytomaten + getrocknete Tomaten in den letzten 5 Min dazu.','Mit Basilikum, Hefeflocken und Pfeffer servieren.'],
+    naehr:'~580 kcal · ~14g Protein (+8g mit Hefeflocken) · Lycopin, Kalium, Vitamin C',
+    quelle:'Selfmade'},
+  { name:'Kichererbsen-Kokos-Curry', meta:'⏱ 25 Min · 2 Portionen (Leftover)', kategorie:'🍽️ Mittag & Abend',
+    zutaten:['1 Dose Kichererbsen (400g)','1 Dose Kokosmilch (400ml)','1 Dose gehackte Tomaten','1 Zwiebel','3 Knoblauchzehen','1 TL Garam Masala','1 TL Kurkuma','1 TL Kreuzkümmel','Chili nach Wunsch','200g Basmatireis','frischer Koriander','1 Limette'],
+    schritte:['Zwiebel + Knoblauch in Öl anbraten (4 Min).','Gewürze 1 Min rösten bis es duftet.','Tomaten hinzufügen, 5 Min einkochen.','Kokosmilch + Kichererbsen einrühren.','15 Min köcheln bis Sauce eindickt.','Mit Basmatireis + Koriander + Limette servieren.'],
+    naehr:'~780 kcal · ~30g Protein · Eisen, Zink, Vitamin C',
+    quelle:'Selfmade'},
+  { name:'Meal Prep Bowl (4 Tage)', meta:'⏱ 45 Min · 4 Portionen · Meal Prep', kategorie:'🍽️ Mittag & Abend',
+    zutaten:['400g rote Linsen','300g Quinoa','2 Süßkartoffeln gewürfelt','200g Kichererbsen (Dose)','2 Handvoll Spinat','Kreuzkümmel, Paprika, Kurkuma','4 EL Tahini','Saft 1 Zitrone','1 L Gemüsebrühe','2 EL Olivenöl'],
+    schritte:['Linsen + Quinoa getrennt kochen (20 Min).','Süßkartoffeln mit Olivenöl + Gewürzen im Ofen: 200°C, 25 Min.','Kichererbsen abtropfen, kurz anbraten.','Tahini-Dressing: Tahini + Zitrone + 4 EL Wasser + Salz verrühren.','4 Behälter befüllen: je Linsen, Quinoa, Süßkartoffel, Kichererbsen.','Spinat oben drauf. Dressing separat. 4 Tage haltbar.'],
+    naehr:'~720 kcal · ~32g Protein · Kalium, Eisen, Folsäure',
+    quelle:'Selfmade'},
+  { name:'Veganer Zitronen-Mohn-Kuchen', meta:'⏱ 20 Min + 60 Min Backzeit · 1 Kastenform', kategorie:'🎂 Kuchen & Backen',
+    zutaten:['450g Weizenmehl Type 405 (oder Dinkelmehl)','16g (1,5 EL) Backpulver','8g (1,5 TL) Vanillezucker','½ TL Salz','3 Zitronen (Abrieb)','3 EL Zitronensaft','200g Zucker','200g pflanzliche Margarine (weich!)','200ml Hafermilch','100ml Sprudelwasser','4 EL Mohnsamen','250g Puderzucker (Glasur)','3 EL Zitronensaft (Glasur)'],
+    schritte:['Ofen auf 200°C vorheizen.','Mehl, Backpulver, Vanillezucker, Salz, Zitronenabrieb mischen.','Margarine + Zucker separat aufschlagen – wichtig für lockeren Teig!','Margarine-Zucker zur Mehlmischung, kurz vermengen.','Hafermilch, Sprudelwasser + 60ml Zitronensaft dazu. Nicht überrühren!','Mohnsamen kurz unterrühren.','In gefettete Kastenform füllen. 60 Min bei 200°C backen.','Nach 15 Min: oben längs einschneiden.','Heiß raus: mehrmals mit Gabel einstechen, mit Zitronensaft bestreichen.','Ausgekühlt: Puderzucker-Glasur drüber, trocknen lassen.'],
+    naehr:'Pro Scheibe (~12 Stück): ~320 kcal · ~4g Protein · Calcium',
+    quelle:'Selfmade'},
+  { name:'Veganer Schoko-Bananen-Kuchen', meta:'⏱ 15 Min + 50 Min Backzeit · Proteinreich', kategorie:'🎂 Kuchen & Backen',
+    zutaten:['3 sehr reife Bananen (~300g)','200g Hafermehl','2 EL Kakaopulver ungesüßt','2 EL Chiasamen','6 EL Wasser','100ml Hafermilch','80ml Ahornsirup','2 EL Kokosöl geschmolzen','2 TL Backpulver','1 TL Vanille','Prise Salz','50g dunkle Schokolade oder Drops','Optional: 2 EL Proteinpulver für +14g Protein'],
+    schritte:['Chiasamen mit Wasser mischen, 10 Min quellen lassen.','Ofen auf 175°C vorheizen, Kastenform einfetten.','Bananen in Schüssel zerdrücken.','Hafermilch, Sirup, Kokosöl, Chia-Ei, Vanille dazumischen.','Hafermehl, Kakao, Backpulver, Salz (+ Proteinpulver) unterrühren.','Schokodrops unterheben.','50 Min backen. Stäbchenprobe. Vollständig auskühlen lassen.'],
+    naehr:'Pro Scheibe: ~210 kcal · ~5g Protein (+3g mit Pulver) · Kalium, Magnesium, Ballaststoffe',
+    quelle:'Selfmade'},
+
+  { name:'Frühstückstoasts mit veganem Ricotta & Erdbeeren', meta:'⏱ 45 Min + 2 Std. Ruhe · 4 Portionen', kategorie:'🌅 Frühstück',
+    zutaten:['200g fester Tofu','75g feste Kokoscreme (oberer Teil einer Dose Kokosmilch)','75g veganer Joghurt','1 TL Vanilleextrakt','2 EL Ahornsirup','1 EL Orangensaft','Abrieb von ½ Orange','4 dicke Scheiben Weißbrot','500g Erdbeeren','2 EL Zucker','1 EL Balsamicoessig','frische Minzblätter'],
+    schritte:['Tofu gut abtropfen, mit Kokoscreme, Joghurt, Vanilleextrakt, Ahornsirup, Orangensaft und -abrieb in einen Zerkleinerer geben. Je nach Wunsch freikrümelig oder glatt mixen. Abschmecken.','Ricotta mindestens 2 Stunden (am besten über Nacht) im Kühlschrank durchziehen lassen.','Ofen auf 180°C vorheizen. Erdbeeren entstielen, halbieren, auf Backpapier legen. Mit Zucker bestreuen, Balsamico beträufeln. 20–25 Min backen bis der Saft austritt. Abkühlen lassen.','Brotscheiben toasten, dick mit Ricotta bestreichen, mit Ahornsirup beträufeln. Erdbeeren darauf, mit Minze und Pfeffer garnieren.'],
+    naehr:'~380 kcal · ~12g Protein · Calcium, Vitamin C, gesunde Fette',
+    quelle:'Zucker&Jagdwurst',
+    tipp:'Ricotta abends vorbereiten – morgens sofort fertig.'},
+  { name:'Veganer Kaiserschmarrn', meta:'⏱ 30 Min · 4 Portionen', kategorie:'🌅 Frühstück',
+    zutaten:['150g Dinkelmehl Type 630','8g Backpulver','50g Speisestärke','250ml Sojamilch','100ml Mineralwasser','1 EL Agavendicksaft','1 EL neutrales Pflanzenöl','360g Fruchtmus (z.B. Zwetschge)','5 EL Puderzucker','Pflanzenöl zum Braten'],
+    schritte:['Mehl, Backpulver und Stärke mischen. Sojamilch, Mineralwasser, Agavendicksaft, Öl und Salz glatt rühren. Mehlmischung dazugeben und zügig zu einem glatten Teig verrühren.','Öl in einer großen Pfanne erhitzen, Teig hineingießen. Mit Deckel bei mittlerer Hitze 3–5 Min backen bis Blasen entstehen und der Rand sich löst.','Mit Messer in 8 Stücke schneiden, vorsichtig wenden, weitere 3–5 Min goldbraun backen. Mit Pfannenwender in mundgerechte Stücke teilen.','4 EL Puderzucker durch ein Sieb darüberstreuen, bei mittlerer Hitze unterrühren bis karamellisiert. Mit restlichem Puderzucker und Fruchtmus servieren.'],
+    naehr:'~420 kcal · ~9g Protein · Ballaststoffe, schnelle Energie',
+    quelle:'Zucker&Jagdwurst',
+    tipp:'Mineralwasser macht den Teig besonders luftig – nicht weglassen!'},
+  { name:'Vegane French Toasts', meta:'⏱ 30 Min · 4 Portionen', kategorie:'🌅 Frühstück',
+    zutaten:['8 Weißbrotscheiben','250ml pflanzliche Milch','70g Weizenmehl','3 EL Agavendicksaft oder Ahornsirup','5g Vanillepaste','1 TL Zimt','vegane Butter','Pflanzenöl zum Braten','100ml vegane Schlagsahne','1 TL Sahnesteif','1 TL Vanillezucker','3 EL veganer Quark','Abrieb von ½ Limette','frisches Obst und Beeren','geröstete Nüsse'],
+    schritte:['Vegane Schlagsahne mit Sahnesteif und Vanillezucker aufschlagen, Quark und Limettenabrieb unterrühren. Obst waschen und klein schneiden.','Pflanzliche Milch, Mehl, Agavendicksaft, Vanillepaste, Zimt und Salz in einem tiefen Teller vermengen.','Vegane Butter und einen Schuss Öl in einer Pfanne erhitzen. Brotscheiben in der Mischung wenden und von beiden Seiten goldbraun braten.','Mit Beeren, Obst, Limettensahne und gerösteten Nüssen servieren.'],
+    naehr:'~450 kcal · ~11g Protein · Kohlenhydrate, Calcium',
+    quelle:'Zucker&Jagdwurst',
+    tipp:'Eine Prise Kala Namak in die Einweich-Mischung gibt einen leichten Ei-Geschmack.'},
+  { name:'Gefüllte Knödel mit Rosenkohl & Cranberrysoße', meta:'⏱ 80 Min · 4 Portionen', kategorie:'🍽️ Mittag & Abend',
+    zutaten:['800g festkochende Kartoffeln','100g Kartoffelstärke','50g Mehl','50g weiche vegane Butter','1 TL Muskat','1 Zwiebel','1 Knoblauchzehe','150g Pilze','250g veganes Hack','1 TL Paprikapulver','1 TL Oregano','½ TL Cayennepfeffer','1–2 EL Sojasoße','200g frische Cranberrys','100ml veganer Rotwein','4 EL Zucker','1 TL Zimt','2 Orangen (Abrieb und Saft)','500g Rosenkohl','4 EL Pflanzenöl','1 EL Agavendicksaft'],
+    schritte:['Kartoffeln mit Schale ca. 20 Min kochen bis gar. Abgießen und ausdampfen lassen.','Cranberrys mit Rotwein, Zucker, Zimt, Orangensaft und -abrieb 5–10 Min köcheln bis die Soße andickt. Warm halten.','Kartoffeln schälen und mit einer Kartoffelpresse zerdrücken (nicht aufschlagen!). Stärke, Mehl und weiche Butter unterarbeiten. Mit Salz, Pfeffer und Muskat würzen.','Zwiebel, Knoblauch und Pilze fein hacken. In Öl anschwitzen, veganes Hack + Gewürze zugeben, 5–10 Min braten. Mit Sojasoße ablöschen. Abkühlen lassen.','Ofen auf 200°C vorheizen. Rosenkohl halbieren, mit Öl, Agavendicksaft, Salz und Pfeffer in eine Form geben. 15 Min rösten, dann Zucker drüber und 5–10 Min karamellisieren.','Aus der Füllung 8 Bällchen formen. Knödelteig in 8 Portionen teilen, je flach drücken, Füllungsbällchen einwickeln und zu einem runden Kloß formen.','Wasser salzen, auf 90°C erhitzen (sieden, nicht kochen). Klöße 20 Min ziehen lassen – fertig wenn sie aufschwimmen. Mit Cranberrysoße und Rosenkohl servieren.'],
+    naehr:'~580 kcal · ~22g Protein · Kalium, Vitamin C, Eisen',
+    quelle:'Zucker&Jagdwurst',
+    tipp:'Kartoffeln stampfen, nicht aufschlagen – sonst wird der Teig zu klebrig.'},
+  { name:'Vegane Dunkelbiersoße', meta:'⏱ 45 Min · ca. 500 ml', kategorie:'🍽️ Mittag & Abend',
+    zutaten:['2 große Karotten','⅓ Knollensellerie','1 mittelgroße Zwiebel','½ Stange Lauch','3 getrocknete Shiitakepilze','1 EL Tomatenmark','1 TL Sojasoße','ca. 300ml Dunkelbier (alternativ Malzbier)','500ml Gemüsebrühe','1 Lorbeerblatt','2 Wacholderbeeren','1 TL Agavendicksaft','optional: Speisestärke zum Binden'],
+    schritte:['Gemüse (Karotten, Sellerie, Zwiebel, Lauch) grob würfeln. In einem Topf mit etwas Öl bei hoher Hitze kräftig anrösten bis alles dunkel und karamellisiert ist (8–10 Min).','Tomatenmark einrühren und 1–2 Min mitrösten. Shiitakepilze und alle Gewürze dazugeben.','Mit Dunkelbier ablöschen und kurz einkochen lassen. Gemüsebrühe, Sojasoße und Agavendicksaft zugeben.','30–35 Min bei mittlerer Hitze köcheln. Durch ein feines Sieb abseihen und gut ausdrücken.','Bei Bedarf mit in Wasser aufgelöster Speisestärke auf gewünschte Konsistenz binden.'],
+    naehr:'~60 kcal pro 100 ml · tiefes Umami-Aroma, perfekt zu Seitan oder Knödeln',
+    quelle:'VeganAufBayrisch',
+    tipp:'Je länger rösten, desto tiefer und kräftiger wird der Geschmack.'},
+  { name:'Veganer Sauerbraten (Seitan)', meta:'⏱ 3–4 Std. + 12–24 Std. Beizen · 4 Portionen', kategorie:'🍽️ Mittag & Abend',
+    zutaten:['── Seitan ──','1.000g Weizenmehl (Typ 480–550, proteinreich)','550–650ml Wasser','── Würzpaste ──','2 TL Senf','2 TL Misopaste','2 TL Sojasauce','1 TL Paprikapulver','2 TL Öl','── Sud ──','750ml trockener Rotwein','450ml kräftige Gemüsebrühe','300ml Wasser','5–6 EL Apfelessig','2 große Zwiebeln','2 Karotten','1 Stück Sellerie (~80–100g)','3 Lorbeerblätter, 6 Wacholderbeeren, 3 Nelken','2–3 getrocknete Shiitakepilze','── Sauce ──','2 TL Zucker','2 EL Tomatenmark','2 TL Misopaste','2 TL Preiselbeeren oder Johannisbeergelee'],
+    schritte:['Mehl, Salz und Wasser zu einem festen Teig kneten. Kugel formen und 1 Stunde in kaltem Wasser ruhen lassen.','Teig in kaltem Wasser kneten, Wasser mehrfach wechseln bis es nur noch leicht trüb ist (ca. 10–15 Min). Übrig bleibt elastisches Gluten.','Seitan flach drücken, mit Würzpaste bestreichen, in drei Stränge teilen, flechten und zu einer kompakten Bratenform verknoten.','Alle Sud-Zutaten aufkochen, 10–15 Min köcheln. Seitan bei 85–95°C ca. 60–75 Min ziehen lassen. Im Sud abkühlen, dann 12–24 Std. im Kühlschrank beizen.','Seitan trocken tupfen und rundum kräftig anbraten (8–12 Min). Sud abseihen.','Zucker karamellisieren, Tomatenmark rösten, mit Sud ablöschen, auf ⅓ einkochen (30–45 Min). Mit Miso, Preiselbeeren, Salz, Pfeffer abschmecken.','Seitan mit Sauce bei 200°C ca. 15 Min glasieren. Mit Klößen und Dunkelbiersoße servieren.'],
+    naehr:'~520 kcal · ~45g Protein · Eisen, Zink',
+    quelle:'VeganAufBayrisch',
+    tipp:'Aufwändig aber beeindruckend – perfekt für Sonntag!'},
+  { name:'Gnocchetti Sardi (Hausgemacht)', meta:'⏱ 60 Min · pro Person', kategorie:'🫓 Teige & Brote',
+    zutaten:['100g Semola (z.B. De Cecco, fein gemahlen)','50ml Wasser','Prise Salz','Schuss Olivenöl'],
+    schritte:['Alle Zutaten in einer Schüssel kombinieren und zu einem Teig zusammenbringen. Anfangs sehr bröselig – das wird!','Auf ein Brett transferieren und weiterkneten bis ein glatter Teig entsteht. Abdecken und 30 Min ruhen lassen.','Kleine Würste rollen (fingerdick), dann in ca. 1,5 cm lange Stücke schneiden.','Jedes Stück mit dem Daumen über ein Gnocchi-Brett oder eine Gabel rollen für die typischen Rillen.','In gut gesalzenem kochendem Wasser 2–3 Min kochen bis sie aufschwimmen. Mit Sauce nach Wahl servieren.'],
+    naehr:'~350 kcal · ~10g Protein · Kohlenhydrate, pflanzlich',
+    quelle:'Selfmade',
+    tipp:'Perfekt zu Dunkelbiersoße oder Sauerbraten.'},
+  { name:'Pizza-Teig mit Lievito Madre', meta:'⏱ 24–48 Std. · 4 Pizzen à ~250g', kategorie:'🫓 Teige & Brote',
+    zutaten:['540g Weizenmehl Tipo 00 (oder 405/550)','340g Wasser','120g Lievito Madre (aktiv, 50% Hydration)','14g Salz','10g Olivenöl (optional)','── Starter aktivieren (3–4 Std. vorher) ──','50g Lievito Madre','100g Weizenmehl Tipo 00','50g Wasser'],
+    schritte:['Lievito Madre 3–4 Stunden vorher füttern (50g LM + 100g Mehl + 50g Wasser) und bei 24–26°C gehen lassen bis das Volumen sich verdoppelt hat.','Wasser und LM vermischen, Mehl zugeben und grob vermengen. 20 Min Autolyse stehen lassen.','Salz und optional Olivenöl zugeben, 8–10 Min kneten bis der Teig glatt, elastisch und leicht klebrig ist. Ziel-Teigtemperatur: 23–25°C.','Stockgare: 2–3 Std. bei 22–24°C. Alle 45 Min einmal dehnen und falten.','Teig in 4 Stücke à 240–260g teilen und zu glatten Kugeln formen.','Beste Variante: 24 Std. im Kühlschrank (4–6°C), danach 2 Std. akklimatisieren. Schnell: 3–4 Std. bei Raumtemperatur.','Teig nicht ausrollen – von innen nach außen mit den Händen drücken, Rand nicht entgasen. Bei 250–300°C mit Pizzastein 5–7 Min backen.'],
+    naehr:'~650 kcal pro Pizza (Teig) · ~18g Protein · lange Fermentation = beste Verträglichkeit',
+    quelle:'Selfmade',
+    tipp:'48 Stunden Kühlschrankgare bringt deutlich mehr Aroma und Struktur.'},
+  { name:'Einfache Sonntagsbrötchen', meta:'⏱ 40 Min + 8–12 Std. Ruhe · 8 Brötchen', kategorie:'🫓 Teige & Brote',
+    zutaten:['10g frische Hefe','350g lauwarmes Wasser','1 TL Zucker','370g Weizenmehl Type 550','100g Weizenvollkornmehl','10g Salz','1–2 EL Olivenöl','Optional: Kürbiskerne, Sonnenblumenkerne, Walnüsse'],
+    schritte:['Hefe zerbröseln und mit Zucker und lauwarmem Wasser verrühren. Kurz stehen lassen.','Beide Mehle und Salz dazugeben, mit einem Löffel zu einem Teig verrühren.','Auflaufform mit Olivenöl einpinseln, Teig gleichmäßig verteilen. Mit Frischhaltefolie abdecken, 8–12 Std. im Kühlschrank gehen lassen.','Teig auf bemehlte Fläche stürzen, in 8 Teile teilen. Jedes Stück plattdrücken, optional Kerne drauf, gegenüberliegende Ecken übereinanderlegen. Auf Backpapier setzen.','Ofen mit Blech auf 240°C vorheizen. Ofenfeste Schale mit Wasser bereitstellen.','Teiglinge auf das heiße Blech legen. Wasserschale auf den Boden, etwas Wasser in den Ofen kippen für Dampf, Tür schnell schließen. Ca. 25 Min backen bis goldbraun.'],
+    naehr:'~210 kcal · ~7g Protein · Ballaststoffe (Vollkorn)',
+    quelle:'Zucker&Jagdwurst',
+    tipp:'Der Dampf im Ofen sorgt für eine knusprige Kruste – nicht weglassen!'},
+  { name:'Sauerteigbrot mit Kartoffel & Walnuss', meta:'⏱ 2 Tage · 1 Brot (∅ 22 cm)', kategorie:'🫓 Teige & Brote',
+    zutaten:['── Starter anfrischen ──','30g Weizensauerteigstarter','30g Wasser','30g Weizenmehl Type 550','── Teig ──','300ml Wasser','60g Sauerteigstarter (aktiviert)','400g Weizenmehl Type 550','8g Salz','140g festkochende Kartoffeln','80g Walnüsse','Roggenmehl zum Bestäuben'],
+    schritte:['TAG 1 VORMITTAGS: Starter mit lauwarmem Wasser verrühren, Mehl zugeben. 3–4 Std. warm stellen bis Bläschen entstehen. Test: 1 TL in Wasser – schwimmt er, ist er aktiv.','TAG 1 MITTAGS: 275ml Wasser (33°C) mit 60g aktivem Starter und Mehl verkneten. Abgedeckt 1 Std. Autolyse.','25ml Wasser mit Salz auflösen, zum Teig geben und gut verkneten. Alle 30 Min dehnen und falten – insgesamt 5 Mal.','Kartoffeln kochen, schälen und zerstampfen. Walnüsse grob hacken und trocken rösten. Beides abkühlen lassen.','Beim 6. Falten: Kartoffeln und Walnüsse einarbeiten. Teig abgedeckt mindestens 12 Std. in den Kühlschrank.','TAG 2: Teig auf feuchter Fläche rundformen. In bemehlten Gärkorb legen (Naht oben). 60–90 Min gehen lassen.','Gusseisernen Topf im Ofen auf 250°C vorheizen. Teig einritzen, in den Topf stürzen. Mit Deckel 20 Min backen.','Deckel abnehmen, auf 230°C reduzieren, weitere 20–25 Min backen bis tiefbraune Kruste. Komplett auskühlen lassen!'],
+    naehr:'~220 kcal pro Scheibe · ~7g Protein · Ballaststoffe, Omega-3 (Walnuss), Kalium',
+    quelle:'Zucker&Jagdwurst',
+    tipp:'Nicht zu früh anschneiden – die Krume braucht min. 2 Std. um zu setzen.'},
+];
+
+// Render days
+function renderDays() {
+  const c = document.getElementById('days-container');
+  c.innerHTML = days.map((d,i) => `
+    <div class="day-card">
+      <div class="day-card-header ${d.run?'run':'rest'}">
+        <div class="day-card-title">${d.tag}</div>
+        <span class="day-badge ${d.run?'badge-run':'badge-rest'}">${d.run?'🏃 Lauftag':'😴 Ruhetag'}</span>
+      </div>
+      <button class="day-toggle" onclick="toggleDay(${i},this)">
+        Mahlzeiten anzeigen <span class="day-toggle-arrow">▼</span>
+      </button>
+      <div class="day-content" id="day-content-${i}">
+        ${d.mahlzeiten.map(m=>`
+          <div class="meal-row">
+            <div class="meal-emoji">${m.emoji}</div>
+            <div class="meal-info">
+              <div class="meal-type">${m.typ}</div>
+              <div class="meal-name">${m.rezept ? `<span onclick="goToRecipe('${m.rezept.replace(/'/g,"\\'")}\")" style="cursor:pointer;text-decoration:underline;text-decoration-color:var(--sage-light);text-underline-offset:3px;">${m.name}</span>` : m.name}</div>
+              <div class="meal-naehr">${m.naehr}</div>
+              <span class="meal-kcal">${m.kcal} kcal</span>
+            </div>
+          </div>`).join('')}
+        <div class="day-footer-row">
+          <div class="day-tipp">💡 ${d.tipp}</div>
+          <div class="day-total">${d.total}</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleDay(i, btn) {
+  const content = document.getElementById('day-content-'+i);
+  content.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+
+// Render recipes with categories
+function renderRecipeCard(r, i, prefix) {
+  return `<div class="recipe-card" id="${prefix}-card-${i}">
+    <div class="recipe-header" onclick="toggleRecipeCard('${prefix}',${i})" style="display:flex;justify-content:space-between;align-items:center;">
+      <div style="flex:1;min-width:0;">
+        <div class="recipe-name">${r.name}</div>
+        <div class="recipe-meta">${r.meta||''}</div>
+      </div>
+      <span style="font-size:12px;color:var(--text-light);flex-shrink:0;margin-left:8px;">▼</span>
+    </div>
+    <div class="recipe-content" id="${prefix}-content-${i}">
+      <div class="recipe-sub">Zutaten</div>
+      <ul class="recipe-list">${(r.zutaten||[]).map(z=>`<li>${z}</li>`).join('')}</ul>
+      <div class="recipe-sub">Zubereitung</div>
+      <ol class="recipe-steps">${(r.schritte||[]).map(s=>`<li>${s}</li>`).join('')}</ol>
+      <div class="recipe-naehr">✅ ${r.naehr||''}</div>
+      ${r.quelle ? `<div style="margin-top:8px;font-size:10px;color:var(--text-muted);text-align:right;">Quelle: ${r.quelle}</div>` : ''}
+      <button class="recipe-add-cart" onclick="addToCart(${i}, event)">🛒 Zutaten zur Einkaufsliste</button>
+      <button onclick="deleteRecipe(${i})" style="margin-top:6px;width:100%;padding:9px;background:#fee;border:1px solid #f5c6c6;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;cursor:pointer;color:#c0392b;">🗑️ Rezept löschen</button>
+    </div>
+  </div>`;
+}
+
+function toggleRecipeCard(prefix, i) {
+  document.getElementById(`${prefix}-content-${i}`).classList.toggle('open');
+}
+
+// Legacy alias
+function toggleRecipe(i) { toggleRecipeCard('r', i); }
+function toggleSaved(i) { toggleRecipeCard('r', i); }
+
+// ── Shopping List ──
+let shopItems = [];
+
+async function loadShoppingBadge() {
+  try {
+    const res = await fetch('/api/shopping');
+    if (!res.ok) return;
+    shopItems = await res.json();
+    updateBadge();
+  } catch(e) {}
+}
+
+function updateBadge() {
+  const unchecked = shopItems.filter(it => !it.checked).length;
+  const badge = document.getElementById('shop-badge-count');
+  if (!badge) return;
+  badge.textContent = unchecked;
+  badge.style.display = unchecked > 0 ? 'block' : 'none';
+}
+
+async function addToCart(recipeIdx, e) {
+  e.stopPropagation();
+  const btn = e.target;
+  btn.textContent = '⏳ Wird hinzugefügt…';
+  btn.disabled = true;
+  try {
+    // Get recipe data from DOM (name + zutaten)
+    const card = document.getElementById(`r-card-${recipeIdx}`);
+    const name = card.querySelector('.recipe-name').textContent.trim();
+    const items = [...card.querySelectorAll('.recipe-list li')].map(li => li.textContent.trim());
+    const res = await fetch('/api/shopping', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ recipeName: name, zutaten: items })
+    });
+    const data = await res.json();
+    btn.textContent = `✅ ${data.added} Zutaten hinzugefügt`;
+    setTimeout(() => { btn.textContent = '🛒 Zutaten zur Einkaufsliste'; btn.disabled = false; }, 2000);
+    await loadShoppingBadge();
+  } catch(e) {
+    btn.textContent = '🛒 Zutaten zur Einkaufsliste'; btn.disabled = false;
+  }
+}
+
+async function openShoppingList() {
+  const modal = document.getElementById('shop-modal');
+  modal.classList.add('open');
+  await refreshShoppingList();
+}
+
+function closeShoppingList() {
+  document.getElementById('shop-modal').classList.remove('open');
+}
+
+async function refreshShoppingList() {
+  const body = document.getElementById('shop-body');
+  body.innerHTML = '<div class="shop-empty">Lädt…</div>';
+  try {
+    const res = await fetch('/api/shopping');
+    shopItems = await res.json();
+    updateBadge();
+    renderShoppingList();
+  } catch(e) {
+    body.innerHTML = '<div class="shop-empty">Fehler beim Laden.</div>';
+  }
+}
+
+function renderShoppingList() {
+  const body = document.getElementById('shop-body');
+  if (!shopItems.length) {
+    body.innerHTML = '<div class="shop-empty">Noch keine Zutaten.<br>Öffne ein Rezept und tippe auf 🛒</div>';
+    return;
+  }
+  // Flat list – checked items at bottom
+  const unchecked = shopItems.filter(it => !it.checked);
+  const checked = shopItems.filter(it => it.checked);
+  const sorted = [...unchecked, ...checked];
+  let html = '';
+  sorted.forEach(it => {
+    html += `<div class="shop-item${it.checked ? ' checked' : ''}" onclick="toggleShopItem('${it.id}')">
+      <div class="shop-item-check">${it.checked ? '✓' : ''}</div>
+      <span class="shop-item-text">${it.display || it.text}</span>
+    </div>`;
+  });
+  body.innerHTML = html;
+}
+
+async function toggleShopItem(id) {
+  const item = shopItems.find(it => String(it.id) === String(id));
+  if (!item) return;
+  item.checked = !item.checked;
+  renderShoppingList();
+  updateBadge();
+  try {
+    await fetch('/api/shopping', {
+      method: 'PATCH',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ id: item.id, checked: item.checked })
+    });
+  } catch(e) {}
+}
+
+async function clearCheckedItems() {
+  try {
+    await fetch('/api/shopping', { method: 'DELETE', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ clearAll: false }) });
+    await refreshShoppingList();
+  } catch(e) {}
+}
+
+async function clearAllItems() {
+  if (!confirm('Gesamte Einkaufsliste leeren?')) return;
+  try {
+    await fetch('/api/shopping', { method: 'DELETE', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ clearAll: true }) });
+    await refreshShoppingList();
+  } catch(e) {}
+}
+
+// Load badge on start
+loadShoppingBadge();
+
+// ── Dark Mode ──
+function toggleDark() {
+  const isDark = document.body.classList.toggle('dark-mode');
+  document.getElementById('dark-btn').textContent = isDark ? '🌙' : '💡';
+  localStorage.setItem('darkMode', isDark ? '1' : '0');
+}
+// Restore on load
+if (localStorage.getItem('darkMode') === '1') {
+  document.body.classList.add('dark-mode');
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('dark-btn');
+    if (btn) btn.textContent = '🌙';
+  });
+}
+
+async function loadSavedRecipes() {
+  const c = document.getElementById('saved-recipes-container');
+  const c2 = document.getElementById('recipes-container');
+  try {
+    const res = await fetch('/api/recipes');
+    if (!res.ok) { c.innerHTML = ''; c2.innerHTML = ''; return; }
+    const saved = await res.json();
+
+    // Check if builtin recipes need to be initialized
+    if (saved.length === 0) {
+      await initBuiltinRecipes();
+      return loadSavedRecipes();
+    }
+
+    // Group by category
+    const catOrder = ['🌅 Frühstück','🍽️ Mittag & Abend','🫓 Teige & Brote','🎂 Kuchen & Backen','📋 Weitere Rezepte'];
+    const cats = {};
+    saved.forEach((r, i) => {
+      const cat = r.kategorie || '📋 Weitere Rezepte';
+      if (!cats[cat]) cats[cat] = [];
+      cats[cat].push({ r, i });
+    });
+
+    let html = '';
+    const sortedCats = Object.keys(cats).sort((a,b) => {
+      const ai = catOrder.indexOf(a); const bi = catOrder.indexOf(b);
+      return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+    });
+    sortedCats.forEach(cat => {
+      html += `<div class="recipe-cat-title">${cat}</div>`;
+      cats[cat].forEach(({ r, i }) => { html += renderRecipeCard(r, i, 'r'); });
+    });
+    html += '<div class="pb"></div>';
+    c2.innerHTML = html;
+    c.innerHTML = '';
+  } catch(e) { c.innerHTML = ''; }
+}
+
+async function initBuiltinRecipes() {
+  for (const recipe of builtinRecipes) {
+    await fetch('/api/recipes', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ recipe })
+    });
+  }
+}
+
+async function deleteRecipe(index) {
+  if (!confirm('Rezept löschen?')) return;
+  const res = await fetch('/api/recipes', {
+    method: 'DELETE',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ index })
+  });
+  if (res.ok) await loadSavedRecipes();
+}
+
+async function goToRecipe(name) {
+  // Switch to recipes tab
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-rezepte').classList.add('active');
+  document.querySelectorAll('.tab-btn')[2].classList.add('active');
+
+  // Wait for recipes to load if not yet rendered
+  const findAndOpen = () => {
+    const cards = document.querySelectorAll('.recipe-card');
+    let found = false;
+    cards.forEach(card => {
+      const nameEl = card.querySelector('.recipe-name');
+      if (nameEl && nameEl.textContent.trim() === name) {
+        found = true;
+        const content = card.querySelector('.recipe-content');
+        if (content && !content.classList.contains('open')) content.classList.add('open');
+        setTimeout(() => card.scrollIntoView({behavior:'smooth', block:'center'}), 50);
+      }
+    });
+    return found;
+  };
+
+  // Try immediately, then poll until found (max 3s)
+  if (!findAndOpen()) {
+    let attempts = 0;
+    const poll = setInterval(() => {
+      attempts++;
+      if (findAndOpen() || attempts > 30) clearInterval(poll);
+    }, 100);
+  }
+}
+
+let healthHistory = [];
+
+async function loadHealthHistory() {
+  const c = document.getElementById('health-history-container');
+  try {
+    const res = await fetch('/api/health');
+    if (!res.ok) return;
+    healthHistory = await res.json();
+    renderHealthHistory();
+  } catch(e) { healthHistory = []; }
+}
+
+function renderHealthHistory() {
+  const c = document.getElementById('health-history-container');
+  if (!healthHistory.length) { c.innerHTML = ''; return; }
+  let html = '<div style="margin:12px 16px 0;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-light);">Verlauf</div>';
+  healthHistory.forEach((entry, i) => {
+    const d = new Date(entry.date);
+    const dateStr = d.toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit', year:'2-digit'});
+    html += `<div class="tip-card" style="margin-top:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+        <div style="font-size:11px;color:var(--text-light);">${dateStr}</div>
+        <button onclick="deleteHealthEntry(${i})" style="background:#fee;border:none;border-radius:6px;padding:3px 7px;font-size:11px;cursor:pointer;color:#c0392b;">🗑️</button>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:var(--sage-deep);margin-bottom:6px;">❓ ${entry.prompt}</div>
+      <div style="font-size:12px;line-height:1.6;color:var(--text);white-space:pre-wrap;">${entry.answer}</div>
+    </div>`;
+  });
+  c.innerHTML = html;
+}
+
+async function deleteHealthEntry(index) {
+  if (!confirm('Eintrag löschen?')) return;
+  const res = await fetch('/api/health', {
+    method: 'DELETE',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ index })
+  });
+  if (res.ok) await loadHealthHistory();
+}
+
+async function askHealthTip() {
+  const input = document.getElementById('healthPromptInput');
+  const result = document.getElementById('healthTipResult');
+  const q = input.value.trim();
+  if (!q) return;
+  result.style.display = 'block';
+  result.innerHTML = '<div style="color:var(--text-light);font-size:13px;">⏳ Antwort wird geladen...</div>';
+
+  // Build context from last 3 entries
+  let contextStr = '';
+  if (healthHistory.length > 0) {
+    const recent = healthHistory.slice(0, 3);
+    contextStr = '\n\nFrühere Einträge des Nutzers (zur Analyse):\n' + recent.map(e => {
+      const d = new Date(e.date).toLocaleDateString('de-DE');
+      return `[${d}] Frage: ${e.prompt}\nAntwort: ${e.answer}`;
+    }).join('\n---\n');
+  }
+
+  try {
+    const res = await fetch('/api/recipes', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        systemPrompt: `Du bist ein veganer Ernährungs- und Sportmedizin-Assistent für Christian (34J, Läufer 30-40km/Woche, vegan, Schilddrüsenunterfunktion, Leukopenie familiär, Kaliummangel bekannt). Gib kurze, konkrete, sofort umsetzbare Tipps auf Deutsch. Maximal 5-6 Stichpunkte. Berücksichtige frühere Einträge falls vorhanden. Kein Smalltalk.${contextStr}`,
+        prompt: q
+      })
+    });
+    const data = await res.json();
+    const answer = data.result || data.error || 'Keine Antwort.';
+    result.innerHTML = `<div style="background:var(--sage-mist);border-radius:10px;padding:12px;font-size:13px;line-height:1.7;white-space:pre-wrap;color:var(--text);">${answer}</div>`;
+
+    // Save to GitHub
+    await fetch('/api/health', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ entry: { prompt: q, answer } })
+    });
+    input.value = '';
+    await loadHealthHistory();
+  } catch(e) {
+    result.innerHTML = `<div style="color:#c0392b;font-size:13px;">⚠️ Fehler: ${e.message}</div>`;
+  }
+}
+
+// ===== NÄHRSTOFFE =====
+const daily = { kcal:2700,protein:100,carbs:340,fat:90,fiber:30,kalium:3500,magnesium:400,eisen:14,calcium:1000,vitamin_c:100,omega3:2500,zink:10 };
+
+const foods = [
+  {id:'banane',cat:'obst',name:'Banane',emoji:'🍌',n:{kcal:89,protein:1.1,carbs:23,fat:0.3,fiber:2.6,kalium:358,magnesium:27,eisen:0.3,calcium:5,vitamin_c:8.7,omega3:0,zink:0.2}},
+  {id:'erdbeeren',cat:'obst',name:'Erdbeeren',emoji:'🍓',n:{kcal:32,protein:0.7,carbs:7.7,fat:0.3,fiber:2.0,kalium:153,magnesium:13,eisen:0.4,calcium:16,vitamin_c:59,omega3:65,zink:0.1}},
+  {id:'avocado',cat:'obst',name:'Avocado',emoji:'🥑',n:{kcal:160,protein:2.0,carbs:8.5,fat:14.7,fiber:6.7,kalium:485,magnesium:29,eisen:0.6,calcium:12,vitamin_c:10,omega3:110,zink:0.6}},
+  {id:'mango',cat:'obst',name:'Mango',emoji:'🥭',n:{kcal:60,protein:0.8,carbs:15,fat:0.4,fiber:1.6,kalium:168,magnesium:10,eisen:0.2,calcium:11,vitamin_c:36,omega3:0,zink:0.1}},
+  {id:'datteln',cat:'obst',name:'Datteln (getrocknet)',emoji:'🌴',n:{kcal:277,protein:1.8,carbs:75,fat:0.2,fiber:6.7,kalium:696,magnesium:54,eisen:1.0,calcium:64,vitamin_c:0,omega3:0,zink:0.4}},
+  {id:'haferflocken',cat:'getreide',name:'Haferflocken',emoji:'🌾',n:{kcal:372,protein:13.5,carbs:59,fat:7.1,fiber:10,kalium:429,magnesium:129,eisen:4.6,calcium:54,vitamin_c:0,omega3:1100,zink:3.4}},
+  {id:'quinoa',cat:'getreide',name:'Quinoa (gekocht)',emoji:'🌿',n:{kcal:120,protein:4.4,carbs:21,fat:1.9,fiber:2.8,kalium:172,magnesium:64,eisen:1.5,calcium:17,vitamin_c:0,omega3:160,zink:1.1}},
+  {id:'reis',cat:'getreide',name:'Basmatireis (gekocht)',emoji:'🍚',n:{kcal:130,protein:2.7,carbs:28,fat:0.3,fiber:0.4,kalium:35,magnesium:12,eisen:0.2,calcium:10,vitamin_c:0,omega3:0,zink:0.5}},
+  {id:'dinkel',cat:'getreide',name:'Dinkelspaghetti (gekocht)',emoji:'🍝',n:{kcal:142,protein:6.2,carbs:27,fat:1.0,fiber:3.5,kalium:150,magnesium:40,eisen:1.5,calcium:20,vitamin_c:0,omega3:60,zink:1.1}},
+  {id:'linsennudeln',cat:'getreide',name:'Linsennudeln (gekocht)',emoji:'🍜',n:{kcal:145,protein:9.0,carbs:24,fat:1.0,fiber:4.5,kalium:230,magnesium:45,eisen:2.8,calcium:25,vitamin_c:0,omega3:50,zink:1.5}},
+  {id:'rote-linsen',cat:'huelsenfruechte',name:'Rote Linsen (trocken)',emoji:'🫘',n:{kcal:353,protein:25,carbs:60,fat:1.1,fiber:10.8,kalium:677,magnesium:122,eisen:7.5,calcium:51,vitamin_c:4,omega3:370,zink:3.8}},
+  {id:'kichererbsen',cat:'huelsenfruechte',name:'Kichererbsen (gekocht)',emoji:'🟡',n:{kcal:164,protein:8.9,carbs:27,fat:2.6,fiber:7.6,kalium:291,magnesium:48,eisen:2.9,calcium:49,vitamin_c:1.3,omega3:40,zink:1.5}},
+  {id:'weisse-bohnen',cat:'huelsenfruechte',name:'Weiße Bohnen (gekocht)',emoji:'⚪',n:{kcal:139,protein:9.7,carbs:25,fat:0.5,fiber:10.5,kalium:561,magnesium:66,eisen:3.7,calcium:90,vitamin_c:0,omega3:170,zink:1.4}},
+  {id:'tofu',cat:'protein',name:'Tofu (fest)',emoji:'⬜',n:{kcal:76,protein:8.1,carbs:1.9,fat:4.2,fiber:0.3,kalium:121,magnesium:30,eisen:1.6,calcium:176,vitamin_c:0,omega3:730,zink:0.8}},
+  {id:'tempeh',cat:'protein',name:'Tempeh',emoji:'🟫',n:{kcal:195,protein:19.9,carbs:9.4,fat:10.8,fiber:7.0,kalium:412,magnesium:81,eisen:2.7,calcium:111,vitamin_c:0,omega3:330,zink:1.7}},
+  {id:'proteinpulver',cat:'protein',name:'Proteinpulver vegan (3 TL≈20g)',emoji:'💪',n:{kcal:380,protein:75,carbs:10,fat:5,fiber:3,kalium:500,magnesium:80,eisen:5,calcium:200,vitamin_c:0,omega3:0,zink:3}},
+  {id:'spinat',cat:'gemuese',name:'Spinat (frisch)',emoji:'🌿',n:{kcal:23,protein:2.9,carbs:3.6,fat:0.4,fiber:2.2,kalium:558,magnesium:87,eisen:2.7,calcium:99,vitamin_c:28,omega3:138,zink:0.5}},
+  {id:'brokkoli',cat:'gemuese',name:'Brokkoli',emoji:'🥦',n:{kcal:34,protein:2.8,carbs:6.6,fat:0.4,fiber:2.6,kalium:316,magnesium:21,eisen:0.7,calcium:47,vitamin_c:89,omega3:130,zink:0.4}},
+  {id:'suesskartoffel',cat:'gemuese',name:'Süßkartoffel',emoji:'🍠',n:{kcal:86,protein:1.6,carbs:20,fat:0.1,fiber:3.0,kalium:337,magnesium:25,eisen:0.6,calcium:30,vitamin_c:2.4,omega3:0,zink:0.3}},
+  {id:'paprika',cat:'gemuese',name:'Paprika (rot)',emoji:'🫑',n:{kcal:31,protein:1.0,carbs:6.0,fat:0.3,fiber:2.1,kalium:211,magnesium:12,eisen:0.4,calcium:7,vitamin_c:140,omega3:30,zink:0.2}},
+  {id:'kartoffel',cat:'gemuese',name:'Kartoffel (gekocht)',emoji:'🥔',n:{kcal:77,protein:2.0,carbs:17,fat:0.1,fiber:1.8,kalium:421,magnesium:23,eisen:0.3,calcium:5,vitamin_c:13,omega3:0,zink:0.3}},
+  {id:'walnuesse',cat:'fette',name:'Walnüsse',emoji:'🫙',n:{kcal:654,protein:15.2,carbs:13.7,fat:65.2,fiber:6.7,kalium:441,magnesium:158,eisen:2.9,calcium:98,vitamin_c:1.3,omega3:9080,zink:3.1}},
+  {id:'cashews',cat:'fette',name:'Cashews',emoji:'🥜',n:{kcal:553,protein:18.2,carbs:30,fat:43.8,fiber:3.3,kalium:660,magnesium:292,eisen:6.7,calcium:37,vitamin_c:0.5,omega3:62,zink:5.8}},
+  {id:'leinsamen',cat:'fette',name:'Leinsamen / Leinöl (1 EL≈14g)',emoji:'🟤',n:{kcal:534,protein:18.3,carbs:28.9,fat:42.2,fiber:27.3,kalium:813,magnesium:392,eisen:5.7,calcium:255,vitamin_c:0.6,omega3:22800,zink:4.3}},
+  {id:'chiasamen',cat:'fette',name:'Chiasamen',emoji:'⚫',n:{kcal:486,protein:16.5,carbs:42.1,fat:30.7,fiber:34.4,kalium:407,magnesium:335,eisen:7.7,calcium:631,vitamin_c:1.6,omega3:17550,zink:4.6}},
+  {id:'erdnussbutter',cat:'fette',name:'Erdnussbutter',emoji:'🥜',n:{kcal:588,protein:25,carbs:20,fat:50,fiber:6,kalium:649,magnesium:168,eisen:1.9,calcium:49,vitamin_c:0,omega3:0,zink:2.9}},
+  {id:'mandelmus',cat:'fette',name:'Mandelmus',emoji:'🤎',n:{kcal:614,protein:21,carbs:20,fat:56,fiber:10.5,kalium:748,magnesium:270,eisen:3.7,calcium:270,vitamin_c:0,omega3:0,zink:3.1}},
+  {id:'hafermilch',cat:'getreide',name:'Hafermilch (250ml=1 Glas)',emoji:'🥛',n:{kcal:46,protein:1.0,carbs:8.6,fat:1.5,fiber:0.8,kalium:115,magnesium:13,eisen:0.4,calcium:120,vitamin_c:0,omega3:60,zink:0.1}},
+];
+
+const nutrientMeta = [
+  {key:'protein',label:'Protein',unit:'g',cls:'c-protein'},
+  {key:'carbs',label:'Kohlenhydrate',unit:'g',cls:'c-carbs'},
+  {key:'fat',label:'Fett',unit:'g',cls:'c-fat'},
+  {key:'fiber',label:'Ballaststoffe',unit:'g',cls:'c-fiber'},
+  {key:'kalium',label:'Kalium',unit:'mg',cls:'c-kalium'},
+  {key:'magnesium',label:'Magnesium',unit:'mg',cls:'c-magnesium'},
+  {key:'eisen',label:'Eisen',unit:'mg',cls:'c-eisen'},
+  {key:'calcium',label:'Calcium',unit:'mg',cls:'c-calcium'},
+  {key:'vitamin_c',label:'Vitamin C',unit:'mg',cls:'c-vitamin_c'},
+  {key:'omega3',label:'Omega-3',unit:'mg',cls:'c-omega3'},
+  {key:'zink',label:'Zink',unit:'mg',cls:'c-zink'},
+];
+
+const catLabels = {
+  obst:{label:'🍌 Obst'},getreide:{label:'🌾 Getreide & Pasta'},
+  huelsenfruechte:{label:'🫘 Hülsenfrüchte'},protein:{label:'💪 Protein-Quellen'},
+  gemuese:{label:'🥦 Gemüse'},fette:{label:'🥑 Fette, Nüsse & Samen'},
+};
+
+let currentGrams = 100;
+let currentCat = 'all';
+
+function renderFoods() {
+  const c = document.getElementById('foods-container');
+  let html = '';
+  const cats = currentCat === 'all' ? Object.keys(catLabels) : [currentCat];
+  cats.forEach(cat => {
+    const catFoods = foods.filter(f => f.cat === cat);
+    if (!catFoods.length) return;
+    html += `<div class="cat-title">${catLabels[cat].label}</div>`;
+    catFoods.forEach(food => {
+      const g = currentGrams / 100;
+      const kcalVal = (food.n.kcal * g).toFixed(0);
+      const rows = nutrientMeta.map(m => {
+        const val = food.n[m.key] * g;
+        const p = Math.min((val / daily[m.key]) * 100, 100);
+        const vStr = m.key==='omega3' ? (val>=1000?(val/1000).toFixed(1)+'g':val.toFixed(0)+'mg') : val.toFixed(1)+m.unit;
+        const pStr = p < 1 ? '<1%' : Math.round(p)+'%';
+        return `<div class="n-row">
+          <div class="n-dot ${m.cls}"></div>
+          <div class="n-name">${m.label}</div>
+          <div class="n-bar-wrap"><div class="n-bar ${m.cls}" style="width:${p}%"></div></div>
+          <div class="n-val">${vStr}</div>
+          <div class="n-pct">${pStr}</div>
+        </div>`;
+      }).join('');
+      html += `<div class="food-card">
+        <div class="food-header-row">
+          <div class="food-name-wrap"><span class="food-emoji">${food.emoji}</span><span class="food-name">${food.name}</span></div>
+          <span class="food-portion">${currentGrams}g</span>
+        </div>
+        <div class="food-kcal-big"><span class="kcal-num">${kcalVal}</span><span class="kcal-u">kcal</span></div>
+        <div class="nutrient-rows">${rows}</div>
+      </div>`;
+    });
+  });
+  c.innerHTML = html;
+}
+
+function filterCat(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFoods();
+}
+
+document.getElementById('gramInput').addEventListener('input', function() {
+  const v = parseInt(this.value);
+  if (v > 0 && v <= 2000) { currentGrams = v; renderFoods(); }
+});
+
+// ===== KI REZEPTSUCHE =====
+async function askAI() {
+  const prompt = document.getElementById('aiPrompt').value.trim();
+  if (!prompt) return;
+  const btn = document.getElementById('aiBtn');
+  btn.disabled = true; btn.textContent = '⏳ Generiere...';
+  document.getElementById('ai-result').innerHTML = '<div class="ai-loading">🤖 Rezept wird erstellt...</div>';
+  try {
+    const res = await fetch('/api/recipes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt })
+    });
+    const raw = await res.text();
+    console.log('RAW RESPONSE:', raw);
+    let r;
+    try { r = JSON.parse(raw); } catch(e) { throw new Error('Server-Antwort: ' + raw.slice(0, 200)); }
+    if (r.error) throw new Error(r.error);
+    lastAIRecipe = r;
+    document.getElementById('ai-result').innerHTML = `
+      <div class="ai-result-card">
+        <div class="ai-result-header">
+          <div class="ai-result-title">✨ ${r.name}</div>
+          <div class="ai-result-meta">${r.meta}</div>
+        </div>
+        <div class="ai-result-body">
+          <div class="ai-result-sub">Zutaten</div>
+          <ul class="ai-result-list">${r.zutaten.map(z=>`<li>${z}</li>`).join('')}</ul>
+          <div class="ai-result-sub">Zubereitung</div>
+          <ol class="ai-result-steps">${r.schritte.map(s=>`<li>${s}</li>`).join('')}</ol>
+          <div class="ai-result-naehr">✅ ${r.naehr}</div>
+          ${r.tipp ? `<div style="margin-top:8px;font-size:11px;color:var(--text-light);font-style:italic;">💡 ${r.tipp}</div>` : ''}
+          <button onclick="saveAIRecipe()" id="saveRecipeBtn" style="margin-top:14px;width:100%;padding:11px;background:var(--sage-deep);color:white;border:none;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">💾 Rezept speichern</button>
+        </div>
+      </div>`;
+  } catch(e) {
+    document.getElementById('ai-result').innerHTML = `<div class="ai-error">⚠️ ${e.message}</div>`;
+  }
+  btn.disabled = false; btn.textContent = '✨ Rezept generieren';
+}
+
+// ===== NAVIGATION =====
+let lastAIRecipe = null;
+
+async function saveAIRecipe() {
+  if (!lastAIRecipe) return;
+  const btn = document.getElementById('saveRecipeBtn');
+  btn.disabled = true; btn.textContent = '⏳ Wird gespeichert...';
+  try {
+    const res = await fetch('/api/recipes', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ recipe: lastAIRecipe })
+    });
+    if (!res.ok) throw new Error('Speichern fehlgeschlagen');
+    btn.textContent = '✅ Gespeichert!';
+    btn.style.background = 'var(--sage-mid)';
+    await loadSavedRecipes();
+  } catch(e) {
+    btn.textContent = '⚠️ Fehler – nochmal versuchen';
+    btn.disabled = false;
+  }
+}
+
+function showScreen(name, btn) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ===== WEIGHT TRACKER (Backend) =====
+let weightData = [];
+
+async function loadWeightData() {
+  try {
+    const res = await fetch('/api/weight');
+    weightData = await res.json();
+  } catch(e) {
+    weightData = [];
+  }
+}
+
+async function saveWeightData(data) {
+  const res = await fetch('/api/weight', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data })
+  });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.error || 'Speichern fehlgeschlagen');
+}
+
+async function openWeight() {
+  document.getElementById('weightModal').classList.add('open');
+  document.getElementById('wEntries').innerHTML = '<div class="w-empty">⏳ Lade Daten...</div>';
+  await loadWeightData();
+  renderWeight();
+}
+function closeWeight() {
+  document.getElementById('weightModal').classList.remove('open');
+}
+function closeWeightOnBg(e) {
+  if (e.target === document.getElementById('weightModal')) closeWeight();
+}
+
+async function addWeight() {
+  const input = document.getElementById('weightInput');
+  const raw = input.value.replace(',', '.');
+  const v = parseFloat(raw);
+  if (isNaN(v) || v < 30 || v > 200) {
+    input.style.borderColor = '#e74c3c';
+    setTimeout(() => input.style.borderColor = '', 1000);
+    return;
+  }
+  try {
+    const today = new Date().toISOString().split('T')[0];
+    const idx = weightData.findIndex(e => e.date === today);
+    if (idx >= 0) weightData[idx].weight = v;
+    else weightData.push({ date: today, weight: v });
+    weightData.sort((a, b) => a.date.localeCompare(b.date));
+    await saveWeightData(weightData);
+    input.value = '';
+    input.style.borderColor = 'var(--sage-light)';
+    setTimeout(() => input.style.borderColor = '', 1000);
+    renderWeight();
+  } catch(e) {
+    document.getElementById('wEntries').innerHTML = `<div class="w-empty" style="color:#c0392b;">⚠️ Fehler: ${e.message}</div>`;
+  }
+}
+
+async function deleteWeight(date) {
+  weightData = weightData.filter(e => e.date !== date);
+  await saveWeightData(weightData);
+  renderWeight();
+}
+
+function renderWeight() {
+  const data = weightData;
+  const goal = 70;
+
+  // Stats
+  const last = data.length ? data[data.length - 1].weight : null;
+  const first = data.length ? data[0].weight : null;
+  const diff = (last !== null && first !== null && data.length > 1) ? (last - first) : null;
+  const toGoal = last !== null ? (goal - last) : null;
+  document.getElementById('wStats').innerHTML = `
+    <div class="ws"><div class="ws-val">${last !== null ? last.toFixed(1) + ' kg' : '—'}</div><div class="ws-lbl">Aktuell</div></div>
+    <div class="ws"><div class="ws-val" style="color:${diff === null ? 'var(--sage-deep)' : diff >= 0 ? 'var(--sage-mid)' : '#e74c3c'}">${diff === null ? '—' : (diff >= 0 ? '+' : '') + diff.toFixed(1) + ' kg'}</div><div class="ws-lbl">Verlauf</div></div>
+    <div class="ws"><div class="ws-val">${toGoal !== null ? (toGoal > 0 ? '+' : '') + (-toGoal).toFixed(1) + ' kg' : '4 kg'}</div><div class="ws-lbl">Bis 70 kg</div></div>`;
+
+  // Graph
+  const wrap = document.getElementById('wGraphWrap');
+  if (data.length < 2) {
+    wrap.innerHTML = '<div class="w-empty">Mindestens 2 Einträge für den Verlaufsgraph</div>';
+  } else {
+    const W = wrap.clientWidth || 320;
+    const H = 130; const PAD = 20; const PL = 34;
+    const weights = data.map(d => d.weight);
+    const minW = Math.min(...weights, goal) - 1;
+    const maxW = Math.max(...weights, goal) + 1;
+    const toX = i => PL + (i / (data.length - 1)) * (W - PL - PAD);
+    const toY = v => PAD + (1 - (v - minW) / (maxW - minW)) * (H - PAD * 2);
+
+    const yVals = [minW, (minW + maxW) / 2, maxW];
+    const yLabels = yVals.map(v =>
+      `<text x="${PL - 4}" y="${toY(v) + 4}" font-size="9" fill="#999" text-anchor="end">${v.toFixed(1)}</text>`
+    ).join('');
+
+    const goalY = toY(goal);
+    const goalLine = `<line x1="${PL}" y1="${goalY}" x2="${W - PAD}" y2="${goalY}" stroke="#52b788" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.6"/>
+      <text x="${W - PAD + 2}" y="${goalY + 4}" font-size="9" fill="#52b788" opacity="0.8">70</text>`;
+
+    const pathD = data.map((d, i) => `${i === 0 ? 'M' : 'L'}${toX(i)} ${toY(d.weight)}`).join(' ');
+    const areaD = pathD + ` L${toX(data.length - 1)} ${H - PAD} L${toX(0)} ${H - PAD} Z`;
+    const dots = data.map((d, i) =>
+      `<circle cx="${toX(i)}" cy="${toY(d.weight)}" r="4" fill="#2d6a4f" stroke="white" stroke-width="2"/>`
+    ).join('');
+    const xLabels = [0, data.length - 1].map(i =>
+      `<text x="${toX(i)}" y="${H - 2}" font-size="9" fill="#999" text-anchor="middle">${data[i].date.slice(5)}</text>`
+    ).join('');
+
+    wrap.innerHTML = `<svg class="wgraph" viewBox="0 0 ${W} ${H}" height="${H}">
+      <defs><linearGradient id="wgrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#52b788" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="#52b788" stop-opacity="0"/>
+      </linearGradient></defs>
+      ${yLabels}${goalLine}
+      <path d="${areaD}" fill="url(#wgrad)"/>
+      <path d="${pathD}" fill="none" stroke="#2d6a4f" stroke-width="2.5" stroke-linejoin="round"/>
+      ${dots}${xLabels}
+    </svg>`;
+  }
+
+  // List
+  document.getElementById('wEntries').innerHTML = data.length === 0
+    ? '<div class="w-empty">Noch keine Einträge – trag dein Gewicht ein!</div>'
+    : [...data].reverse().map(e => `
+        <div class="w-entry">
+          <span class="w-entry-date">${new Date(e.date + 'T12:00:00').toLocaleDateString('de-DE', { day: '2-digit', month: 'short', year: '2-digit' })}</span>
+          <span class="w-entry-val">${e.weight.toFixed(1)} kg</span>
+          <button class="w-entry-del" onclick="deleteWeight('${e.date}')">🗑</button>
+        </div>`).join('');
+}
+
+// ===== INIT
+renderDays();
+loadSavedRecipes();
+loadHealthHistory();
+renderFoods();
+</script>
+<!-- Shopping List Modal -->
+<div class="shop-modal" id="shop-modal">
+  <div class="shop-modal-hero">
+    <button class="shop-close" onclick="closeShoppingList()">✕</button>
+    <h2>Einkaufs<em>liste</em></h2>
+    <button onclick="clearCheckedItems()" class="shop-clear-checked" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:7px 12px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;">✓ Abgehakte löschen</button>
+  </div>
+  <div class="shop-body" id="shop-body">
+    <div class="shop-empty">Noch keine Zutaten.<br>Öffne ein Rezept und tippe auf 🛒</div>
+  </div>
+  <div class="shop-footer">
+    <button class="shop-clear-all" onclick="clearAllItems()">🗑️ Liste leeren</button>
+  </div>
+</div>
+</body>
+</html>

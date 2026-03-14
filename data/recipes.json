@@ -513,5 +513,49 @@
     "quelle": "VeganAufBayrisch",
     "tipp": "Je länger rösten, desto tiefer und kräftiger wird der Geschmack.",
     "savedAt": "2026-03-14T12:12:36.906Z"
+  },
+  {
+    "name": "Sauerbraten (Seitan)",
+    "meta": "⏱ 3–4 Std. + 12–24 Std. Beizen · 4 Portionen",
+    "kategorie": "🍽️ Mittag & Abend",
+    "zutaten": [
+      "── Seitan ──",
+      "1.000g Weizenmehl (Typ 480–550, proteinreich)",
+      "550–650ml Wasser",
+      "── Würzpaste ──",
+      "2 TL Senf",
+      "2 TL Misopaste",
+      "2 TL Sojasauce",
+      "1 TL Paprikapulver",
+      "2 TL Öl",
+      "── Sud ──",
+      "750ml trockener Rotwein",
+      "450ml kräftige Gemüsebrühe",
+      "300ml Wasser",
+      "5–6 EL Apfelessig",
+      "2 große Zwiebeln",
+      "2 Karotten",
+      "1 Stück Sellerie (~80–100g)",
+      "3 Lorbeerblätter, 6 Wacholderbeeren, 3 Nelken",
+      "2–3 getrocknete Shiitakepilze",
+      "── Sauce ──",
+      "2 TL Zucker",
+      "2 EL Tomatenmark",
+      "2 TL Misopaste",
+      "2 TL Preiselbeeren oder Johannisbeergelee"
+    ],
+    "schritte": [
+      "Mehl, Salz und Wasser zu einem festen Teig kneten. Kugel formen und 1 Stunde in kaltem Wasser ruhen lassen.",
+      "Teig in kaltem Wasser kneten, Wasser mehrfach wechseln bis es nur noch leicht trüb ist (ca. 10–15 Min). Übrig bleibt elastisches Gluten.",
+      "Seitan flach drücken, mit Würzpaste bestreichen, in drei Stränge teilen, flechten und zu einer kompakten Bratenform verknoten.",
+      "Alle Sud-Zutaten aufkochen, 10–15 Min köcheln. Seitan bei 85–95°C ca. 60–75 Min ziehen lassen. Im Sud abkühlen, dann 12–24 Std. im Kühlschrank beizen.",
+      "Seitan trocken tupfen und rundum kräftig anbraten (8–12 Min). Sud abseihen.",
+      "Zucker karamellisieren, Tomatenmark rösten, mit Sud ablöschen, auf ⅓ einkochen (30–45 Min). Mit Miso, Preiselbeeren, Salz, Pfeffer abschmecken.",
+      "Seitan mit Sauce bei 200°C ca. 15 Min glasieren. Mit Klößen und Dunkelbiersoße servieren."
+    ],
+    "naehr": "~520 kcal · ~45g Protein · Eisen, Zink",
+    "quelle": "VeganAufBayrisch",
+    "tipp": "Aufwändig aber beeindruckend – perfekt für Sonntag!",
+    "savedAt": "2026-03-14T12:12:37.964Z"
   }
 ]

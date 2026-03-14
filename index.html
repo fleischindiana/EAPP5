@@ -94,8 +94,12 @@ body {
   .tab-bar { width: 100%; }
   .tab-inner { max-width: 700px; margin: 0 auto; }
 
-  /* Screen content: centered column */
-  .screen { padding-left: 0; padding-right: 0; }
+  /* Screen fills remaining height, tab-bar stays visible */
+  .screen.active {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+  }
 
   /* Center all screen content */
   .screen > * {
@@ -133,8 +137,8 @@ body {
 }
 
 /* SCREENS */
-.screen { display:none; flex:1; overflow-y:auto; overflow-x:hidden; padding-bottom:calc(var(--safe-bottom) + 72px); }
-.screen.active { display:flex; flex-direction:column; }
+.screen { display:none; overflow-y:auto; overflow-x:hidden; padding-bottom:calc(var(--safe-bottom) + 72px); }
+.screen.active { display:block; flex:1; min-height:0; }
 .screen::-webkit-scrollbar { display:none; }
 
 /* TAB BAR */

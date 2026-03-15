@@ -448,7 +448,7 @@ body.dark-mode html { background: linear-gradient(135deg, #0f1a14 0%, #141f18 50
 <div class="screen active" id="screen-plan">
   <div class="plan-hero">
     <div class="hero-inner">
-      <h1>7-Tage <em>Plan</em> ♦</h1>
+      <h1>7-Tage <em>Plan</em> ✿</h1>
       <div class="plan-hero-sub">Ausdauer · Regeneration · +0,25 kg/Woche</div>
       <div style="display:flex;gap:8px;position:absolute;top:0;right:20px;">
         <button onclick="toggleDark()" id="dark-btn" style="background:rgba(255,255,255,0.15);border:none;border-radius:20px;padding:6px 12px;font-size:16px;cursor:pointer;" title="Dunkelmodus">🌓</button>
@@ -1133,6 +1133,7 @@ function showScreen(name, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
   btn.classList.add('active');
+  if (name === 'naehrstoffe') renderFoods();
 }
 
 // ===== WEIGHT TRACKER (Backend) =====
@@ -1400,6 +1401,48 @@ async function askAI() {
   btn.disabled = false; btn.textContent = '✨ Rezept generieren';
 }
 
+let healthHistory = [];
+
+async function loadHealthHistory() {
+  const container = document.getElementById('health-history-container');
+  try {
+    const res = await fetch('/api/health');
+    if (!res.ok) return;
+    healthHistory = await res.json();
+    renderHealthHistory();
+  } catch(e) { healthHistory = []; }
+}
+
+function renderHealthHistory() {
+  const container = document.getElementById('health-history-container');
+  if (!container) return;
+  if (!healthHistory.length) { container.innerHTML = ''; return; }
+  let html = '<div style="margin:12px 16px 0;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);">Verlauf</div>';
+  healthHistory.forEach((entry, i) => {
+    const d = new Date(entry.date);
+    const dateStr = d.toLocaleDateString('de-DE', {day:'2-digit', month:'2-digit', year:'2-digit'});
+    html += `<div class="tip-card" style="margin-top:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+        <div style="font-size:11px;color:var(--text-light);">${dateStr}</div>
+        <button onclick="deleteHealthEntry(${i})" style="background:#fee;border:none;border-radius:6px;padding:3px 7px;font-size:11px;cursor:pointer;color:#c0392b;">🗑️</button>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:var(--sage-deep);margin-bottom:6px;">❓ ${entry.prompt}</div>
+      <div style="font-size:12px;line-height:1.6;color:var(--text);white-space:pre-wrap;">${entry.answer}</div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+async function deleteHealthEntry(index) {
+  if (!confirm('Eintrag löschen?')) return;
+  const res = await fetch('/api/health', {
+    method: 'DELETE',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ index })
+  });
+  if (res.ok) await loadHealthHistory();
+}
+
 async function askHealthTip() {
   const input = document.getElementById('healthPromptInput');
   const result = document.getElementById('healthTipResult');
@@ -1442,7 +1485,7 @@ async function askHealthTip() {
 // ===== INIT
 renderDays();
 loadSavedRecipes();
-loadHealthHistory();
+if (typeof loadHealthHistory === "function") loadHealthHistory();
 // Wait for DOM before rendering foods
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {

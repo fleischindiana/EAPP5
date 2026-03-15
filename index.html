@@ -259,7 +259,7 @@ body {
 .supp-hint { font-size:10px; color:var(--text-muted); margin-top:5px; line-height:1.4; }
 
 /* ── NÄHRSTOFFE ── */
-.naehr-sticky { position:sticky; top:0; z-index:10; }
+.naehr-sticky { position:sticky; top:0; z-index:10; width:100%; left:0; right:0; }
 .screen-hero, .naehr-hero, .tips-hero {
   background: var(--sage-deep);
   padding: calc(var(--safe-top) + 10px) 20px 18px;
@@ -440,7 +440,7 @@ body.dark-mode html { background: linear-gradient(135deg, #0f1a14 0%, #141f18 50
 <div class="screen active" id="screen-plan">
   <div class="plan-hero">
     <div class="hero-inner">
-      <h1>7-Tage <em>Plan</em> ★</h1>
+      <h1>7-Tage <em>Plan</em> ●</h1>
       <div class="plan-hero-sub">Ausdauer · Regeneration · +0,25 kg/Woche</div>
       <div style="display:flex;gap:8px;position:absolute;top:0;right:20px;">
         <button onclick="toggleDark()" id="dark-btn" style="background:rgba(255,255,255,0.15);border:none;border-radius:20px;padding:6px 12px;font-size:16px;cursor:pointer;" title="Dunkelmodus">💡</button>
@@ -623,15 +623,6 @@ body.dark-mode html { background: linear-gradient(135deg, #0f1a14 0%, #141f18 50
   </div>
 </div>
 
-<!-- TAB BAR -->
-<div class="tab-bar">
-  <div class="tab-inner">
-    <button class="tab-btn active" onclick="showScreen('plan',this)"><span class="tab-icon">📅</span><span class="tab-label">Plan</span></button>
-    <button class="tab-btn" onclick="showScreen('naehrstoffe',this)"><span class="tab-icon">🔬</span><span class="tab-label">Nährstoffe</span></button>
-    <button class="tab-btn" onclick="showScreen('rezepte',this)"><span class="tab-icon">🍳</span><span class="tab-label">Rezepte</span></button>
-    <button class="tab-btn" onclick="showScreen('tipps',this)"><span class="tab-icon">💡</span><span class="tab-label">Tipps</span></button>
-  </div>
-</div>
 
 <!-- WEIGHT MODAL -->
 <div class="modal-overlay" id="weightModal" onclick="closeWeightOnBg(event)">
@@ -1542,5 +1533,14 @@ loadSavedRecipes();
 loadHealthHistory();
 renderFoods();
 </script>
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <div class="tab-inner">
+    <button class="tab-btn active" onclick="showScreen('plan',this)"><span class="tab-icon">📅</span><span class="tab-label">Plan</span></button>
+    <button class="tab-btn" onclick="showScreen('naehrstoffe',this)"><span class="tab-icon">🔬</span><span class="tab-label">Nährstoffe</span></button>
+    <button class="tab-btn" onclick="showScreen('rezepte',this)"><span class="tab-icon">🍳</span><span class="tab-label">Rezepte</span></button>
+    <button class="tab-btn" onclick="showScreen('tipps',this)"><span class="tab-icon">💡</span><span class="tab-label">Tipps</span></button>
+  </div>
+</div>
 </body>
 </html>

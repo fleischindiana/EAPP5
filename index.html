@@ -91,6 +91,7 @@ body {
 
   /* Tab bar: full width, but inner items centered */
   .tab-bar { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; }
+  .naehr-sticky { max-width: 100% !important; width: 100%; margin-left: 0 !important; margin-right: 0 !important; }
   .tab-inner { max-width: 700px; margin: 0 auto; }
 
   /* Screen fills remaining height */
@@ -259,7 +260,14 @@ body {
 .supp-hint { font-size:10px; color:var(--text-muted); margin-top:5px; line-height:1.4; }
 
 /* ── NÄHRSTOFFE ── */
-.naehr-sticky { position:sticky; top:0; z-index:10; width:100%; left:0; right:0; }
+.naehr-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  width: 100vw;
+  margin-left: calc(-1 * ((100vw - 100%) / 2));
+  box-sizing: border-box;
+}
 .screen-hero, .naehr-hero, .tips-hero {
   background: var(--sage-deep);
   padding: calc(var(--safe-top) + 10px) 20px 18px;
@@ -440,10 +448,10 @@ body.dark-mode html { background: linear-gradient(135deg, #0f1a14 0%, #141f18 50
 <div class="screen active" id="screen-plan">
   <div class="plan-hero">
     <div class="hero-inner">
-      <h1>7-Tage <em>Plan</em> ●</h1>
+      <h1>7-Tage <em>Plan</em> ◉</h1>
       <div class="plan-hero-sub">Ausdauer · Regeneration · +0,25 kg/Woche</div>
       <div style="display:flex;gap:8px;position:absolute;top:0;right:20px;">
-        <button onclick="toggleDark()" id="dark-btn" style="background:rgba(255,255,255,0.15);border:none;border-radius:20px;padding:6px 12px;font-size:16px;cursor:pointer;" title="Dunkelmodus">💡</button>
+        <button onclick="toggleDark()" id="dark-btn" style="background:rgba(255,255,255,0.15);border:none;border-radius:20px;padding:6px 12px;font-size:16px;cursor:pointer;" title="Dunkelmodus">🌓</button>
         <button class="weight-fab" style="position:static;" onclick="openWeight()">⚖️ Gewicht</button>
       </div>
     </div>
@@ -624,45 +632,6 @@ body.dark-mode html { background: linear-gradient(135deg, #0f1a14 0%, #141f18 50
 </div>
 
 
-<!-- WEIGHT MODAL -->
-<div class="modal-overlay" id="weightModal" onclick="closeWeightOnBg(event)">
-  <div class="modal" id="weightModalInner">
-    <div class="modal-handle"></div>
-    <div class="modal-head">
-      <div class="modal-title">Gewichtstracker</div>
-      <button class="modal-close" onclick="closeWeight()">✕</button>
-    </div>
-    <div class="w-input-row">
-      <div class="w-field">
-        <label>Gewicht eintragen</label>
-        <input type="number" id="weightInput" inputmode="decimal" step="0.1" placeholder="66.5">
-      </div>
-      <button class="w-add-btn" onclick="addWeight()">+ Eintragen</button>
-    </div>
-    <div class="w-stats" id="wStats"></div>
-    <div class="w-graph-wrap">
-      <div class="w-graph-title">Verlauf</div>
-      <div id="wGraphWrap"></div>
-    </div>
-    <div class="w-entries" id="wEntries"></div>
-  </div>
-</div>
-
-
-<!-- Shopping List Modal -->
-<div class="shop-modal" id="shop-modal">
-  <div class="shop-modal-hero">
-    <button class="shop-close" onclick="closeShoppingList()">✕</button>
-    <h2>Einkaufs<em>liste</em></h2>
-    <button onclick="clearCheckedItems()" class="shop-clear-checked" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:7px 12px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;">✓ Abgehakte löschen</button>
-  </div>
-  <div class="shop-body" id="shop-body">
-    <div class="shop-empty">Noch keine Zutaten.<br>Öffne ein Rezept und tippe auf 🛒</div>
-  </div>
-  <div class="shop-footer">
-    <button class="shop-clear-all" onclick="clearAllItems()">🗑️ Liste leeren</button>
-  </div>
-</div>
 
 </div><!-- end app-shell -->
 
@@ -1028,7 +997,7 @@ loadShoppingBadge();
 // ── Dark Mode ──
 function toggleDark() {
   const isDark = document.body.classList.toggle('dark-mode');
-  document.getElementById('dark-btn').textContent = isDark ? '🌙' : '💡';
+  document.getElementById('dark-btn').textContent = isDark ? '🌙' : '🌓';
   localStorage.setItem('darkMode', isDark ? '1' : '0');
 }
 // Restore on load
@@ -1540,6 +1509,45 @@ renderFoods();
     <button class="tab-btn" onclick="showScreen('naehrstoffe',this)"><span class="tab-icon">🔬</span><span class="tab-label">Nährstoffe</span></button>
     <button class="tab-btn" onclick="showScreen('rezepte',this)"><span class="tab-icon">🍳</span><span class="tab-label">Rezepte</span></button>
     <button class="tab-btn" onclick="showScreen('tipps',this)"><span class="tab-icon">💡</span><span class="tab-label">Tipps</span></button>
+  </div>
+</div>
+<!-- WEIGHT MODAL -->
+<div class="modal-overlay" id="weightModal" onclick="closeWeightOnBg(event)">
+  <div class="modal" id="weightModalInner">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <div class="modal-title">Gewichtstracker</div>
+      <button class="modal-close" onclick="closeWeight()">✕</button>
+    </div>
+    <div class="w-input-row">
+      <div class="w-field">
+        <label>Gewicht eintragen</label>
+        <input type="number" id="weightInput" inputmode="decimal" step="0.1" placeholder="66.5">
+      </div>
+      <button class="w-add-btn" onclick="addWeight()">+ Eintragen</button>
+    </div>
+    <div class="w-stats" id="wStats"></div>
+    <div class="w-graph-wrap">
+      <div class="w-graph-title">Verlauf</div>
+      <div id="wGraphWrap"></div>
+    </div>
+    <div class="w-entries" id="wEntries"></div>
+  </div>
+</div>
+
+
+<!-- Shopping List Modal -->
+<div class="shop-modal" id="shop-modal">
+  <div class="shop-modal-hero">
+    <button class="shop-close" onclick="closeShoppingList()">✕</button>
+    <h2>Einkaufs<em>liste</em></h2>
+    <button onclick="clearCheckedItems()" class="shop-clear-checked" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:7px 12px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;">✓ Abgehakte löschen</button>
+  </div>
+  <div class="shop-body" id="shop-body">
+    <div class="shop-empty">Noch keine Zutaten.<br>Öffne ein Rezept und tippe auf 🛒</div>
+  </div>
+  <div class="shop-footer">
+    <button class="shop-clear-all" onclick="clearAllItems()">🗑️ Liste leeren</button>
   </div>
 </div>
 </body>

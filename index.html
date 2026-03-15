@@ -47,7 +47,6 @@ body {
   display: flex;
   flex-direction: column;
   height: 100dvh;
-  overflow: hidden;
   position: relative;
 }
 
@@ -91,12 +90,13 @@ body {
   .plan-hero h1, .hero-title, .tips-hero h1 { font-size: 32px; }
 
   /* Tab bar: full width, but inner items centered */
-  .tab-bar { width: 100%; }
+  .tab-bar { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; }
   .tab-inner { max-width: 700px; margin: 0 auto; }
 
   /* Screen fills remaining height */
   .screen.active {
     height: auto;
+    padding-bottom: 80px;
   }
 
   /* Center all screen content */
@@ -138,24 +138,26 @@ body {
 .screen { display:none; }
 .screen.active {
   display: block;
-  flex: 1 1 0;
-  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-bottom: calc(var(--safe-bottom) + 72px);
+  height: 100dvh;
+  padding-bottom: calc(var(--safe-bottom) + 80px);
 }
 .screen::-webkit-scrollbar { display:none; }
 
 /* TAB BAR */
 .tab-bar {
-  flex-shrink: 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background: var(--white);
   border-top: 1px solid var(--sage-pale);
   display: flex;
   justify-content: center;
   padding-bottom: var(--safe-bottom);
   box-shadow: 0 -2px 16px rgba(58,107,80,0.08);
-  z-index: 100;
+  z-index: 9000;
 }
 .tab-inner {
   display: flex;
@@ -438,7 +440,7 @@ body.dark-mode html { background: linear-gradient(135deg, #0f1a14 0%, #141f18 50
 <div class="screen active" id="screen-plan">
   <div class="plan-hero">
     <div class="hero-inner">
-      <h1>7-Tage <em>Plan</em> ✓</h1>
+      <h1>7-Tage <em>Plan</em> ★</h1>
       <div class="plan-hero-sub">Ausdauer · Regeneration · +0,25 kg/Woche</div>
       <div style="display:flex;gap:8px;position:absolute;top:0;right:20px;">
         <button onclick="toggleDark()" id="dark-btn" style="background:rgba(255,255,255,0.15);border:none;border-radius:20px;padding:6px 12px;font-size:16px;cursor:pointer;" title="Dunkelmodus">💡</button>

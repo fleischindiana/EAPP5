@@ -388,7 +388,7 @@ body {
 .tip-list li:last-child { border-bottom:none; }
 
 /* ── WEIGHT MODAL ── */
-.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:200; align-items:flex-end; justify-content:center; backdrop-filter:blur(4px); }
+.modal-overlay { display:none; position:fixed; inset:0; z-index:200; flex-direction:column; background:var(--bg); }
 .modal-overlay.open { display:flex; }
 .modal { background:var(--white); border-radius:24px 24px 0 0; width:100%; max-width:430px; max-height:88dvh; overflow-y:auto; padding:0 0 calc(var(--safe-bottom)+16px); box-shadow:0 -8px 40px rgba(58,107,80,0.18); }
 .modal-handle { width:40px; height:4px; background:var(--sage-pale); border-radius:2px; margin:12px auto 0; }
@@ -448,7 +448,7 @@ body.dark-mode html { background: linear-gradient(135deg, #0f1a14 0%, #141f18 50
 <div class="screen active" id="screen-plan">
   <div class="plan-hero">
     <div class="hero-inner">
-      <h1>7-Tage <em>Plan</em> ◉</h1>
+      <h1>7-Tage <em>Plan</em> ✦</h1>
       <div class="plan-hero-sub">Ausdauer · Regeneration · +0,25 kg/Woche</div>
       <div style="display:flex;gap:8px;position:absolute;top:0;right:20px;">
         <button onclick="toggleDark()" id="dark-btn" style="background:rgba(255,255,255,0.15);border:none;border-radius:20px;padding:6px 12px;font-size:16px;cursor:pointer;" title="Dunkelmodus">🌓</button>
@@ -1068,13 +1068,21 @@ async function deleteRecipe(index) {
 }
 
 async function goToRecipe(name) {
-  // Switch to recipes tab
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  // Switch to recipes tab - find the correct tab button
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const screens = document.querySelectorAll('.screen');
+  tabBtns.forEach(b => b.classList.remove('active'));
+  screens.forEach(s => s.classList.remove('active'));
   document.getElementById('screen-rezepte').classList.add('active');
-  document.querySelectorAll('.tab-btn')[2].classList.add('active');
+  // Find and activate the Rezepte tab button
+  tabBtns.forEach(b => {
+    if (b.textContent.trim().includes('Rezepte')) b.classList.add('active');
+  });
 
-  // Wait for recipes to load if not yet rendered
+  // Load recipes if not yet loaded
+  await loadSavedRecipes();
+
+  // Find and open matching recipe card
   const findAndOpen = () => {
     const cards = document.querySelectorAll('.recipe-card');
     let found = false;
@@ -1084,19 +1092,18 @@ async function goToRecipe(name) {
         found = true;
         const content = card.querySelector('.recipe-content');
         if (content && !content.classList.contains('open')) content.classList.add('open');
-        setTimeout(() => card.scrollIntoView({behavior:'smooth', block:'center'}), 50);
+        setTimeout(() => card.scrollIntoView({behavior:'smooth', block:'center'}), 100);
       }
     });
     return found;
   };
 
-  // Try immediately, then poll until found (max 3s)
   if (!findAndOpen()) {
     let attempts = 0;
     const poll = setInterval(() => {
       attempts++;
       if (findAndOpen() || attempts > 30) clearInterval(poll);
-    }, 100);
+    }, 150);
   }
 }
 
@@ -1514,10 +1521,9 @@ renderFoods();
 <!-- WEIGHT MODAL -->
 <div class="modal-overlay" id="weightModal" onclick="closeWeightOnBg(event)">
   <div class="modal" id="weightModalInner">
-    <div class="modal-handle"></div>
-    <div class="modal-head">
-      <div class="modal-title">Gewichtstracker</div>
-      <button class="modal-close" onclick="closeWeight()">✕</button>
+    <div style="background:var(--sage-deep);padding:calc(var(--safe-top) + 16px) 20px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0;">
+      <button onclick="closeWeight()" style="background:none;border:none;color:white;font-size:22px;cursor:pointer;padding:4px;">✕</button>
+      <h2 style="font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:24px;color:white;flex:1;">Gewichts<em style="font-style:normal;color:var(--sage-light);">tracker</em></h2>
     </div>
     <div class="w-input-row">
       <div class="w-field">

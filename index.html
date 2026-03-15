@@ -448,7 +448,7 @@ body.dark-mode html { background: linear-gradient(135deg, #0f1a14 0%, #141f18 50
 <div class="screen active" id="screen-plan">
   <div class="plan-hero">
     <div class="hero-inner">
-      <h1>7-Tage <em>Plan</em> ✔</h1>
+      <h1>7-Tage <em>Plan</em> ✅</h1>
       <div class="plan-hero-sub">Ausdauer · Regeneration · +0,25 kg/Woche</div>
       <div style="display:flex;gap:8px;position:absolute;top:0;right:20px;">
         <button onclick="toggleDark()" id="dark-btn" style="background:rgba(255,255,255,0.15);border:none;border-radius:20px;padding:6px 12px;font-size:16px;cursor:pointer;" title="Dunkelmodus">🌓</button>
@@ -1070,7 +1070,8 @@ async function deleteRecipe(index) {
 async function goToRecipe(name) {
   // 1. Switch screen
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-rezepte').classList.add('active');
+  const recipeScreen = document.getElementById('screen-rezepte');
+  recipeScreen.classList.add('active');
 
   // 2. Switch tab button
   document.querySelectorAll('.tab-btn').forEach(b => {
@@ -1078,7 +1079,10 @@ async function goToRecipe(name) {
     b.classList.toggle('active', lbl && lbl.textContent.trim() === 'Rezepte');
   });
 
-  // 3. Find and open recipe – poll until found (recipes may still be loading)
+  // 3. Reset scroll position first
+  recipeScreen.scrollTop = 0;
+
+  // 4. Find and open recipe
   let attempts = 0;
   const poll = setInterval(() => {
     attempts++;
@@ -1092,7 +1096,11 @@ async function goToRecipe(name) {
         found = true;
         const content = card.querySelector('.recipe-content');
         if (content && !content.classList.contains('open')) content.classList.add('open');
-        setTimeout(() => card.scrollIntoView({behavior:'smooth', block:'center'}), 100);
+        // Scroll within the screen element
+        setTimeout(() => {
+          const offset = card.offsetTop - 20;
+          recipeScreen.scrollTop = offset;
+        }, 100);
       }
     });
     if (found || attempts > 40) clearInterval(poll);

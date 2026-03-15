@@ -448,7 +448,7 @@ body.dark-mode html { background: linear-gradient(135deg, #0f1a14 0%, #141f18 50
 <div class="screen active" id="screen-plan">
   <div class="plan-hero">
     <div class="hero-inner">
-      <h1>7-Tage <em>Plan</em> ◈</h1>
+      <h1>7-Tage <em>Plan</em> ♦</h1>
       <div class="plan-hero-sub">Ausdauer · Regeneration · +0,25 kg/Woche</div>
       <div style="display:flex;gap:8px;position:absolute;top:0;right:20px;">
         <button onclick="toggleDark()" id="dark-btn" style="background:rgba(255,255,255,0.15);border:none;border-radius:20px;padding:6px 12px;font-size:16px;cursor:pointer;" title="Dunkelmodus">🌓</button>
@@ -1425,7 +1425,7 @@ async function askHealthTip() {
       })
     });
     const data = await res.json();
-    const answer = data.result || data.error || 'Keine Antwort.';
+    const answer = data.result || data.text || data.content || data.answer || data.error || JSON.stringify(data) || 'Keine Antwort.';
     result.innerHTML = `<div style="background:var(--sage-mist);border-radius:10px;padding:12px;font-size:13px;line-height:1.7;white-space:pre-wrap;color:var(--text);">${answer}</div>`;
     await fetch('/api/health', {
       method: 'POST',
@@ -1443,12 +1443,24 @@ async function askHealthTip() {
 renderDays();
 loadSavedRecipes();
 loadHealthHistory();
-renderFoods();
-const _gi = document.getElementById('gramInput');
-if (_gi) _gi.addEventListener('input', function() {
-  const v = parseInt(this.value);
-  if (v > 0 && v <= 2000) { currentGrams = v; renderFoods(); }
-});
+// Wait for DOM before rendering foods
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    renderFoods();
+    const gi = document.getElementById('gramInput');
+    if (gi) gi.addEventListener('input', function() {
+      const v = parseInt(this.value);
+      if (v > 0 && v <= 2000) { currentGrams = v; renderFoods(); }
+    });
+  });
+} else {
+  renderFoods();
+  const gi = document.getElementById('gramInput');
+  if (gi) gi.addEventListener('input', function() {
+    const v = parseInt(this.value);
+    if (v > 0 && v <= 2000) { currentGrams = v; renderFoods(); }
+  });
+}
 </script>
 <!-- TAB BAR -->
 <div class="tab-bar">

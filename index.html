@@ -124,7 +124,7 @@ body {
   .section-header, .cat-filter, .tagesinfo-bar, .cat-title, .recipe-cat-title { max-width: 700px; margin-left: auto; margin-right: auto; padding-left: 20px; }
 
   .modal-overlay { align-items: flex-end; }
-  .modal { max-width: 700px; }
+  .modal { max-width: 500px; }
 
   /* Shopping modal centered */
   .shop-modal-hero, .shop-body, .shop-footer {
@@ -388,7 +388,7 @@ body {
 .tip-list li:last-child { border-bottom:none; }
 
 /* ── WEIGHT MODAL ── */
-.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:200; align-items:flex-end; justify-content:center; backdrop-filter:blur(4px); }
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:200; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
 .modal-overlay.open { display:flex; }
 .modal { background:var(--white); border-radius:24px 24px 0 0; width:100%; max-width:430px; max-height:96dvh; overflow-y:auto; padding:0 0 calc(var(--safe-bottom)+16px); box-shadow:0 -8px 40px rgba(58,107,80,0.18); }
 .modal-handle { width:40px; height:4px; background:var(--sage-pale); border-radius:2px; margin:12px auto 0; }
@@ -448,7 +448,7 @@ body.dark-mode html { background: linear-gradient(135deg, #0f1a14 0%, #141f18 50
 <div class="screen active" id="screen-plan">
   <div class="plan-hero">
     <div class="hero-inner">
-      <h1>7-Tage <em>Plan</em> ★★</h1>
+      <h1>7-Tage <em>Plan</em> ✚</h1>
       <div class="plan-hero-sub">Ausdauer · Regeneration · +0,25 kg/Woche</div>
       <div style="display:flex;gap:8px;position:absolute;top:0;right:20px;">
         <button onclick="toggleDark()" id="dark-btn" style="background:rgba(255,255,255,0.15);border:none;border-radius:20px;padding:6px 12px;font-size:16px;cursor:pointer;" title="Dunkelmodus">🌓</button>
@@ -639,7 +639,7 @@ body.dark-mode html { background: linear-gradient(135deg, #0f1a14 0%, #141f18 50
 // ===== DATA =====
 const days = [
   { tag:'Tag 1 · Montag', run:false, mahlzeiten:[
-    {emoji:'🌅',typ:'Frühstück',name:'Granola + Haferflocken + Banane + Hafermilch + 1 EL Leinöl + 1 EL Chiasamen',naehr:'Omega-3, Kalium, Ballaststoffe',kcal:'~650',rezept:'Hafermehl-Pancakes (Sonntags-Spezial)'},
+    {emoji:'🌅',typ:'Frühstück',name:'Granola + Haferflocken + Banane + Hafermilch + 1 EL Leinöl + 1 EL Chiasamen',naehr:'Omega-3, Kalium, Ballaststoffe',kcal:'~650',rezept:'Hafermehl-Pancakes'},
     {emoji:'🍽️',typ:'Mittagessen',name:'Rote Linsensuppe mit Kokosmilch & Spinat (Leftover)',naehr:'Eisen, Folsäure, Protein, Kalium',kcal:'~600',rezept:'Rote Linsensuppe mit Kokosmilch & Spinat'},
     {emoji:'🌙',typ:'Abendessen',name:'Rote Linsensuppe mit Kokosmilch, Spinat, Süßkartoffel & Dinkelbrötchen',naehr:'Protein ~28g, Eisen, Folsäure',kcal:'~750',rezept:'Rote Linsensuppe mit Kokosmilch & Spinat'},
   ], total:'~2.000 kcal · ~82g Protein', tipp:'Ruhetag: Leinöl ins Granola für Omega-3.'},
@@ -672,7 +672,7 @@ const days = [
     {emoji:'🍌',typ:'Post-Run Shake',name:'Protein-Shake + Banane + 3 Datteln',naehr:'Protein ~28g, Kreatin, Kalium',kcal:'~460',rezept:''},
   ], total:'~2.530 kcal · ~100g Protein', tipp:'Langer Lauftag: Datteln für schnelle Energie. 3L Wasser!'},
   { tag:'Tag 7 · Sonntag', run:true, mahlzeiten:[
-    {emoji:'🌅',typ:'Frühstück',name:'Hafermehl-Pancakes + Chiasamen + Ahornsirup + frische Beeren',naehr:'KH, Ballaststoffe, Antioxidantien',kcal:'~700',rezept:'Hafermehl-Pancakes (Sonntags-Spezial)'},
+    {emoji:'🌅',typ:'Frühstück',name:'Hafermehl-Pancakes + Chiasamen + Ahornsirup + frische Beeren',naehr:'KH, Ballaststoffe, Antioxidantien',kcal:'~700',rezept:'Hafermehl-Pancakes'},
     {emoji:'🍽️',typ:'Mittagessen',name:'Cremiges Tomaten-Risotto mit Kokosmilch & Hefeflocken',naehr:'Kalium, Lycopin, Vitamin C',kcal:'~580',rezept:'Cremiges Tomaten-Risotto'},
     {emoji:'🌙',typ:'Abendessen',name:'Asiatischer Tofu-Wok mit Brokkoli, Zuckerschoten, Sesam & Reisnudeln',naehr:'Protein ~28g, Calcium (Sesam)',kcal:'~780',rezept:''},
     {emoji:'🍌',typ:'Post-Run Shake',name:'Banane + Hafermilch + Proteinpulver + Kreatin + Cashews',naehr:'Protein ~32g, Zink, Kreatin',kcal:'~480',rezept:''},

@@ -448,7 +448,7 @@ body.dark-mode html { background: linear-gradient(135deg, #0f1a14 0%, #141f18 50
 <div class="screen active" id="screen-plan">
   <div class="plan-hero">
     <div class="hero-inner">
-      <h1>7-Tage <em>Plan</em> 🎯</h1>
+      <h1>7-Tage <em>Plan</em> ◈</h1>
       <div class="plan-hero-sub">Ausdauer · Regeneration · +0,25 kg/Woche</div>
       <div style="display:flex;gap:8px;position:absolute;top:0;right:20px;">
         <button onclick="toggleDark()" id="dark-btn" style="background:rgba(255,255,255,0.15);border:none;border-radius:20px;padding:6px 12px;font-size:16px;cursor:pointer;" title="Dunkelmodus">🌓</button>
@@ -1269,11 +1269,186 @@ function renderWeight() {
         </div>`).join('');
 }
 
+// ===== NÄHRSTOFFE =====
+const daily = { kcal:2700,protein:100,carbs:340,fat:90,fiber:30,kalium:3500,magnesium:400,eisen:14,calcium:1000,vitamin_c:100,omega3:2500,zink:10 };
+
+const foods = [
+  {id:'banane',cat:'obst',name:'Banane',emoji:'🍌',n:{kcal:89,protein:1.1,carbs:23,fat:0.3,fiber:2.6,kalium:358,magnesium:27,eisen:0.3,calcium:5,vitamin_c:8.7,omega3:0,zink:0.2}},
+  {id:'erdbeeren',cat:'obst',name:'Erdbeeren',emoji:'🍓',n:{kcal:32,protein:0.7,carbs:7.7,fat:0.3,fiber:2.0,kalium:153,magnesium:13,eisen:0.4,calcium:16,vitamin_c:59,omega3:65,zink:0.1}},
+  {id:'avocado',cat:'obst',name:'Avocado',emoji:'🥑',n:{kcal:160,protein:2.0,carbs:8.5,fat:14.7,fiber:6.7,kalium:485,magnesium:29,eisen:0.6,calcium:12,vitamin_c:10,omega3:110,zink:0.6}},
+  {id:'mango',cat:'obst',name:'Mango',emoji:'🥭',n:{kcal:60,protein:0.8,carbs:15,fat:0.4,fiber:1.6,kalium:168,magnesium:10,eisen:0.2,calcium:11,vitamin_c:36,omega3:0,zink:0.1}},
+  {id:'datteln',cat:'obst',name:'Datteln (getrocknet)',emoji:'🌴',n:{kcal:277,protein:1.8,carbs:75,fat:0.2,fiber:6.7,kalium:696,magnesium:54,eisen:1.0,calcium:64,vitamin_c:0,omega3:0,zink:0.4}},
+  {id:'haferflocken',cat:'getreide',name:'Haferflocken',emoji:'🌾',n:{kcal:372,protein:13.5,carbs:59,fat:7.1,fiber:10,kalium:429,magnesium:129,eisen:4.6,calcium:54,vitamin_c:0,omega3:1100,zink:3.4}},
+  {id:'quinoa',cat:'getreide',name:'Quinoa (gekocht)',emoji:'🌿',n:{kcal:120,protein:4.4,carbs:21,fat:1.9,fiber:2.8,kalium:172,magnesium:64,eisen:1.5,calcium:17,vitamin_c:0,omega3:160,zink:1.1}},
+  {id:'reis',cat:'getreide',name:'Basmatireis (gekocht)',emoji:'🍚',n:{kcal:130,protein:2.7,carbs:28,fat:0.3,fiber:0.4,kalium:35,magnesium:12,eisen:0.2,calcium:10,vitamin_c:0,omega3:0,zink:0.5}},
+  {id:'dinkel',cat:'getreide',name:'Dinkelspaghetti (gekocht)',emoji:'🍝',n:{kcal:142,protein:6.2,carbs:27,fat:1.0,fiber:3.5,kalium:150,magnesium:40,eisen:1.5,calcium:20,vitamin_c:0,omega3:60,zink:1.1}},
+  {id:'linsennudeln',cat:'getreide',name:'Linsennudeln (gekocht)',emoji:'🍜',n:{kcal:145,protein:9.0,carbs:24,fat:1.0,fiber:4.5,kalium:230,magnesium:45,eisen:2.8,calcium:25,vitamin_c:0,omega3:50,zink:1.5}},
+  {id:'rote-linsen',cat:'huelsenfruechte',name:'Rote Linsen (trocken)',emoji:'🫘',n:{kcal:353,protein:25,carbs:60,fat:1.1,fiber:10.8,kalium:677,magnesium:122,eisen:7.5,calcium:51,vitamin_c:4,omega3:370,zink:3.8}},
+  {id:'kichererbsen',cat:'huelsenfruechte',name:'Kichererbsen (gekocht)',emoji:'🟡',n:{kcal:164,protein:8.9,carbs:27,fat:2.6,fiber:7.6,kalium:291,magnesium:48,eisen:2.9,calcium:49,vitamin_c:1.3,omega3:40,zink:1.5}},
+  {id:'weisse-bohnen',cat:'huelsenfruechte',name:'Weiße Bohnen (gekocht)',emoji:'⚪',n:{kcal:139,protein:9.7,carbs:25,fat:0.5,fiber:10.5,kalium:561,magnesium:66,eisen:3.7,calcium:90,vitamin_c:0,omega3:170,zink:1.4}},
+  {id:'tofu',cat:'protein',name:'Tofu (fest)',emoji:'⬜',n:{kcal:76,protein:8.1,carbs:1.9,fat:4.2,fiber:0.3,kalium:121,magnesium:30,eisen:1.6,calcium:176,vitamin_c:0,omega3:730,zink:0.8}},
+  {id:'tempeh',cat:'protein',name:'Tempeh',emoji:'🟫',n:{kcal:195,protein:19.9,carbs:9.4,fat:10.8,fiber:7.0,kalium:412,magnesium:81,eisen:2.7,calcium:111,vitamin_c:0,omega3:330,zink:1.7}},
+  {id:'proteinpulver',cat:'protein',name:'Proteinpulver vegan (3 TL≈20g)',emoji:'💪',n:{kcal:380,protein:75,carbs:10,fat:5,fiber:3,kalium:500,magnesium:80,eisen:5,calcium:200,vitamin_c:0,omega3:0,zink:3}},
+  {id:'spinat',cat:'gemuese',name:'Spinat (frisch)',emoji:'🌿',n:{kcal:23,protein:2.9,carbs:3.6,fat:0.4,fiber:2.2,kalium:558,magnesium:87,eisen:2.7,calcium:99,vitamin_c:28,omega3:138,zink:0.5}},
+  {id:'brokkoli',cat:'gemuese',name:'Brokkoli',emoji:'🥦',n:{kcal:34,protein:2.8,carbs:6.6,fat:0.4,fiber:2.6,kalium:316,magnesium:21,eisen:0.7,calcium:47,vitamin_c:89,omega3:130,zink:0.4}},
+  {id:'suesskartoffel',cat:'gemuese',name:'Süßkartoffel',emoji:'🍠',n:{kcal:86,protein:1.6,carbs:20,fat:0.1,fiber:3.0,kalium:337,magnesium:25,eisen:0.6,calcium:30,vitamin_c:2.4,omega3:0,zink:0.3}},
+  {id:'paprika',cat:'gemuese',name:'Paprika (rot)',emoji:'🫑',n:{kcal:31,protein:1.0,carbs:6.0,fat:0.3,fiber:2.1,kalium:211,magnesium:12,eisen:0.4,calcium:7,vitamin_c:140,omega3:30,zink:0.2}},
+  {id:'kartoffel',cat:'gemuese',name:'Kartoffel (gekocht)',emoji:'🥔',n:{kcal:77,protein:2.0,carbs:17,fat:0.1,fiber:1.8,kalium:421,magnesium:23,eisen:0.3,calcium:5,vitamin_c:13,omega3:0,zink:0.3}},
+  {id:'walnuesse',cat:'fette',name:'Walnüsse',emoji:'🫙',n:{kcal:654,protein:15.2,carbs:13.7,fat:65.2,fiber:6.7,kalium:441,magnesium:158,eisen:2.9,calcium:98,vitamin_c:1.3,omega3:9080,zink:3.1}},
+  {id:'cashews',cat:'fette',name:'Cashews',emoji:'🥜',n:{kcal:553,protein:18.2,carbs:30,fat:43.8,fiber:3.3,kalium:660,magnesium:292,eisen:6.7,calcium:37,vitamin_c:0.5,omega3:62,zink:5.8}},
+  {id:'leinsamen',cat:'fette',name:'Leinsamen / Leinöl (1 EL≈14g)',emoji:'🟤',n:{kcal:534,protein:18.3,carbs:28.9,fat:42.2,fiber:27.3,kalium:813,magnesium:392,eisen:5.7,calcium:255,vitamin_c:0.6,omega3:22800,zink:4.3}},
+  {id:'chiasamen',cat:'fette',name:'Chiasamen',emoji:'⚫',n:{kcal:486,protein:16.5,carbs:42.1,fat:30.7,fiber:34.4,kalium:407,magnesium:335,eisen:7.7,calcium:631,vitamin_c:1.6,omega3:17550,zink:4.6}},
+  {id:'erdnussbutter',cat:'fette',name:'Erdnussbutter',emoji:'🥜',n:{kcal:588,protein:25,carbs:20,fat:50,fiber:6,kalium:649,magnesium:168,eisen:1.9,calcium:49,vitamin_c:0,omega3:0,zink:2.9}},
+  {id:'mandelmus',cat:'fette',name:'Mandelmus',emoji:'🤎',n:{kcal:614,protein:21,carbs:20,fat:56,fiber:10.5,kalium:748,magnesium:270,eisen:3.7,calcium:270,vitamin_c:0,omega3:0,zink:3.1}},
+  {id:'hafermilch',cat:'getreide',name:'Hafermilch (250ml=1 Glas)',emoji:'🥛',n:{kcal:46,protein:1.0,carbs:8.6,fat:1.5,fiber:0.8,kalium:115,magnesium:13,eisen:0.4,calcium:120,vitamin_c:0,omega3:60,zink:0.1}},
+];
+
+const nutrientMeta = [
+  {key:'protein',label:'Protein',unit:'g',cls:'c-protein'},
+  {key:'carbs',label:'Kohlenhydrate',unit:'g',cls:'c-carbs'},
+  {key:'fat',label:'Fett',unit:'g',cls:'c-fat'},
+  {key:'fiber',label:'Ballaststoffe',unit:'g',cls:'c-fiber'},
+  {key:'kalium',label:'Kalium',unit:'mg',cls:'c-kalium'},
+  {key:'magnesium',label:'Magnesium',unit:'mg',cls:'c-magnesium'},
+  {key:'eisen',label:'Eisen',unit:'mg',cls:'c-eisen'},
+  {key:'calcium',label:'Calcium',unit:'mg',cls:'c-calcium'},
+  {key:'vitamin_c',label:'Vitamin C',unit:'mg',cls:'c-vitamin_c'},
+  {key:'omega3',label:'Omega-3',unit:'mg',cls:'c-omega3'},
+  {key:'zink',label:'Zink',unit:'mg',cls:'c-zink'},
+];
+
+const catLabels = {
+  obst:{label:'🍌 Obst'},getreide:{label:'🌾 Getreide & Pasta'},
+  huelsenfruechte:{label:'🫘 Hülsenfrüchte'},protein:{label:'💪 Protein-Quellen'},
+  gemuese:{label:'🥦 Gemüse'},fette:{label:'🥑 Fette, Nüsse & Samen'},
+};
+
+let currentGrams = 100;
+let currentCat = 'all';
+
+function renderFoods() {
+  const container = document.getElementById('foods-container');
+  if (!container) return;
+  let html = '';
+  const cats = currentCat === 'all' ? Object.keys(catLabels) : [currentCat];
+  cats.forEach(cat => {
+    const catFoods = foods.filter(f => f.cat === cat);
+    if (!catFoods.length) return;
+    html += `<div class="cat-title">${catLabels[cat].label}</div>`;
+    catFoods.forEach(food => {
+      const g = currentGrams / 100;
+      const kcalVal = (food.n.kcal * g).toFixed(0);
+      const rows = nutrientMeta.map(m => {
+        const val = food.n[m.key] * g;
+        const p = Math.min((val / daily[m.key]) * 100, 100);
+        const vStr = m.key==='omega3' ? (val>=1000?(val/1000).toFixed(1)+'g':val.toFixed(0)+'mg') : val.toFixed(1)+m.unit;
+        const pStr = p < 1 ? '<1%' : Math.round(p)+'%';
+        return `<div class="n-row"><div class="n-dot ${m.cls}"></div><div class="n-name">${m.label}</div><div class="n-bar-wrap"><div class="n-bar ${m.cls}" style="width:${p}%"></div></div><div class="n-val">${vStr}</div><div class="n-pct">${pStr}</div></div>`;
+      }).join('');
+      html += `<div class="food-card"><div class="food-header-row"><div class="food-name-wrap"><span class="food-emoji">${food.emoji}</span><span class="food-name">${food.name}</span></div><span class="food-portion">${currentGrams}g</span></div><div class="food-kcal-big"><span class="kcal-num">${kcalVal}</span><span class="kcal-u">kcal</span></div><div class="nutrient-rows">${rows}</div></div>`;
+    });
+  });
+  container.innerHTML = html;
+}
+
+function filterCat(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFoods();
+}
+
+// gramInput listener added after DOM ready (in INIT)
+
+// ===== KI REZEPTSUCHE =====
+async function askAI() {
+  const prompt = document.getElementById('aiPrompt').value.trim();
+  if (!prompt) return;
+  const btn = document.getElementById('aiBtn');
+  btn.disabled = true; btn.textContent = '⏳ Generiere...';
+  document.getElementById('ai-result').innerHTML = '<div class="ai-loading">🤖 Rezept wird erstellt...</div>';
+  try {
+    const res = await fetch('/api/recipes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt })
+    });
+    const raw = await res.text();
+    let r;
+    try { r = JSON.parse(raw); } catch(e) { throw new Error('Server-Antwort: ' + raw.slice(0, 200)); }
+    if (r.error) throw new Error(r.error);
+    lastAIRecipe = r;
+    document.getElementById('ai-result').innerHTML = `
+      <div class="ai-result-card">
+        <div class="ai-result-header">
+          <div class="ai-result-title">✨ ${r.name}</div>
+          <div class="ai-result-meta">${r.meta}</div>
+        </div>
+        <div class="ai-result-body">
+          <div class="ai-result-sub">Zutaten</div>
+          <ul class="ai-result-list">${r.zutaten.map(z=>`<li>${z}</li>`).join('')}</ul>
+          <div class="ai-result-sub">Zubereitung</div>
+          <ol class="ai-result-steps">${r.schritte.map(s=>`<li>${s}</li>`).join('')}</ol>
+          <div class="ai-result-naehr">✅ ${r.naehr}</div>
+          ${r.tipp ? `<div style="margin-top:8px;font-size:11px;color:var(--text-light);font-style:italic;">💡 ${r.tipp}</div>` : ''}
+          <button onclick="saveAIRecipe()" id="saveRecipeBtn" style="margin-top:14px;width:100%;padding:11px;background:var(--sage-deep);color:white;border:none;border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">💾 Rezept speichern</button>
+        </div>
+      </div>`;
+  } catch(e) {
+    document.getElementById('ai-result').innerHTML = `<div class="ai-error">⚠️ ${e.message}</div>`;
+  }
+  btn.disabled = false; btn.textContent = '✨ Rezept generieren';
+}
+
+async function askHealthTip() {
+  const input = document.getElementById('healthPromptInput');
+  const result = document.getElementById('healthTipResult');
+  const q = input.value.trim();
+  if (!q) return;
+  result.style.display = 'block';
+  result.innerHTML = '<div style="color:var(--text-light);font-size:13px;">⏳ Antwort wird geladen...</div>';
+  let contextStr = '';
+  if (healthHistory.length > 0) {
+    const recent = healthHistory.slice(0, 3);
+    contextStr = '\n\nFrühere Einträge des Nutzers:\n' + recent.map(e => {
+      const d = new Date(e.date).toLocaleDateString('de-DE');
+      return `[${d}] Frage: ${e.prompt}\nAntwort: ${e.answer}`;
+    }).join('\n---\n');
+  }
+  try {
+    const res = await fetch('/api/recipes', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        systemPrompt: `Du bist ein veganer Ernährungs- und Sportmedizin-Assistent für Christian (34J, Läufer 30-40km/Woche, vegan, Schilddrüsenunterfunktion, Leukopenie familiär, Kaliummangel bekannt). Gib kurze, konkrete, sofort umsetzbare Tipps auf Deutsch. Maximal 5-6 Stichpunkte. Berücksichtige frühere Einträge falls vorhanden. Kein Smalltalk.${contextStr}`,
+        prompt: q
+      })
+    });
+    const data = await res.json();
+    const answer = data.result || data.error || 'Keine Antwort.';
+    result.innerHTML = `<div style="background:var(--sage-mist);border-radius:10px;padding:12px;font-size:13px;line-height:1.7;white-space:pre-wrap;color:var(--text);">${answer}</div>`;
+    await fetch('/api/health', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ entry: { prompt: q, answer } })
+    });
+    input.value = '';
+    await loadHealthHistory();
+  } catch(e) {
+    result.innerHTML = `<div style="color:#c0392b;font-size:13px;">⚠️ Fehler: ${e.message}</div>`;
+  }
+}
+
 // ===== INIT
 renderDays();
 loadSavedRecipes();
 loadHealthHistory();
 renderFoods();
+const _gi = document.getElementById('gramInput');
+if (_gi) _gi.addEventListener('input', function() {
+  const v = parseInt(this.value);
+  if (v > 0 && v <= 2000) { currentGrams = v; renderFoods(); }
+});
 </script>
 <!-- TAB BAR -->
 <div class="tab-bar">

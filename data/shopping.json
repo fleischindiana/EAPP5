@@ -34,5 +34,77 @@
     "display": "Optional: 30g hanfsamen für +10g protein",
     "cat": 7,
     "checked": false
+  },
+  {
+    "id": 1773694029035.733,
+    "name": "rote linsen trocken",
+    "amount": 200,
+    "unit": "g",
+    "display": "200g Rote linsen trocken",
+    "cat": 6,
+    "checked": false
+  },
+  {
+    "id": 1773694029035.1604,
+    "name": "1 süßkartoffel",
+    "amount": null,
+    "unit": null,
+    "display": "1 süßkartoffel",
+    "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773694029035.279,
+    "name": "kokosmilch",
+    "amount": 1,
+    "unit": "Dose",
+    "display": "1 Dose Kokosmilch",
+    "cat": 5,
+    "checked": false
+  },
+  {
+    "id": 1773694029035.058,
+    "name": "spinat",
+    "amount": 100,
+    "unit": "g",
+    "display": "100g Spinat",
+    "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773694029035.748,
+    "name": "1 zwiebel",
+    "amount": null,
+    "unit": null,
+    "display": "1 zwiebel",
+    "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773694029035.6296,
+    "name": "2 knoblauchzehen",
+    "amount": null,
+    "unit": null,
+    "display": "2 knoblauchzehen",
+    "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773694029035.363,
+    "name": "ingwer",
+    "amount": 1,
+    "unit": "Stück",
+    "display": "1 Stück Ingwer",
+    "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773694029035.511,
+    "name": "gemüsebrühe",
+    "amount": 500,
+    "unit": "ml",
+    "display": "500ml Gemüsebrühe",
+    "cat": 9,
+    "checked": false
   }
 ]

@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "id": 1773693919638.4407,
+    "name": "tofu",
+    "amount": 400,
+    "unit": "g",
+    "display": "400g Tofu",
+    "cat": 4,
+    "checked": false
+  },
+  {
+    "id": 1773693919638.6902,
+    "name": "1 paprika",
+    "amount": null,
+    "unit": null,
+    "display": "1 paprika",
+    "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773693919638.4622,
+    "name": "cherrytomaten halbiert",
+    "amount": null,
+    "unit": null,
+    "display": "Cherrytomaten halbiert",
+    "cat": 1,
+    "checked": false
+  },
+  {
+    "id": 1773693919638.6104,
+    "name": "optional: 30g hanfsamen für +10g protein",
+    "amount": null,
+    "unit": null,
+    "display": "Optional: 30g hanfsamen für +10g protein",
+    "cat": 7,
+    "checked": false
+  }
+]

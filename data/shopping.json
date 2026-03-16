@@ -34,14 +34,5 @@
     "display": "300ml Hafermilch",
     "cat": 5,
     "checked": false
-  },
-  {
-    "id": 1773660782621.367,
-    "name": "frische beeren",
-    "amount": null,
-    "unit": null,
-    "display": "Frische beeren",
-    "cat": 1,
-    "checked": true
   }
 ]

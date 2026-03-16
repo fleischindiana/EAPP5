@@ -105,6 +105,6 @@
     "unit": "ml",
     "display": "500ml Gemüsebrühe",
     "cat": 9,
-    "checked": false
+    "checked": true
   }
 ]

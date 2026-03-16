@@ -127,12 +127,8 @@ body {
   .modal { max-width: 500px; }
 
   /* Shopping modal centered */
-  .shop-modal-hero, .shop-body, .shop-footer {
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-  }
+  .shop-modal-hero, .shop-body { max-width: 700px; margin-left: auto; margin-right: auto; width: 100%; }
+  .shop-footer { max-width: 100%; width: 100%; }
 }
 
 /* SCREENS */
@@ -392,7 +388,10 @@ body {
   z-index: 1;
 }
 .shop-clear-checked { flex:1; padding:11px; border-radius:12px; border:1.5px solid var(--sage-pale); background:transparent; font-family:"Plus Jakarta Sans",sans-serif; font-size:13px; font-weight:600; color:var(--text-muted); cursor:pointer; }
-.shop-clear-all { flex:1; padding:11px; border-radius:12px; border:none; background:#fee; font-family:"Plus Jakarta Sans",sans-serif; font-size:13px; font-weight:600; color:#c0392b; cursor:pointer; }
+.shop-clear-all { flex:1; padding:11px; border-radius:12px; border:2px solid #f5c6c6; background:#fee; font-family:"Plus Jakarta Sans",sans-serif; font-size:13px; font-weight:600; color:#c0392b; cursor:pointer; }
+body.dark-mode .shop-clear-all { background:#3d1f1f; border-color:#7a3333; color:#ff8080; }
+body.dark-mode .shop-footer { background:#1e2e27; border-color:#2a3d32; }
+body.dark-mode .shop-clear-checked { color:var(--text-muted); border-color:#2a3d32; }
 
 /* ── TIPPS ── */
 .tips-hero-sub { font-size:12px; color:rgba(255,255,255,0.5); font-weight:300; margin-top:4px; }
@@ -465,7 +464,7 @@ body.dark-mode html { background: linear-gradient(135deg, #0f1a14 0%, #141f18 50
 <div class="screen active" id="screen-plan">
   <div class="plan-hero">
     <div class="hero-inner">
-      <h1>7-Tage <em>Plan</em> ❋</h1>
+      <h1>7-Tage <em>Plan</em> ✱</h1>
       <div class="plan-hero-sub">Ausdauer · Regeneration · +0,25 kg/Woche</div>
       <div style="display:flex;gap:8px;position:absolute;top:0;right:20px;">
         <button onclick="toggleDark()" id="dark-btn" style="background:rgba(255,255,255,0.15);border:none;border-radius:20px;padding:6px 12px;font-size:16px;cursor:pointer;" title="Dunkelmodus">🌓</button>

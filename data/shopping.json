@@ -97,14 +97,5 @@
     "display": "1 Stück Ingwer",
     "cat": 1,
     "checked": false
-  },
-  {
-    "id": 1773694029035.511,
-    "name": "gemüsebrühe",
-    "amount": 500,
-    "unit": "ml",
-    "display": "500ml Gemüsebrühe",
-    "cat": 9,
-    "checked": true
   }
 ]

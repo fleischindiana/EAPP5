@@ -28,7 +28,7 @@
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 input, textarea, select { font-size:16px !important; }
 
-html { min-height:100dvh; background: linear-gradient(135deg, #dceee3 0%, #c8e0d0 50%, #d8eedd 100%); }
+html { min-height:100dvh; background: var(--white); }
 
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
@@ -37,8 +37,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: transparent;
+  background: var(--white);
 }
+body.dark-mode { background: #1e2e27; }
+body.dark-mode ~ html, html:has(body.dark-mode) { background: #1e2e27; }
 
 /* ── App-Shell: phone-first, centered on desktop ── */
 .app-shell {
@@ -445,6 +447,7 @@ body.dark-mode {
   --text-muted: #6a8f78;
 }
 body.dark-mode .tab-bar { background:#1e2e27; border-color:#2a3d32; }
+body.dark-mode, html { --tab-bg: #1e2e27; }
 body.dark-mode .tab-label { color:#6a8f78; }
 body.dark-mode .tab-btn.active .tab-label { color:var(--sage-light); }
 body.dark-mode .day-card { background:#243028; }
@@ -464,7 +467,7 @@ body.dark-mode html { background: linear-gradient(135deg, #0f1a14 0%, #141f18 50
 <div class="screen active" id="screen-plan">
   <div class="plan-hero">
     <div class="hero-inner">
-      <h1>7-Tage <em>Plan</em> ◆</h1>
+      <h1>7-Tage <em>Plan</em> ⊙</h1>
       <div class="plan-hero-sub">Ausdauer · Regeneration · +0,25 kg/Woche</div>
       <div style="display:flex;gap:8px;position:absolute;top:0;right:20px;">
         <button onclick="toggleDark()" id="dark-btn" style="background:rgba(255,255,255,0.15);border:none;border-radius:20px;padding:6px 12px;font-size:16px;cursor:pointer;" title="Dunkelmodus">🌓</button>
@@ -1499,6 +1502,15 @@ async function askHealthTip() {
 }
 
 // ===== INIT
+// Match html background to tab-bar to eliminate gap on iPhone PWA
+function syncHtmlBg() {
+  const isDark = document.body.classList.contains('dark-mode');
+  document.documentElement.style.background = isDark ? '#1e2e27' : '#ffffff';
+}
+syncHtmlBg();
+const _origToggleDark = toggleDark;
+// Patch toggleDark to also update html bg
+const _patchedToggleDark = function() { _origToggleDark(); syncHtmlBg(); };
 renderDays();
 loadSavedRecipes();
 if (typeof loadHealthHistory === "function") loadHealthHistory();

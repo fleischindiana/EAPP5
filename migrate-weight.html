@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Gewicht Migration</title>
+<style>
+  body { font-family: sans-serif; max-width: 600px; margin: 60px auto; padding: 20px; }
+  button { padding: 14px 28px; background: #2d5a3d; color: white; border: none; border-radius: 10px; font-size: 16px; cursor: pointer; }
+  #status { margin-top: 20px; padding: 16px; border-radius: 10px; font-size: 14px; }
+  .ok { background: #d4edda; color: #155724; }
+  .err { background: #f8d7da; color: #721c24; }
+  .loading { background: #d1ecf1; color: #0c5460; }
+</style>
+</head>
+<body>
+<h2>⚖️ Gewichtsdaten → Redis</h2>
+<p>5 Einträge werden wiederhergestellt.</p>
+<button onclick="migrate()">Daten wiederherstellen</button>
+<div id="status"></div>
+<script>
+async function migrate() {
+  const status = document.getElementById('status');
+  status.className = 'loading';
+  status.textContent = '⏳ Wird gespeichert...';
+  try {
+    const res = await fetch('/api/weight', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ data: [{"date":"2026-03-11","weight":66},{"date":"2026-03-13","weight":66.5},{"date":"2026-03-14","weight":65.8},{"date":"2026-03-15","weight":66.75},{"date":"2026-03-16","weight":66}] })
+    });
+    if (res.ok) {
+      status.className = 'ok';
+      status.textContent = '✅ Gewichtsdaten erfolgreich wiederhergestellt!';
+    } else {
+      const err = await res.json();
+      status.className = 'err';
+      status.textContent = '⚠️ Fehler: ' + (err.error || 'Unbekannt');
+    }
+  } catch(e) {
+    status.className = 'err';
+    status.textContent = '⚠️ ' + e.message;
+  }
+}
+</script>
+</body>
+</html>
